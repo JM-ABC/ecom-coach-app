@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "App.tsx",
+    "main.tsx",
+    "vite-env.d.ts",
+    "pages",
+    "integrations",
+    "test",
+    "components/NavLink.tsx",
+    "components/OnboardingGuide.tsx",
+    "components/PricingFooter.tsx",
+    "components/UsageLimitBanner.tsx",
+    "components/ui",
+    "components/tabs/MarketingCalendar.tsx",
+    "hooks/use-daily-usage.ts",
+    "hooks/use-mobile.tsx",
+    "hooks/use-toast.ts",
+    "lib/utils.ts"
+  ]
+}

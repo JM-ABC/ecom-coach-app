@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>셀러 마케팅 툴킷 — 리디자인</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Pretendard -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="tokens.css" />
+
+<style>
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideIn { from { transform: translateX(20px); opacity: 0 } to { transform: translateX(0); opacity: 1 } }
+
+.app-root { display: flex; min-height: 100vh; background: var(--bg); }
+.main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.tweaks-panel {
+  position: fixed; bottom: 16px; right: 16px;
+  width: 260px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 14px;
+  z-index: 100;
+  display: none;
+}
+.tweaks-panel.open { display: block; }
+.tweaks-head {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12.5; font-weight: 600;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--divider);
+}
+.tweak-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.tweak-label { font-size: 11.5px; color: var(--text-muted); font-weight: 500; }
+.tweak-options { display: flex; gap: 4px; flex-wrap: wrap; }
+.tweak-opt {
+  padding: 4px 9px; font-size: 11.5px; font-weight: 500;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: 999px; color: var(--text-muted); cursor: pointer;
+}
+.tweak-opt.active {
+  background: var(--accent-bg); border-color: var(--accent-border); color: var(--accent-text);
+}
+.tweak-swatch {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 2px solid transparent; cursor: pointer;
+  transition: border-color 120ms;
+}
+.tweak-swatch.active { border-color: var(--text); }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- Tweaks panel (rendered outside React for simplicity) -->
+<div id="tweaks" class="tweaks-panel">
+  <div class="tweaks-head">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    Tweaks
+  </div>
+  <div class="tweak-row">
+    <div class="tweak-label">캘린더 기본 뷰</div>
+    <div class="tweak-options" id="tweak-view">
+      <div class="tweak-opt" data-val="focus">포커스</div>
+      <div class="tweak-opt" data-val="grid">월간</div>
+      <div class="tweak-opt" data-val="timeline">타임라인</div>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <div class="tweak-label">포인트 컬러</div>
+    <div class="tweak-options" id="tweak-accent">
+      <div class="tweak-swatch" data-val="indigo" style="background: oklch(0.56 0.18 258);" title="인디고"></div>
+      <div class="tweak-swatch" data-val="violet" style="background: oklch(0.56 0.2 300);" title="바이올렛"></div>
+      <div class="tweak-swatch" data-val="teal" style="background: oklch(0.58 0.12 190);" title="틸"></div>
+      <div class="tweak-swatch" data-val="charcoal" style="background: oklch(0.28 0.015 260);" title="차콜"></div>
+      <div class="tweak-swatch" data-val="rose" style="background: oklch(0.62 0.18 10);" title="로즈"></div>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <div class="tweak-label">초기 탭</div>
+    <div class="tweak-options" id="tweak-tab">
+      <div class="tweak-opt" data-val="calendar">캘린더</div>
+      <div class="tweak-opt" data-val="product-name">상품명</div>
+      <div class="tweak-opt" data-val="copy">카피</div>
+      <div class="tweak-opt" data-val="detail-page">상세</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- TWEAKS ---
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "defaultView": "focus",
+    "accent": "rose",
+    "defaultTab": "calendar"
+  }/*EDITMODE-END*/;
+
+  const ACCENT_MAP = {
+    indigo:  { c: 'oklch(0.56 0.18 258)', h: 'oklch(0.50 0.19 258)', bg: 'oklch(0.97 0.02 258)', br: 'oklch(0.88 0.06 258)', tx: 'oklch(0.45 0.18 258)' },
+    violet:  { c: 'oklch(0.56 0.2 300)',  h: 'oklch(0.50 0.21 300)', bg: 'oklch(0.97 0.025 300)', br: 'oklch(0.88 0.07 300)', tx: 'oklch(0.45 0.2 300)' },
+    teal:    { c: 'oklch(0.58 0.12 190)', h: 'oklch(0.52 0.13 190)', bg: 'oklch(0.97 0.02 190)', br: 'oklch(0.88 0.06 190)', tx: 'oklch(0.46 0.13 190)' },
+    charcoal:{ c: 'oklch(0.28 0.015 260)',h: 'oklch(0.22 0.015 260)',bg: 'oklch(0.95 0.005 260)',br: 'oklch(0.82 0.01 260)', tx: 'oklch(0.24 0.015 260)' },
+    rose:    { c: 'oklch(0.62 0.18 10)',  h: 'oklch(0.56 0.19 10)',  bg: 'oklch(0.97 0.025 10)', br: 'oklch(0.88 0.07 10)', tx: 'oklch(0.52 0.18 10)' },
+  };
+
+  function applyAccent(name) {
+    const a = ACCENT_MAP[name] || ACCENT_MAP.indigo;
+    const r = document.documentElement;
+    r.style.setProperty('--accent', a.c);
+    r.style.setProperty('--accent-hover', a.h);
+    r.style.setProperty('--accent-bg', a.bg);
+    r.style.setProperty('--accent-border', a.br);
+    r.style.setProperty('--accent-text', a.tx);
+  }
+
+  applyAccent(TWEAKS.accent);
+  window.CALENDAR_VIEW_DEFAULT = TWEAKS.defaultView;
+  window.DEFAULT_TAB = TWEAKS.defaultTab;
+
+  // --- Tweaks host protocol ---
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === '__activate_edit_mode') {
+      document.getElementById('tweaks').classList.add('open');
+    } else if (e.data?.type === '__deactivate_edit_mode') {
+      document.getElementById('tweaks').classList.remove('open');
+    }
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+  // --- Tweaks UI wiring ---
+  function persist(key, val) {
+    TWEAKS[key] = val;
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  }
+
+  function initTweak(containerId, key, onApply) {
+    const host = document.getElementById(containerId);
+    const sync = () => host.querySelectorAll('[data-val]').forEach(el =>
+      el.classList.toggle('active', el.dataset.val === String(TWEAKS[key])));
+    host.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-val]');
+      if (!t) return;
+      persist(key, t.dataset.val);
+      if (onApply) onApply(t.dataset.val);
+      sync();
+    });
+    sync();
+  }
+
+  initTweak('tweak-view', 'defaultView', (v) => {
+    window.CALENDAR_VIEW_DEFAULT = v;
+    if (window.__rerender) window.__rerender();
+  });
+  initTweak('tweak-accent', 'accent', applyAccent);
+  initTweak('tweak-tab', 'defaultTab', (v) => {
+    if (window.__setTab) window.__setTab(v);
+  });
+</script>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="data.js?v=10"></script>
+<script type="text/babel" src="Sidebar.jsx?v=10"></script>
+<script type="text/babel" src="CalendarParts.jsx?v=10"></script>
+<script type="text/babel" src="DetailPanel.jsx?v=10"></script>
+<script type="text/babel" src="MarketingCalendar.jsx?v=10"></script>
+<script type="text/babel" src="OtherTabs.jsx?v=10"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const App = () => {
+  const [tab, setTab] = useState(window.DEFAULT_TAB || 'calendar');
+  const [_, setRerenderTick] = useState(0);
+
+  useEffect(() => {
+    window.__setTab = setTab;
+    window.__rerender = () => setRerenderTick(t => t + 1);
+  }, []);
+
+  if (!window.Sidebar || !window.MarketingCalendar) {
+    return <div style={{ padding: 40, color: '#888' }}>Loading…</div>;
+  }
+
+  return (
+    <div className="app-root">
+      <window.Sidebar activeTab={tab} onTabChange={setTab} />
+      <div className="main-col" data-screen-label={
+        tab === 'calendar' ? '01 마케팅 캘린더' :
+        tab === 'product-name' ? '02 상품명 최적화' :
+        tab === 'copy' ? '03 카피 생성' : '04 상세페이지'
+      }>
+        {tab === 'calendar' && <window.MarketingCalendar />}
+        {tab === 'product-name' && window.ProductNameOptimizer && <window.ProductNameOptimizer />}
+        {tab === 'copy' && window.CopyGenerator && <window.CopyGenerator />}
+        {tab === 'detail-page' && window.DetailPageDesign && <window.DetailPageDesign />}
+      </div>
+    </div>
+  );
+};
+
+function mountApp() {
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+}
+
+// Wait for all component modules to register on window
+(function waitForDeps() {
+  if (window.Sidebar && window.MarketingCalendar && window.DetailPanel && window.mcStyles && window.ProductNameOptimizer) {
+    mountApp();
+  } else {
+    setTimeout(waitForDeps, 30);
+  }
+})();
+</script>
+
+</body>
+</html>
