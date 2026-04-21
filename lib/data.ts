@@ -52,7 +52,7 @@ export const PLATFORMS: Record<string, string> = {
   kakao: '카카오', gmarket: 'G마켓', wemakeprice: '위메프',
 };
 
-export const TODAY = new Date(2026, 3, 18);
+export const TODAY = new Date();
 
 export const PLATFORM_META: Record<string, PlatformMeta> = {
   coupang:  { label: '쿠팡',   color: 'oklch(0.62 0.18 25)',  bg: 'oklch(0.97 0.025 25)' },
