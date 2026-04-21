@@ -358,10 +358,17 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
 }
 
 // ---- TimelineView ----
+const PX_PER_DAY = 22;
+const LABEL_W = 160;
+
 function TimelineView({ events, onOpen }: { events: MarketingEvent[]; onOpen: (e: MarketingEvent) => void }) {
-  const start = new Date(TODAY);
-  start.setDate(start.getDate() - 7);
-  const totalDays = 60;
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // 오늘부터 올해 12월 말까지
+  const start = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+  const end = new Date(TODAY.getFullYear(), 11, 31);
+  const totalDays = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const totalW = totalDays * PX_PER_DAY;
 
   const dayDiff = (iso: string) => {
     const d = new Date(iso);
@@ -370,72 +377,97 @@ function TimelineView({ events, onOpen }: { events: MarketingEvent[]; onOpen: (e
 
   const sorted = [...events]
     .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
-    .filter(e => {
-      const s = dayDiff(e.start); const en = dayDiff(e.end);
-      return en >= 0 && s < totalDays;
-    });
+    .filter(e => dayDiff(e.end) >= 0 && dayDiff(e.start) < totalDays);
 
+  // 월 마커
   const monthMarkers: { day: number; label: string }[] = [];
   for (let i = 0; i < totalDays; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    if (d.getDate() === 1 || i === 0) {
-      monthMarkers.push({ day: i, label: `${d.getMonth() + 1}월` });
-    }
+    const d = new Date(start); d.setDate(d.getDate() + i);
+    if (d.getDate() === 1 || i === 0) monthMarkers.push({ day: i, label: `${d.getMonth() + 1}월` });
   }
 
-  const todayIso = TODAY.toISOString().slice(0, 10);
-  const todayCol = dayDiff(todayIso);
+  const todayDay = dayDiff(TODAY.toISOString().slice(0, 10));
+
+  // 오늘로 스크롤
+  const scrollToToday = () => {
+    scrollRef.current?.scrollTo({ left: Math.max(0, todayDay * PX_PER_DAY - 80), behavior: 'smooth' });
+  };
+
+  // 월 이동
+  const scrollToMonth = (month: number) => {
+    const target = new Date(TODAY.getFullYear(), month, 1);
+    const day = Math.floor((target.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    scrollRef.current?.scrollTo({ left: day * PX_PER_DAY, behavior: 'smooth' });
+  };
+
+  React.useEffect(() => { scrollToToday(); }, []);
 
   return (
-    <div className="timeline-wrap">
-      <div className="timeline-inner">
-      <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ padding: '8px 14px', fontSize: 11, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', borderRight: '1px solid var(--border)' }}>
-          이벤트
-        </div>
-        <div style={{ position: 'relative', height: 30 }}>
-          {monthMarkers.map(m => (
-            <div key={m.day} style={{ position: 'absolute', left: `${(m.day / totalDays) * 100}%`, padding: '8px 10px', fontSize: 11, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              {m.label}
-            </div>
-          ))}
-          <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${(todayCol / totalDays) * 100}%`, width: 1, background: 'var(--accent)' }} />
-        </div>
+    <div>
+      {/* 월 이동 버튼 */}
+      <div style={{ display: 'flex', gap: 4, marginBottom: 8, flexWrap: 'wrap' as const, alignItems: 'center' }}>
+        <button className="btn sm ghost" onClick={scrollToToday} style={{ fontWeight: 600, color: 'var(--accent)' }}>오늘</button>
+        <div style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 2px' }} />
+        {Array.from({ length: 12 }, (_, i) => i).map(m => (
+          <button key={m} className="btn sm ghost" onClick={() => scrollToMonth(m)}
+            style={{ color: m === TODAY.getMonth() ? 'var(--accent)' : 'var(--text-muted)', fontWeight: m === TODAY.getMonth() ? 600 : 400 }}>
+            {m + 1}월
+          </button>
+        ))}
       </div>
 
-      {sorted.map(ev => {
-        const s = Math.max(0, dayDiff(ev.start));
-        const e = Math.min(totalDays, dayDiff(ev.end) + 1);
-        const left = (s / totalDays) * 100;
-        const width = Math.max(1.5, ((e - s) / totalDays) * 100);
-
-        return (
-          <div key={ev.id} style={{ display: 'grid', gridTemplateColumns: '180px 1fr', borderBottom: '1px solid var(--divider)', minHeight: 42, position: 'relative' }}>
-            <div style={{ padding: '10px 14px', fontSize: 12.5, fontWeight: 500, color: 'var(--text)', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: catColor(ev.type), flexShrink: 0 }} />
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.title}</span>
+      {/* 타임라인 */}
+      <div ref={scrollRef} className="timeline-wrap" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' as any, border: '1px solid var(--border)', borderRadius: 10, background: 'var(--surface)' }}>
+        <div style={{ width: LABEL_W + totalW, minWidth: LABEL_W + totalW }}>
+          {/* 헤더 */}
+          <div style={{ display: 'flex', background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 2 }}>
+            <div style={{ width: LABEL_W, flexShrink: 0, padding: '8px 14px', fontSize: 11, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase' as const, letterSpacing: '0.04em', borderRight: '1px solid var(--border)' }}>
+              이벤트
             </div>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${(todayCol / totalDays) * 100}%`, width: 1, background: 'var(--accent)', opacity: 0.35 }} />
-              <div
-                onClick={() => onOpen(ev)}
-                style={{
-                  position: 'absolute', top: 9, bottom: 9,
-                  left: `${left}%`, width: `${width}%`,
-                  background: catColor(ev.type), borderRadius: 4,
-                  padding: '0 8px', display: 'flex', alignItems: 'center',
-                  color: '#fff', fontSize: 11, fontWeight: 500,
-                  overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
-                  cursor: 'pointer',
-                }}
-              >
-                {width > 6 ? `${fmtDate(ev.start)} – ${fmtDate(ev.end)}` : ''}
-              </div>
+            <div style={{ position: 'relative', height: 32, flex: 1 }}>
+              {monthMarkers.map(m => (
+                <div key={m.day} style={{ position: 'absolute', left: m.day * PX_PER_DAY, padding: '8px 10px', fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', whiteSpace: 'nowrap' as const }}>
+                  {m.label}
+                </div>
+              ))}
+              {/* 오늘 선 */}
+              <div style={{ position: 'absolute', top: 0, bottom: 0, left: todayDay * PX_PER_DAY, width: 2, background: 'var(--accent)' }} />
             </div>
           </div>
-        );
-      })}
+
+          {/* 이벤트 행 */}
+          {sorted.map(ev => {
+            const s = Math.max(0, dayDiff(ev.start));
+            const e = Math.min(totalDays, dayDiff(ev.end) + 1);
+            const barW = Math.max(PX_PER_DAY, (e - s) * PX_PER_DAY);
+
+            return (
+              <div key={ev.id} style={{ display: 'flex', borderBottom: '1px solid var(--divider)', minHeight: 40 }}>
+                <div style={{ width: LABEL_W, flexShrink: 0, padding: '0 14px', fontSize: 12, fontWeight: 500, color: 'var(--text)', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: catColor(ev.type), flexShrink: 0 }} />
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>{ev.title}</span>
+                </div>
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <div style={{ position: 'absolute', top: 0, bottom: 0, left: todayDay * PX_PER_DAY, width: 1, background: 'var(--accent)', opacity: 0.2 }} />
+                  <div
+                    onClick={() => onOpen(ev)}
+                    style={{
+                      position: 'absolute', top: 7, bottom: 7,
+                      left: s * PX_PER_DAY, width: barW,
+                      background: catColor(ev.type), borderRadius: 4,
+                      padding: '0 8px', display: 'flex', alignItems: 'center',
+                      color: '#fff', fontSize: 11, fontWeight: 500,
+                      overflow: 'hidden', whiteSpace: 'nowrap' as const,
+                      cursor: 'pointer', opacity: 0.9,
+                    }}
+                  >
+                    {barW > 60 ? `${fmtDate(ev.start)} – ${fmtDate(ev.end)}` : ''}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
