@@ -226,6 +226,101 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 
+/* 뷰 전환 버튼 그룹 — 텍스트 줄바꿈 방지 */
+.view-switcher {
+  display: flex;
+  padding: 2px;
+  background: var(--bg-sunken);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.view-switcher-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background var(--duration-fast) var(--easing), color var(--duration-fast) var(--easing), box-shadow var(--duration-fast) var(--easing);
+}
+.view-switcher-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 데이터 소스 상태바 */
+.source-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.source-status-bar::-webkit-scrollbar { display: none; }
+.source-status-label {
+  font-weight: 500;
+  color: var(--text-subtle);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.source-status-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 이벤트 카드 푸터 */
+.event-card-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--divider);
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+/* 타임라인 뷰 */
+.timeline-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.timeline-inner {
+  min-width: 640px;
+}
+
+/* 월간 그리드 뷰 */
+.grid-view-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 @media (max-width: 767px) {
   .sidebar-desktop { display: none !important; }
 
@@ -258,16 +353,73 @@ a { color: inherit; text-decoration: none; }
   .mobile-nav-item.active { color: var(--accent); }
   .main-content { padding-bottom: 56px; }
 
-  /* 포커스뷰: 1컬럼 */
-  .focus-grid { grid-template-columns: 1fr; }
+  /* 포커스뷰: 1컬럼 스택 */
+  .focus-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 
-  /* 캘린더 헤더 패딩 축소 */
-  .cal-header { padding: 12px 12px 0 !important; }
-  .cal-body { padding: 12px !important; }
+  /* 캘린더 패딩 축소 */
+  .cal-body { padding: 12px 12px 60px !important; }
 
-  /* 툴바 버튼 텍스트 줄바꿈 방지 */
-  .cal-toolbar .btn { white-space: nowrap; font-size: 11.5px; padding: 3px 8px; }
+  /* 툴바 레이아웃 재배치 */
+  .cal-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 12px !important;
+  }
+  .cal-toolbar-title { font-size: 18px !important; }
+  .cal-toolbar-meta { font-size: 12px !important; }
+  .cal-toolbar-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-  /* EventHero 폰트 축소 */
+  /* 뷰 전환 버튼 */
+  .view-switcher { flex: 1; justify-content: space-between; }
+  .view-switcher-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 6px;
+    font-size: 11.5px;
+    gap: 3px;
+  }
+
+  /* 내보내기 버튼 */
+  .btn-export { padding: 5px 10px !important; font-size: 12px !important; height: 32px !important; flex-shrink: 0; }
+
+  /* 데이터 소스 상태바: 가로 스크롤 */
+  .source-status-bar { gap: 10px; padding: 5px 10px; margin-bottom: 8px; }
+
+  /* 이벤트카드: 푸터 버튼 레이아웃 */
+  .event-card-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 11.5px;
+  }
+  .event-card-footer .btn { font-size: 11.5px; padding: 4px 10px; height: 28px; }
+
+  /* EventHero 폰트 스케일 */
   .event-hero-title { font-size: 16px !important; }
+  .event-hero-metrics { gap: 12px !important; }
+  .event-hero-metric-value { font-size: 15px !important; }
+
+  /* 월간 뷰: 셀 높이 축소, 폰트 축소 */
+  .grid-view-cell { padding: 4px !important; min-height: 64px !important; }
+  .grid-view-day-num { font-size: 10px !important; }
+  .grid-view-event-chip {
+    font-size: 9px !important;
+    padding: 1px 4px !important;
+  }
+
+  /* 타임라인: 가로 스크롤 컨테이너 */
+  .timeline-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .timeline-inner { min-width: 560px; }
+
+  /* FilterBar: 서브 카테고리 버튼 축소 */
+  .filter-bar-sub-btn { font-size: 11px !important; padding: 3px 8px !important; }
 }

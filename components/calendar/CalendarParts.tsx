@@ -111,7 +111,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
           {active ? '지금 진행 중' : '가장 임박한 기회'}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 6 }}>
-          <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)' }}>
+          <span className="event-hero-title" style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)' }}>
             {event.title}
           </span>
           {trendHint && Math.abs(trendHint.change) >= 5 && (
@@ -136,7 +136,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
         <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.55, marginBottom: 14 }}>
           {event.summary}
         </div>
-        <div style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
+        <div className="event-hero-metrics" style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
           {[
             { label: '예상 GMV 증가', value: event.gmv, color: 'var(--success)' },
             { label: '검색량 변화', value: event.search, color: 'var(--text)' },
@@ -144,7 +144,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
           ].map(m => (
             <div key={m.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
+              <div className="event-hero-metric-value" style={{ fontSize: 18, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
             </div>
           ))}
         </div>
@@ -293,10 +293,7 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
         </div>
       )}
 
-      <div style={{
-        padding: '10px 16px', borderTop: '1px solid var(--divider)',
-        background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', gap: 12, fontSize: 12,
-      }}>
+      <div className="event-card-footer">
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-muted)' }}>
           <Icon name="checkCircle" size={12} />
           체크리스트 {event.checklist.filter(c => c.done).length}/{event.checklist.length}

@@ -286,13 +286,14 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
         </button>
         <button className="btn sm" onClick={() => setMonthOffset(0)}>오늘</button>
       </div>
-      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+      <div className="grid-view-wrap">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: '1px solid var(--border)' }}>
           {weekdays.map((w, i) => (
             <div key={w} style={{
-              padding: '8px 10px', fontSize: 11, fontWeight: 500,
+              padding: '8px 6px', fontSize: 11, fontWeight: 500,
               textTransform: 'uppercase' as const, letterSpacing: '0.04em',
               color: i === 0 ? 'var(--danger)' : i === 6 ? 'var(--cat-platform)' : 'var(--text-subtle)',
+              textAlign: 'center' as const,
             }}>
               {w}
             </div>
@@ -302,14 +303,14 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
           {cells.map((day, i) => {
             const dayEvents = day ? getEvents(day) : [];
             return (
-              <div key={i} style={{
+              <div key={i} className="grid-view-cell" style={{
                 padding: 6, borderRight: '1px solid var(--divider)', borderBottom: '1px solid var(--divider)',
                 display: 'flex', flexDirection: 'column', gap: 2,
                 background: day === null ? 'var(--bg-subtle)' : isToday(day!) ? 'var(--accent-bg)' : 'var(--surface)',
               }}>
                 {day && (
                   <>
-                    <div style={{
+                    <div className="grid-view-day-num" style={{
                       fontSize: 11.5, fontWeight: 500, fontVariantNumeric: 'tabular-nums',
                       padding: '1px 4px', borderRadius: 4, alignSelf: 'flex-start',
                       color: 'var(--text-muted)',
@@ -320,8 +321,9 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
                     {dayEvents.slice(0, 3).map(ev => (
                       <div
                         key={ev.id}
+                        className="grid-view-event-chip"
                         style={{
-                          padding: '2px 6px', borderRadius: 4, fontSize: 10.5, fontWeight: 500,
+                          padding: '2px 4px', borderRadius: 3, fontSize: 10.5, fontWeight: 500,
                           lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                           cursor: 'pointer', background: catColor(ev.type), color: '#fff', opacity: 0.92,
                         }}
@@ -332,7 +334,7 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
                       </div>
                     ))}
                     {dayEvents.length > 3 && (
-                      <div style={{ fontSize: 10, color: 'var(--text-subtle)', padding: '0 4px' }}>
+                      <div style={{ fontSize: 10, color: 'var(--text-subtle)', padding: '0 3px' }}>
                         +{dayEvents.length - 3}건
                       </div>
                     )}
@@ -386,7 +388,8 @@ function TimelineView({ events, onOpen }: { events: MarketingEvent[]; onOpen: (e
   const todayCol = dayDiff(todayIso);
 
   return (
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+    <div className="timeline-wrap">
+      <div className="timeline-inner">
       <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ padding: '8px 14px', fontSize: 11, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', borderRight: '1px solid var(--border)' }}>
           이벤트
@@ -433,6 +436,7 @@ function TimelineView({ events, onOpen }: { events: MarketingEvent[]; onOpen: (e
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
@@ -446,17 +450,17 @@ function SourceStatusBar({ weatherStatus, customCount }: { weatherStatus: string
     }} />
   );
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 10px', marginBottom: 12, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11.5, color: 'var(--text-muted)' }}>
-      <span style={{ fontWeight: 500, color: 'var(--text-subtle)', fontSize: 11, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>데이터 소스</span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        {dot(true, false)}<span>기본 이벤트 {EVENTS.length}건</span>
+    <div className="source-status-bar">
+      <span className="source-status-label">데이터 소스</span>
+      <span className="source-status-item">
+        {dot(true, false)}<span>기본 {EVENTS.length}건</span>
       </span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <span className="source-status-item">
         {dot(weatherStatus === 'ok', weatherStatus === 'loading')}
-        <span>기상청 날씨 {weatherStatus === 'ok' ? '연동됨' : weatherStatus === 'loading' ? '로딩 중' : weatherStatus === 'no-api-key' ? 'API키 미설정' : '오류'}</span>
+        <span>날씨 {weatherStatus === 'ok' ? '연동됨' : weatherStatus === 'loading' ? '로딩 중' : weatherStatus === 'no-api-key' ? 'API키 미설정' : '오류'}</span>
       </span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        {dot(customCount > 0, false)}<span>직접 등록 {customCount}건</span>
+      <span className="source-status-item">
+        {dot(customCount > 0, false)}<span>직접 {customCount}건</span>
       </span>
     </div>
   );
@@ -513,41 +517,38 @@ export default function MarketingCalendar() {
 
   return (
     <div className="cal-body" style={{ padding: '20px 28px 60px' }}>
-      <div className="cal-toolbar" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, marginBottom: 18, flexWrap: 'wrap' as const }}>
-        <div>
-          <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>
-            마케팅 캘린더
+      <div className="cal-toolbar" style={{ marginBottom: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' as const }}>
+          <div>
+            <div className="cal-toolbar-title" style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>
+              마케팅 캘린더
+            </div>
+            <div className="cal-toolbar-meta" style={{ fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const }}>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                padding: '2px 8px', borderRadius: 999,
+                background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                fontSize: 11.5, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+                whiteSpace: 'nowrap' as const,
+              }}>
+                <Icon name="clock" size={10} />2026.04.18 (토)
+              </span>
+              <span style={{ whiteSpace: 'nowrap' as const }}>다가오는 기회 {upcoming.length}건 · 진행 중 {activeEvents.length}건</span>
+            </div>
           </div>
-          <div style={{ fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              padding: '2px 8px', borderRadius: 999,
-              background: 'var(--bg-subtle)', border: '1px solid var(--border)',
-              fontSize: 11.5, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
-            }}>
-              <Icon name="clock" size={10} />2026.04.18 (토)
-            </span>
-            <span>다가오는 기회 {upcoming.length}건 · 진행 중 {activeEvents.length}건</span>
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn"><Icon name="download" size={13} />내보내기</button>
-          <div style={{ display: 'flex', padding: 2, background: 'var(--bg-sunken)', borderRadius: 8, border: '1px solid var(--border)' }}>
-            {views.map(v => (
-              <button
-                key={v.id}
-                onClick={() => setView(v.id)}
-                style={{
-                  padding: '5px 10px', borderRadius: 6, fontSize: 12.5, fontWeight: 500,
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  color: view === v.id ? 'var(--text)' : 'var(--text-muted)',
-                  background: view === v.id ? 'var(--surface)' : 'transparent',
-                  boxShadow: view === v.id ? 'var(--shadow-sm)' : 'none',
-                }}
-              >
-                <Icon name={v.icon} size={12} />{v.label}
-              </button>
-            ))}
+          <div className="cal-toolbar-actions" style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
+            <button className="btn btn-export"><Icon name="download" size={13} />내보내기</button>
+            <div className="view-switcher">
+              {views.map(v => (
+                <button
+                  key={v.id}
+                  className={`view-switcher-btn${view === v.id ? ' active' : ''}`}
+                  onClick={() => setView(v.id)}
+                >
+                  <Icon name={v.icon} size={12} />{v.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
