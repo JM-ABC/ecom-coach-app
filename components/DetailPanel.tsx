@@ -44,7 +44,7 @@ export default function DetailPanel({ event, onClose }: DetailPanelProps) {
         style={{ position: 'fixed', inset: 0, background: 'rgba(17, 24, 39, 0.35)', zIndex: 50, animation: 'fadeIn 180ms var(--easing)' }}
         onClick={onClose}
       />
-      <div style={{
+      <div className="detail-panel" style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, width: 540,
         background: 'var(--surface)', borderLeft: '1px solid var(--border)',
         boxShadow: 'var(--shadow-lg)', zIndex: 51,
