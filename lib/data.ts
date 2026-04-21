@@ -210,26 +210,6 @@ export const EVENTS: MarketingEvent[] = [
     pro: '유아용품은 "엄마 후기 전환율"이 핵심입니다. 4월 3주차부터 리뷰 수 500개 이상 확보한 상품에 집중하세요. 신상은 5월까진 밀어도 밑빠진 독입니다.',
   },
   {
-    id: 'e-weather-rain', title: '이상저온·꽃샘추위', type: 'weather',
-    start: '2026-04-19', end: '2026-04-22',
-    categories: ['b_fashion', 'b_bedding', 'l_electric'],
-    platforms: ['coupang', 'naver', 'momq'],
-    summary: '기상청 4/19-22 영하권 예보. 겨울 재고 소진 기회 + 환절기 방한 수요.',
-    trendScore: 65, search: '+41%', gmv: '+28%',
-    products: [
-      { name: '유아 경량 패딩·바람막이', reason: '환절기 구매, 재고 처분 기회', urgency: 'high', category: 'b_fashion' },
-      { name: '전기요·온열 매트', reason: '단기 4일간 검색 급증 예상', urgency: 'high', category: 'l_electric' },
-      { name: '유아 수면조끼·수면가운', reason: '밤사이 온도 변화 대응 수요', urgency: 'mid', category: 'b_bedding' },
-    ],
-    checklist: [
-      { d: 0, task: '"꽃샘추위 긴급 세일" 배너 즉시 게시', done: false },
-      { d: 0, task: '쿠팡 로켓 긴급 재입고 요청', done: false },
-      { d: 1, task: '"오늘 받는 방한용품" 키워드 광고 상향', done: false },
-      { d: 4, task: '한파 종료 후 재고 정리 쿠폰', done: false },
-    ],
-    pro: '날씨 이슈는 반응 속도가 전부입니다. 기상청 예보 발표 당일 배너/광고 반영 못하면 기회 완전 소멸. 자동화 알림 설정하세요.',
-  },
-  {
     id: 'e-children-day', title: '어린이날', type: 'holiday',
     start: '2026-05-05', end: '2026-05-05',
     categories: ['b_toy', 'b_furniture', 'b_fashion', 'b_safety'],
@@ -286,41 +266,5 @@ export const EVENTS: MarketingEvent[] = [
       { d: 0, task: '세제 대용량 정기구독 혜택 세팅', done: false },
     ],
     pro: '생활용품은 "정기구독"이 핵심입니다. 단발 할인보다 3회 연속 할인으로 습관화 유도하세요.',
-  },
-  {
-    id: 'e-rainy-season', title: '장마 시즌', type: 'weather',
-    start: '2026-06-20', end: '2026-07-20',
-    categories: ['l_air', 'l_electric', 'l_storage', 'b_safety'],
-    platforms: ['coupang', 'naver', 'momq'],
-    summary: '제습기·탈취제·방수용품 폭증. 기상청 예보 확정 후 1주 이내 준비.',
-    trendScore: 88, search: '+125%', gmv: '+85%',
-    products: [
-      { name: '제습기·제습제', reason: '장마 1주 전부터 검색 급증', urgency: 'high', category: 'l_electric' },
-      { name: '곰팡이 제거제·탈취제', reason: '욕실·베란다 집중 수요', urgency: 'high', category: 'l_air' },
-      { name: '진공 압축팩·수납정리함', reason: '겨울이불 보관 수요', urgency: 'mid', category: 'l_storage' },
-    ],
-    checklist: [
-      { d: -7, task: '"장마 대비" 큐레이션 페이지 오픈', done: false },
-      { d: 0, task: '쿠팡 로켓 재고 1.5배 확보', done: false },
-    ],
-    pro: '제습기는 "층수별 면적 가이드"를 상세페이지에 넣으면 전환율 2배 이상 차이 납니다.',
-  },
-  {
-    id: 'e-gmarket-bigsmile', title: 'G마켓 빅스마일데이', type: 'platform',
-    start: '2026-06-15', end: '2026-06-25',
-    categories: ['l_laundry', 'l_clean', 'l_tissue', 'b_diaper', 'b_wipe', 'b_formula'],
-    platforms: ['gmarket', 'momq'],
-    summary: 'G마켓 연중 최대 행사. 스마일페이 적립 + 대형 쿠폰.',
-    trendScore: 85, search: '+45%', gmv: '+90%',
-    products: [
-      { name: '세제·섬유유연제 TOP10', reason: 'G마켓 알고리즘이 TOP 10에 트래픽 몰아줌', urgency: 'high', category: 'l_laundry' },
-      { name: '기저귀·물티슈 대용량', reason: '스마일클럽 정기구독 유입 최적', urgency: 'high', category: 'b_diaper' },
-    ],
-    checklist: [
-      { d: -30, task: 'G마켓 빅스마일 입점 신청', done: false },
-      { d: -7, task: '스마일클럽 전용 쿠폰 세팅', done: false },
-      { d: 0, task: '광고 단가 입찰 공격적 조정', done: false },
-    ],
-    pro: 'G마켓은 "리뷰+평점 4.5 이상"이 상단 노출 조건입니다. 행사 전 평점 관리 필수.',
   },
 ];
