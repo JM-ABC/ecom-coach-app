@@ -17,10 +17,11 @@ const urgencyLabel = (u: string) => ({ high: '긴급', mid: '중요', low: '여�
 interface DetailPanelProps {
   event: MarketingEvent;
   onClose: () => void;
+  initialTab?: 'plan' | 'products' | 'insights';
 }
 
-export default function DetailPanel({ event, onClose }: DetailPanelProps) {
-  const [tab, setTab] = useState<'plan' | 'products' | 'insights'>('plan');
+export default function DetailPanel({ event, onClose, initialTab = 'plan' }: DetailPanelProps) {
+  const [tab, setTab] = useState<'plan' | 'products' | 'insights'>(initialTab);
   const [checked, setChecked] = useState<Record<number, boolean>>(
     Object.fromEntries(event.checklist.map((c, i) => [i, c.done]))
   );

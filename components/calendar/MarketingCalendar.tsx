@@ -178,7 +178,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weath
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
   filter: string;
-  onOpen: (e: MarketingEvent) => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
   trendByKey: Record<string, CategoryTrend>;
   weatherEvents: MarketingEvent[];
 }) {
@@ -471,6 +471,12 @@ export default function MarketingCalendar() {
   const [view, setView] = useState<ViewMode>('focus');
   const [category, setCategory] = useState('all');
   const [selected, setSelected] = useState<MarketingEvent | null>(null);
+  const [selectedTab, setSelectedTab] = useState<'plan' | 'products' | 'insights'>('plan');
+
+  const openPanel = (e: MarketingEvent, tab: 'plan' | 'products' | 'insights' = 'plan') => {
+    setSelected(e);
+    setSelectedTab(tab);
+  };
   const [monthOffset, setMonthOffset] = useState(0);
 
   const weatherState = useWeatherEvents();
@@ -559,18 +565,18 @@ export default function MarketingCalendar() {
       {view === 'focus' && (
         <FocusView
           hero={hero} thisWeek={thisWeek} upcoming={upcoming}
-          filter={category} onOpen={setSelected}
+          filter={category} onOpen={openPanel}
           trendByKey={trendByKey} weatherEvents={weatherState.events}
         />
       )}
       {view === 'grid' && (
-        <GridView year={currentYear} monthIdx={monthIdx} monthOffset={monthOffset} setMonthOffset={setMonthOffset} events={filteredEvents} onOpen={setSelected} />
+        <GridView year={currentYear} monthIdx={monthIdx} monthOffset={monthOffset} setMonthOffset={setMonthOffset} events={filteredEvents} onOpen={openPanel} />
       )}
       {view === 'timeline' && (
-        <TimelineView events={filteredEvents} onOpen={setSelected} />
+        <TimelineView events={filteredEvents} onOpen={openPanel} />
       )}
 
-      {selected && <DetailPanel event={selected} onClose={() => setSelected(null)} />}
+      {selected && <DetailPanel event={selected} initialTab={selectedTab} onClose={() => setSelected(null)} />}
     </div>
   );
 }

@@ -79,7 +79,7 @@ export interface TrendHint {
 // ---- EventHero ----
 interface EventHeroProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent) => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
   trendHint?: TrendHint;
 }
 
@@ -152,7 +152,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
           <button className="btn primary" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
             <Icon name="target" size={13} />액션 플랜 열기
           </button>
-          <button className="btn" onClick={(e) => e.stopPropagation()}>
+          <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={13} />추천 품목
           </button>
         </div>
@@ -173,7 +173,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
 // ---- EventCard ----
 interface EventCardProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent) => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
   filter: string;
   trendHint?: TrendHint;
 }
@@ -317,7 +317,7 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
 // ---- MiniItem ----
 interface MiniItemProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent) => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
 }
 
 export function MiniItem({ event, onOpen }: MiniItemProps) {
