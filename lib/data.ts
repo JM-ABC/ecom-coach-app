@@ -73,7 +73,7 @@ const PLATFORM_TIPS: Record<string, Partial<Record<EventType, PlatformInsight>>>
   },
   naver: {
     holiday: { tip: '스마트스토어 기획전 배너 노출이 핵심. 공휴일 14일 전 MD 기획전 신청.', action: '기획전 페이지 오픈', metric: '기획전 유입 +50%' },
-    season: { tip: '블로그·쇼핑인사이트 검색 트렌드를 1~2주 먼저 반영. 숏폼·블로그 리뷰 동시 진행.', action: '파워팩·숏핑 광고 세팅', metric: '리뷰 전환 +18%' },
+    season: { tip: '블로그·쇼핑인사이트 검색 트렌드를 1~2주 먼저 반영. 숏폼·블로그 리뷰 동시 진행.', action: '쇼핑검색광고·파워링크 세팅', metric: '리뷰 전환 +18%' },
     platform: { tip: '네이버 도착보장 + N페이 적립이 전환 훅. 라이브쇼핑 편성 시 GMV 3배.', action: '도착보장 라벨 부착', metric: 'N페이 결제 +40%' },
     weather: { tip: '모바일 검색 비중이 높은 만큼 "오늘 받는" 배송 훅이 효과적입니다.', action: '빠른배송 배지 활성화', metric: '모바일 CTR +25%' },
   },
@@ -186,29 +186,6 @@ export const EVENTS: MarketingEvent[] = [
       { d: 0, task: '당일 한정 5% 쿠폰', done: false },
     ],
     pro: '지구의 날 단일 매출보다는 "브랜드 인식" 용도로 접근하세요. 실제 GMV 임팩트는 ±5% 수준입니다.',
-  },
-  {
-    id: 'e-coupang-mega', title: '쿠팡 메가쇼핑위크', type: 'platform',
-    start: '2026-04-20', end: '2026-04-26',
-    categories: ['l_laundry', 'l_clean', 'l_tissue', 'b_diaper', 'b_wipe', 'b_formula'],
-    platforms: ['coupang', 'momq'],
-    summary: '쿠팡 상반기 최대 행사. 베스트셀러 집중 노출 + 와우회원 타깃 쿠폰.',
-    trendScore: 95, search: '+52%', gmv: '+140%',
-    products: [
-      { name: '세탁세제·섬유유연제 묶음', reason: '쿠팡이 선호하는 대용량·리필 세트', urgency: 'high', category: 'l_laundry' },
-      { name: '유아 물티슈 대용량팩 (10+N)', reason: '반복구매 주기와 정확히 일치', urgency: 'high', category: 'b_wipe' },
-      { name: '기저귀 박스 세트', reason: '와우회원 정기구독 유입 최적', urgency: 'high', category: 'b_diaper' },
-      { name: '화장지·키친타올 묶음', reason: '로켓배송 검색 상위 고정', urgency: 'mid', category: 'l_tissue' },
-    ],
-    checklist: [
-      { d: -30, task: '행사 입점 신청 마감', done: true },
-      { d: -14, task: '대표이미지·타이틀 쿠팡 가이드 맞춰 수정', done: true },
-      { d: -7, task: '재고 2주치 이상 확보 (품절 시 노출 차단)', done: true },
-      { d: -3, task: '할인율 최소 10% 이상 세팅', done: false },
-      { d: 0, task: '시작일 00시 검색광고 입찰가 +30%', done: false },
-      { d: 7, task: '행사 종료 후 리뷰 이벤트 연계', done: false },
-    ],
-    pro: '메가위크는 "재고 소진 → 순위 급락"이 가장 큰 리스크입니다. 로켓 재고를 평소 2.5배로 준비하고, 행사 3일차부터 재고 알림 체크하세요.',
   },
   {
     id: 'e-children-prep', title: '어린이날 선물 수요 시작', type: 'season',
