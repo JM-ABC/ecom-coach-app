@@ -69,7 +69,7 @@ const tools = [
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
-    <aside style={s.sidebar}>
+    <aside style={s.sidebar} className="sidebar-desktop">
       <div style={s.brand}>
         <div style={s.brandMark}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
