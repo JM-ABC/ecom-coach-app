@@ -59,6 +59,7 @@ const tabs = [
   { id: 'product-name' as TabId, label: '상품명 최적화', icon: 'search' },
   { id: 'copy' as TabId, label: '카피 생성', icon: 'pen' },
   { id: 'detail-page' as TabId, label: '상세페이지', icon: 'layout' },
+  { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud' },
 ];
 
 const tools = [
@@ -124,19 +125,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       <div style={{ flex: 1 }} />
 
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
-        <div style={s.usageBar}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-            <span style={{ fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>오늘 사용량</span>
-            <span style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>7 / 10</span>
-          </div>
-          <div style={s.usageTrack}>
-            <div style={{ ...s.usageFill, width: '70%' }} />
-          </div>
-          <button className="btn sm" style={{ width: '100%', marginTop: 8, background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' }}>
-            <Icon name="crown" size={11} />
-            Pro 업그레이드
-          </button>
-        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
           <div style={s.avatar}>박</div>
           <div style={{ flex: 1, minWidth: 0 }}>

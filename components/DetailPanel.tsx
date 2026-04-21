@@ -251,21 +251,13 @@ export default function DetailPanel({ event, onClose }: DetailPanelProps) {
                 border: '1px solid var(--cat-season-border)',
               }}>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, fontWeight: 600, color: 'var(--cat-season)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>
-                  <Icon name="crown" size={10} stroke={2.4} />PRO 실무 인사이트
+                  실무 인사이트
                 </div>
                 <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>
                   {event.pro}
                 </div>
                 <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 10, fontStyle: 'italic' }}>
                   — 10년차 쿠팡 생활용품 BM 박지민
-                </div>
-              </div>
-              <div style={{ marginTop: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 10 }}>
-                  <Icon name="users" size={11} />같은 이벤트 참여 경쟁사
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: 12, background: 'var(--bg-subtle)', borderRadius: 8, border: '1px dashed var(--border)' }}>
-                  Pro 업그레이드 시 카테고리별 경쟁사 참여 현황을 확인할 수 있습니다.
                 </div>
               </div>
             </div>

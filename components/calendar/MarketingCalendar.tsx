@@ -9,12 +9,18 @@ import {
   TODAY, catColor, typeLabel, fmtDate, daysUntil, isActive,
 } from '@/lib/data';
 import type { MarketingEvent, ViewMode } from '@/lib/types';
+import { useWeatherEvents } from '@/hooks/useWeatherEvents';
+import { useCustomEvents } from '@/hooks/useCustomEvents';
+import { useTrendData } from '@/hooks/useTrendData';
+import type { TrendHint } from './CalendarParts';
+import type { CategoryTrend } from '@/app/api/trends/route';
 
 // ---- FilterBar ----
-function FilterBar({ category, setCategory, filteredLen }: {
+function FilterBar({ category, setCategory, filteredLen, totalLen }: {
   category: string;
   setCategory: (c: string) => void;
   filteredLen: number;
+  totalLen: number;
 }) {
   const catObj = CATEGORIES.find(c => c.id === category);
   const [openGroup, setOpenGroup] = useState<string | null>(catObj?.parent ?? null);
@@ -52,7 +58,7 @@ function FilterBar({ category, setCategory, filteredLen }: {
       ))}
       <div style={{ flex: 1 }} />
       <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontVariantNumeric: 'tabular-nums', paddingRight: 4 }}>
-        {category === 'all' ? `${EVENTS.length}건` : `${filteredLen}건 필터됨`}
+        {category === 'all' ? `${totalLen}건` : `${filteredLen}건 필터됨`}
       </span>
       {openGroup && (
         <div style={{ flexBasis: '100%', display: 'flex', flexWrap: 'wrap' as const, gap: 6, paddingTop: 8, marginTop: 4, borderTop: '1px dashed var(--border)' }}>
@@ -77,13 +83,104 @@ function FilterBar({ category, setCategory, filteredLen }: {
   );
 }
 
+// ---- 트렌드 힌트 헬퍼 ----
+function getEventTrendHint(event: MarketingEvent, byKey: Record<string, CategoryTrend>): TrendHint | undefined {
+  let best: TrendHint | undefined;
+  for (const catId of event.categories) {
+    const t = byKey[catId];
+    if (!t) continue;
+    if (!best || Math.abs(t.changeVsPrevWeek) > Math.abs(best.change)) {
+      best = { change: t.changeVsPrevWeek, keyword: t.title };
+    }
+  }
+  return best;
+}
+
+// ---- 동적 인사이트 카드 ----
+function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
+  thisWeek: MarketingEvent[];
+  upcoming: MarketingEvent[];
+  trendByKey: Record<string, CategoryTrend>;
+  weatherEvents: MarketingEvent[];
+}) {
+  const topTrends = Object.values(trendByKey)
+    .filter(t => Math.abs(t.changeVsPrevWeek) >= 5)
+    .sort((a, b) => b.changeVsPrevWeek - a.changeVsPrevWeek)
+    .slice(0, 3);
+
+  const activeWeather = weatherEvents.filter(e => {
+    const s = new Date(e.start); const en = new Date(e.end);
+    return s <= TODAY && en >= TODAY;
+  });
+
+  const topEvent = [...thisWeek, ...upcoming]
+    .sort((a, b) => b.trendScore - a.trendScore)[0];
+
+  const hasTrendData = topTrends.length > 0;
+
+  return (
+    <div className="card" style={{ padding: 14 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+        <Icon name="lightbulb" size={14} stroke={2.2} />
+        <span style={{ fontSize: 13, fontWeight: 600 }}>이번 주 인사이트</span>
+        {hasTrendData && (
+          <span style={{ marginLeft: 'auto', fontSize: 10.5, color: 'var(--success)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--success)', display: 'inline-block' }} />
+            실시간 연동
+          </span>
+        )}
+      </div>
+
+      {activeWeather.length > 0 && (
+        <div style={{ marginBottom: 10, padding: '8px 10px', borderRadius: 8, background: 'oklch(0.96 0.025 220)', border: '1px solid oklch(0.88 0.05 220)' }}>
+          {activeWeather.map(w => (
+            <div key={w.id} style={{ fontSize: 12.5, color: 'oklch(0.38 0.1 220)', lineHeight: 1.5 }}>
+              <strong>{w.title}</strong> — {w.summary}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {hasTrendData ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
+          {topTrends.map(t => (
+            <div key={t.ourKey} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{
+                fontSize: 12, fontWeight: 700, minWidth: 28,
+                color: t.changeVsPrevWeek > 0 ? 'var(--success)' : 'var(--danger)',
+              }}>
+                {t.changeVsPrevWeek > 0 ? '↑' : '↓'} {t.changeVsPrevWeek > 0 ? '+' : ''}{t.changeVsPrevWeek}%
+              </span>
+              <span style={{ fontSize: 12.5, color: 'var(--text)', fontWeight: 500 }}>{t.title}</span>
+              <span style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>전주 대비 검색량</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 10 }}>
+          네이버 트렌드 데이터 로딩 중...
+        </div>
+      )}
+
+      {topEvent && (
+        <div style={{ paddingTop: 10, borderTop: '1px solid var(--divider)', fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          지금 집중할 것: <strong style={{ color: 'var(--text)' }}>{topEvent.title}</strong>
+          {' '}(기회점수 {topEvent.trendScore})
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---- FocusView ----
-function FocusView({ hero, thisWeek, upcoming, filter, onOpen }: {
+function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weatherEvents }: {
   hero: MarketingEvent | undefined;
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
   filter: string;
   onOpen: (e: MarketingEvent) => void;
+  trendByKey: Record<string, CategoryTrend>;
+  weatherEvents: MarketingEvent[];
 }) {
   const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id);
   const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id);
@@ -91,7 +188,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen }: {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {hero && <EventHero event={hero} onOpen={onOpen} />}
+        {hero && <EventHero event={hero} onOpen={onOpen} trendHint={getEventTrendHint(hero, trendByKey)} />}
 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
@@ -101,7 +198,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen }: {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {thisWeekFiltered.length > 0 ? (
-              thisWeekFiltered.map(e => <EventCard key={e.id} event={e} onOpen={onOpen} filter={filter} />)
+              thisWeekFiltered.map(e => <EventCard key={e.id} event={e} onOpen={onOpen} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} />)
             ) : (
               <div style={{ padding: 24, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)', background: 'var(--surface)', border: '1px dashed var(--border)', borderRadius: 10 }}>
                 이번 주에 해당하는 이벤트가 없습니다.
@@ -118,29 +215,19 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen }: {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {upcomingNotActive.slice(0, 5).map(e => (
-              <EventCard key={e.id} event={e} onOpen={onOpen} filter={filter} />
+              <EventCard key={e.id} event={e} onOpen={onOpen} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} />
             ))}
           </div>
         </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <div className="card" style={{ padding: 14 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-            <Icon name="lightbulb" size={14} stroke={2.2} />
-            <span style={{ fontSize: 13, fontWeight: 600 }}>이번 주 인사이트</span>
-          </div>
-          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            <p style={{ margin: '0 0 10px' }}>
-              <strong style={{ color: 'var(--text)' }}>꽃샘추위(4/19-22)</strong>로 유아 경량패딩 검색이 전주 대비{' '}
-              <span style={{ color: 'var(--success)', fontWeight: 600 }}>+41%</span>.
-              동시에 <strong style={{ color: 'var(--text)' }}>쿠팡 메가위크(4/20-26)</strong> 시작 — 겨울 재고 정리 + 로켓배송 메인 노출 기회가 겹칩니다.
-            </p>
-            <p style={{ margin: 0 }}>
-              지금 가장 먼저 할 일: <strong style={{ color: 'var(--text)' }}>로켓 재고 긴급 재입고</strong> → 배너 게시 → 광고 단가 상향 (오늘 중).
-            </p>
-          </div>
-        </div>
+        <DynamicInsightCard
+          thisWeek={thisWeek}
+          upcoming={upcoming}
+          trendByKey={trendByKey}
+          weatherEvents={weatherEvents}
+        />
 
         <div className="card" style={{ padding: 14 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
@@ -154,18 +241,6 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen }: {
           </div>
         </div>
 
-        <div className="card" style={{ padding: 14, background: 'linear-gradient(135deg, var(--accent-bg) 0%, var(--surface) 70%)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-            <Icon name="crown" size={14} />
-            <span style={{ fontSize: 13, fontWeight: 600 }}>Pro로 더 보기</span>
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 10 }}>
-            경쟁사 프로모션 일정, 카테고리별 GMV 예측, 자동 캠페인 생성까지.
-          </div>
-          <button className="btn primary sm" style={{ width: '100%' }}>
-            <Icon name="crown" size={11} />Pro 체험하기
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -362,6 +437,31 @@ function TimelineView({ events, onOpen }: { events: MarketingEvent[]; onOpen: (e
   );
 }
 
+// ---- Source Status Bar ----
+function SourceStatusBar({ weatherStatus, customCount }: { weatherStatus: string; customCount: number }) {
+  const dot = (ok: boolean, pending: boolean) => (
+    <span style={{
+      width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+      background: ok ? 'var(--success)' : pending ? 'var(--text-subtle)' : 'oklch(0.65 0.15 75)',
+    }} />
+  );
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 10px', marginBottom: 12, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 11.5, color: 'var(--text-muted)' }}>
+      <span style={{ fontWeight: 500, color: 'var(--text-subtle)', fontSize: 11, textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>데이터 소스</span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {dot(true, false)}<span>기본 이벤트 {EVENTS.length}건</span>
+      </span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {dot(weatherStatus === 'ok', weatherStatus === 'loading')}
+        <span>기상청 날씨 {weatherStatus === 'ok' ? '연동됨' : weatherStatus === 'loading' ? '로딩 중' : weatherStatus === 'no-api-key' ? 'API키 미설정' : '오류'}</span>
+      </span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {dot(customCount > 0, false)}<span>직접 등록 {customCount}건</span>
+      </span>
+    </div>
+  );
+}
+
 // ---- Main MarketingCalendar ----
 export default function MarketingCalendar() {
   const [view, setView] = useState<ViewMode>('focus');
@@ -369,14 +469,24 @@ export default function MarketingCalendar() {
   const [selected, setSelected] = useState<MarketingEvent | null>(null);
   const [monthOffset, setMonthOffset] = useState(0);
 
+  const weatherState = useWeatherEvents();
+  const { events: customEvents } = useCustomEvents();
+  const { byKey: trendByKey } = useTrendData();
+
+  const allEvents = useMemo(() => [
+    ...EVENTS,
+    ...weatherState.events,
+    ...customEvents,
+  ], [weatherState.events, customEvents]);
+
   const currentMonth = TODAY.getMonth() + monthOffset;
   const currentYear = TODAY.getFullYear() + Math.floor(currentMonth / 12);
   const monthIdx = ((currentMonth % 12) + 12) % 12;
 
   const filteredEvents = useMemo(() => {
-    if (category === 'all') return EVENTS;
-    return EVENTS.filter(e => e.categories.includes(category));
-  }, [category]);
+    if (category === 'all') return allEvents;
+    return allEvents.filter(e => e.categories.includes(category));
+  }, [category, allEvents]);
 
   const activeEvents = useMemo(() => filteredEvents.filter(e => isActive(e)), [filteredEvents]);
 
@@ -442,10 +552,15 @@ export default function MarketingCalendar() {
         </div>
       </div>
 
-      <FilterBar category={category} setCategory={setCategory} filteredLen={filteredEvents.length} />
+      <SourceStatusBar weatherStatus={weatherState.status} customCount={customEvents.length} />
+      <FilterBar category={category} setCategory={setCategory} filteredLen={filteredEvents.length} totalLen={allEvents.length} />
 
       {view === 'focus' && (
-        <FocusView hero={hero} thisWeek={thisWeek} upcoming={upcoming} filter={category} onOpen={setSelected} />
+        <FocusView
+          hero={hero} thisWeek={thisWeek} upcoming={upcoming}
+          filter={category} onOpen={setSelected}
+          trendByKey={trendByKey} weatherEvents={weatherState.events}
+        />
       )}
       {view === 'grid' && (
         <GridView year={currentYear} monthIdx={monthIdx} monthOffset={monthOffset} setMonthOffset={setMonthOffset} events={filteredEvents} onOpen={setSelected} />

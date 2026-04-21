@@ -71,13 +71,19 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
   );
 }
 
+export interface TrendHint {
+  change: number;
+  keyword: string;
+}
+
 // ---- EventHero ----
 interface EventHeroProps {
   event: MarketingEvent;
   onOpen: (e: MarketingEvent) => void;
+  trendHint?: TrendHint;
 }
 
-export function EventHero({ event, onOpen }: EventHeroProps) {
+export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -104,8 +110,20 @@ export function EventHero({ event, onOpen }: EventHeroProps) {
           <Icon name="zap" size={11} stroke={2.4} />
           {active ? '지금 진행 중' : '가장 임박한 기회'}
         </div>
-        <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 6 }}>
-          {event.title}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 6 }}>
+          <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)' }}>
+            {event.title}
+          </span>
+          {trendHint && Math.abs(trendHint.change) >= 5 && (
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: 3,
+              padding: '3px 8px', borderRadius: 999, fontSize: 11.5, fontWeight: 600,
+              background: trendHint.change > 0 ? 'oklch(0.94 0.06 145)' : 'oklch(0.96 0.04 15)',
+              color: trendHint.change > 0 ? 'var(--success)' : 'var(--danger)',
+            }}>
+              {trendHint.change > 0 ? '↑' : '↓'} {trendHint.keyword} {trendHint.change > 0 ? '+' : ''}{trendHint.change}%
+            </span>
+          )}
         </div>
         <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 14 }}>
           {fmtDateFull(event.start)}
@@ -157,9 +175,10 @@ interface EventCardProps {
   event: MarketingEvent;
   onOpen: (e: MarketingEvent) => void;
   filter: string;
+  trendHint?: TrendHint;
 }
 
-export function EventCard({ event, onOpen, filter }: EventCardProps) {
+export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -210,8 +229,20 @@ export function EventCard({ event, onOpen, filter }: EventCardProps) {
               {event.end !== event.start && ` – ${fmtDate(event.end)}`}
             </span>
           </div>
-          <div style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em', marginBottom: 4 }}>
-            {event.title}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' as const, marginBottom: 4 }}>
+            <span style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em' }}>
+              {event.title}
+            </span>
+            {trendHint && Math.abs(trendHint.change) >= 5 && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 3,
+                padding: '2px 7px', borderRadius: 999, fontSize: 10.5, fontWeight: 600,
+                background: trendHint.change > 0 ? 'oklch(0.94 0.06 145)' : 'oklch(0.96 0.04 15)',
+                color: trendHint.change > 0 ? 'var(--success)' : 'var(--danger)',
+              }}>
+                {trendHint.change > 0 ? '↑' : '↓'} {trendHint.keyword} {trendHint.change > 0 ? '+' : ''}{trendHint.change}%
+              </span>
+            )}
           </div>
           <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
           <div style={{ display: 'flex', gap: 16, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--divider)' }}>

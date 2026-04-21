@@ -6,6 +6,7 @@ import MarketingCalendar from '@/components/calendar/MarketingCalendar';
 import ProductNameOptimizer from '@/components/tabs/ProductNameOptimizer';
 import CopyGenerator from '@/components/tabs/CopyGenerator';
 import DetailPageDesign from '@/components/tabs/DetailPageDesign';
+import EventManager from '@/components/tabs/EventManager';
 import type { TabId } from '@/lib/types';
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
         {tab === 'product-name' && <ProductNameOptimizer />}
         {tab === 'copy' && <CopyGenerator />}
         {tab === 'detail-page' && <DetailPageDesign />}
+        {tab === 'event-manager' && <EventManager />}
       </div>
     </div>
   );
