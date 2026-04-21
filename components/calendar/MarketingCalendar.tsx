@@ -186,7 +186,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weath
   const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16 }}>
+    <div className="focus-grid" style={{ gap: 16 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {hero && <EventHero event={hero} onOpen={onOpen} trendHint={getEventTrendHint(hero, trendByKey)} />}
 
@@ -512,8 +512,8 @@ export default function MarketingCalendar() {
   ];
 
   return (
-    <div style={{ padding: '20px 28px 60px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, marginBottom: 18, flexWrap: 'wrap' as const }}>
+    <div className="cal-body" style={{ padding: '20px 28px 60px' }}>
+      <div className="cal-toolbar" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, marginBottom: 18, flexWrap: 'wrap' as const }}>
         <div>
           <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>
             마케팅 캘린더
