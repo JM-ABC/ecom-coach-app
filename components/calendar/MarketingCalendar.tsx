@@ -477,6 +477,21 @@ export default function MarketingCalendar() {
     setSelected(e);
     setSelectedTab(tab);
   };
+
+  const exportCSV = () => {
+    const header = ['제목', '타입', '시작일', '종료일', '요약', '트렌드점수', '검색량변화', 'GMV변화'];
+    const rows = filteredEvents.map(e => [
+      e.title, e.type, e.start, e.end,
+      `"${e.summary.replace(/"/g, '""')}"`,
+      e.trendScore, e.search, e.gmv,
+    ]);
+    const csv = [header, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `marketing-calendar-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+  };
   const [monthOffset, setMonthOffset] = useState(0);
 
   const weatherState = useWeatherEvents();
@@ -543,7 +558,7 @@ export default function MarketingCalendar() {
             </div>
           </div>
           <div className="cal-toolbar-actions" style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
-            <button className="btn btn-export"><Icon name="download" size={13} />내보내기</button>
+            <button className="btn btn-export" onClick={exportCSV}><Icon name="download" size={13} />내보내기</button>
             <div className="view-switcher">
               {views.map(v => (
                 <button
