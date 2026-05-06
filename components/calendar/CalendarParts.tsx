@@ -8,6 +8,12 @@ import {
 } from '@/lib/data';
 import type { MarketingEvent } from '@/lib/types';
 
+function dDayBadge(dU: number, active: boolean): { text: string; urgent: boolean } | null {
+  if (active) return { text: '진행중', urgent: true };
+  if (dU <= 0) return null;
+  return { text: `D-${dU}`, urgent: dU <= 3 };
+}
+
 // ---- PlatformInsights ----
 interface PlatformInsightsProps {
   event: MarketingEvent;
@@ -107,7 +113,7 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
           fontSize: 11, fontWeight: 600, letterSpacing: '0.06em',
           color: 'var(--accent-text)', textTransform: 'uppercase', marginBottom: 8,
         }}>
-          <Icon name="zap" size={11} stroke={2.4} />
+          <Icon name="sparkles" size={11} stroke={1.5} />
           {active ? '지금 진행 중' : '가장 임박한 기회'}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 6 }}>
@@ -189,7 +195,8 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
   const displayProducts = productsToShow.length > 0 ? productsToShow : event.products.slice(0, 3);
 
   const cardStyle: CSSProperties = {
-    background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10,
+    background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12,
+    boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
     overflow: 'hidden', cursor: 'pointer',
     transition: 'box-shadow 140ms, transform 140ms, border-color 140ms',
     ...(hover ? {
@@ -246,8 +253,26 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
           </div>
           <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
           <div style={{ display: 'flex', gap: 16, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--divider)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>기회점수</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ color: event.trendScore >= 80 ? '#f59e0b' : 'var(--text-disabled)', display: 'flex' }}>
+                  <Icon
+                    name="star"
+                    size={12}
+                    stroke={1.5}
+                    fill={event.trendScore >= 80 ? '#f59e0b' : 'none'}
+                  />
+                </span>
+                <span style={{
+                  fontSize: 15, fontWeight: 700,
+                  color: event.trendScore >= 80 ? 'var(--accent-text)' : 'var(--text)',
+                }}>
+                  {event.trendScore}<span style={{ fontSize: 11, fontWeight: 400, color: 'var(--text-subtle)' }}>/100</span>
+                </span>
+              </div>
+            </div>
             {[
-              { label: '기회점수', value: `${event.trendScore}`, color: event.trendScore >= 80 ? 'var(--accent-text)' : 'var(--text)', sub: '/100' },
               { label: '검색량', value: event.search, color: 'var(--success)' },
               { label: '예상 GMV', value: event.gmv, color: 'var(--success)' },
             ].map(m => (
@@ -255,7 +280,6 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
                 <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
                 <div style={{ fontSize: 13.5, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>
                   {m.value}
-                  {m.sub && <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontWeight: 400, marginLeft: 2 }}>{m.sub}</span>}
                 </div>
               </div>
             ))}
@@ -347,8 +371,23 @@ export function MiniItem({ event, onOpen }: MiniItemProps) {
         <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {event.title}
         </div>
-        <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 1 }}>
-          {active ? '진행 중' : `D-${dU}`} · {typeLabel(event.type)}
+        <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
+          {(() => {
+            const badge = dDayBadge(dU, active);
+            if (!badge) return null;
+            return (
+              <span style={{
+                fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+                background: badge.urgent ? 'var(--accent-bg)' : '#f9fafb',
+                color: badge.urgent ? 'var(--accent-text)' : 'var(--text-subtle)',
+                border: `1px solid ${badge.urgent ? 'var(--accent-border)' : '#e5e7eb'}`,
+                whiteSpace: 'nowrap' as const,
+              }}>
+                {badge.text}
+              </span>
+            );
+          })()}
+          <span>· {typeLabel(event.type)}</span>
         </div>
       </div>
     </div>
