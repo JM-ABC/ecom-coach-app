@@ -563,7 +563,7 @@ export default function MarketingCalendar() {
     }), [filteredEvents]);
 
   const views = [
-    { id: 'focus' as ViewMode, label: '포커스', icon: 'target' },
+    { id: 'focus' as ViewMode, label: '포커스', icon: 'sparkles' },
     { id: 'grid' as ViewMode, label: '월간', icon: 'grid' },
     { id: 'timeline' as ViewMode, label: '타임라인', icon: 'list' },
   ];
@@ -584,19 +584,40 @@ export default function MarketingCalendar() {
                 fontSize: 11.5, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
                 whiteSpace: 'nowrap' as const,
               }}>
-                <Icon name="clock" size={10} />2026.04.18 (토)
+                <Icon name="clock" size={10} />{fmtDate(TODAY)}
               </span>
               <span style={{ whiteSpace: 'nowrap' as const }}>다가오는 기회 {upcoming.length}건 · 진행 중 {activeEvents.length}건</span>
             </div>
           </div>
           <div className="cal-toolbar-actions" style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
             <button className="btn btn-export" onClick={exportCSV}><Icon name="download" size={13} />내보내기</button>
-            <div className="view-switcher">
+            <div style={{
+              display: 'flex',
+              background: 'var(--accent-bg)',
+              border: '1px solid var(--accent-border)',
+              borderRadius: 10,
+              padding: 3,
+              gap: 2,
+            }}>
               {views.map(v => (
                 <button
                   key={v.id}
-                  className={`view-switcher-btn${view === v.id ? ' active' : ''}`}
                   onClick={() => setView(v.id)}
+                  style={view === v.id ? {
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    padding: '4px 10px', borderRadius: 7,
+                    background: 'var(--accent)',
+                    color: '#fff',
+                    fontSize: 12, fontWeight: 600,
+                    border: 'none', cursor: 'pointer',
+                  } : {
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    padding: '4px 10px', borderRadius: 7,
+                    background: 'transparent',
+                    color: 'var(--text-subtle)',
+                    fontSize: 12, fontWeight: 500,
+                    border: 'none', cursor: 'pointer',
+                  }}
                 >
                   <Icon name={v.icon} size={12} />{v.label}
                 </button>
