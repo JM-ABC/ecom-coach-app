@@ -256,12 +256,12 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>기회점수</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ color: event.trendScore >= 80 ? '#f59e0b' : 'var(--text-disabled)', display: 'flex' }}>
+                <span style={{ color: event.trendScore >= 80 ? 'var(--warning)' : 'var(--text-disabled)', display: 'flex' }}>
                   <Icon
                     name="star"
                     size={12}
                     stroke={1.5}
-                    fill={event.trendScore >= 80 ? '#f59e0b' : 'none'}
+                    fill={event.trendScore >= 80 ? 'var(--warning)' : 'none'}
                   />
                 </span>
                 <span style={{
@@ -349,6 +349,7 @@ export function MiniItem({ event, onOpen }: MiniItemProps) {
   const dU = daysUntil(event.start);
   const active = isActive(event);
   const date = new Date(event.start);
+  const badge = dDayBadge(dU, active);
 
   return (
     <div
@@ -372,22 +373,18 @@ export function MiniItem({ event, onOpen }: MiniItemProps) {
           {event.title}
         </div>
         <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
-          {(() => {
-            const badge = dDayBadge(dU, active);
-            if (!badge) return null;
-            return (
-              <span style={{
-                fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
-                background: badge.urgent ? 'var(--accent-bg)' : '#f9fafb',
-                color: badge.urgent ? 'var(--accent-text)' : 'var(--text-subtle)',
-                border: `1px solid ${badge.urgent ? 'var(--accent-border)' : '#e5e7eb'}`,
-                whiteSpace: 'nowrap' as const,
-              }}>
-                {badge.text}
-              </span>
-            );
-          })()}
-          <span>· {typeLabel(event.type)}</span>
+          {badge && (
+            <span style={{
+              fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+              background: badge.urgent ? 'var(--accent-bg)' : 'var(--bg-subtle)',
+              color: badge.urgent ? 'var(--accent-text)' : 'var(--text-subtle)',
+              border: `1px solid ${badge.urgent ? 'var(--accent-border)' : 'var(--border)'}`,
+              whiteSpace: 'nowrap' as const,
+            }}>
+              {badge.text}
+            </span>
+          )}
+          <span>{badge ? '· ' : ''}{typeLabel(event.type)}</span>
         </div>
       </div>
     </div>

@@ -226,36 +226,6 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 
-/* 뷰 전환 버튼 그룹 — 텍스트 줄바꿈 방지 */
-.view-switcher {
-  display: flex;
-  padding: 2px;
-  background: var(--bg-sunken);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.view-switcher-btn {
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 12.5px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: background var(--duration-fast) var(--easing), color var(--duration-fast) var(--easing), box-shadow var(--duration-fast) var(--easing);
-}
-.view-switcher-btn.active {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow-sm);
-}
 
 /* 데이터 소스 상태바 */
 .source-status-bar {
@@ -378,17 +348,7 @@ a { color: inherit; text-decoration: none; }
     align-items: center;
   }
 
-  /* 뷰 전환 버튼 */
-  .view-switcher { flex: 1; justify-content: space-between; }
-  .view-switcher-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 5px 6px;
-    font-size: 11.5px;
-    gap: 3px;
-  }
-
-  /* 내보내기 버튼 */
+/* 내보내기 버튼 */
   .btn-export { padding: 5px 10px !important; font-size: 12px !important; height: 32px !important; flex-shrink: 0; }
 
   /* 데이터 소스 상태바: 가로 스크롤 */
