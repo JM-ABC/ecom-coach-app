@@ -56,9 +56,9 @@ interface SidebarProps {
 
 const tabs = [
   { id: 'calendar' as TabId, label: '마케팅 캘린더', icon: 'calendar' },
-  { id: 'product-name' as TabId, label: '상품명 최적화', icon: 'search' },
-  { id: 'copy' as TabId, label: '카피 생성', icon: 'pen' },
-  { id: 'detail-page' as TabId, label: '상세페이지', icon: 'layout' },
+  { id: 'product-name' as TabId, label: '상품명 최적화', icon: 'search', disabled: true },
+  { id: 'copy' as TabId, label: '카피 생성', icon: 'pen', disabled: true },
+  { id: 'detail-page' as TabId, label: '상세페이지', icon: 'layout', disabled: true },
   { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud' },
 ];
 
@@ -101,11 +101,21 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         {tabs.map(t => (
           <div
             key={t.id}
-            onClick={() => onTabChange(t.id)}
-            style={{ ...s.navItem, ...(activeTab === t.id ? s.navItemActive : {}) }}
+            onClick={t.disabled ? undefined : () => onTabChange(t.id)}
+            style={{
+              ...s.navItem,
+              ...(activeTab === t.id ? s.navItemActive : {}),
+              ...(t.disabled ? { opacity: 0.45, cursor: 'default', pointerEvents: 'none' } : {}),
+            }}
           >
             <Icon name={t.icon} size={15} />
             <span>{t.label}</span>
+            {t.disabled && (
+              <span style={{ flex: 1 }} />
+            )}
+            {t.disabled && (
+              <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
+            )}
           </div>
         ))}
       </div>
@@ -126,10 +136,10 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
-          <div style={s.avatar}>박</div>
+          <div style={s.avatar}>내</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>박지민</div>
-            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>쿠팡 · 생활용품</div>
+            <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>내 계정</div>
+            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>쿠팡 셀러</div>
           </div>
           <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>
         </div>

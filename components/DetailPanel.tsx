@@ -257,9 +257,6 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                 <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>
                   {event.pro}
                 </div>
-                <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 10, fontStyle: 'italic' }}>
-                  — 10년차 쿠팡 생활용품 BM 박지민
-                </div>
               </div>
             </div>
           )}
