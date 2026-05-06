@@ -599,29 +599,26 @@ export default function MarketingCalendar() {
               padding: 3,
               gap: 2,
             }}>
-              {views.map(v => (
-                <button
-                  key={v.id}
-                  onClick={() => setView(v.id)}
-                  style={view === v.id ? {
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '4px 10px', borderRadius: 7,
-                    background: 'var(--accent)',
-                    color: '#fff',
-                    fontSize: 12, fontWeight: 600,
-                    border: 'none', cursor: 'pointer',
-                  } : {
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '4px 10px', borderRadius: 7,
-                    background: 'transparent',
-                    color: 'var(--text-subtle)',
-                    fontSize: 12, fontWeight: 500,
-                    border: 'none', cursor: 'pointer',
-                  }}
-                >
-                  <Icon name={v.icon} size={12} />{v.label}
-                </button>
-              ))}
+              {views.map(v => {
+                const isActive = view === v.id;
+                return (
+                  <button
+                    key={v.id}
+                    onClick={() => setView(v.id)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 4,
+                      padding: '4px 10px', borderRadius: 7,
+                      border: 'none', cursor: 'pointer',
+                      fontSize: 12,
+                      background: isActive ? 'var(--accent)' : 'transparent',
+                      color: isActive ? '#fff' : 'var(--text-subtle)',
+                      fontWeight: isActive ? 600 : 500,
+                    }}
+                  >
+                    <Icon name={v.icon} size={12} />{v.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
