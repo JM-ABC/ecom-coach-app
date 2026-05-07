@@ -114,8 +114,10 @@ export function fmtDateFull(iso: string): string {
 }
 
 export function daysUntil(iso: string): number {
-  const target = new Date(iso);
-  return Math.floor((target.getTime() - TODAY.getTime()) / (1000 * 60 * 60 * 24));
+  const t = new Date(iso);
+  const todayMid = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
+  const targetMid = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  return Math.round((targetMid.getTime() - todayMid.getTime()) / (1000 * 60 * 60 * 24));
 }
 
 export function isActive(ev: MarketingEvent): boolean {
@@ -145,6 +147,28 @@ export const typeLabel = (type: string): string => EVENT_TYPES[type]?.label || t
 export const typeChip = (type: string): string => EVENT_TYPES[type]?.cls || '';
 
 export const EVENTS: MarketingEvent[] = [
+  {
+    id: 'e-new-semester', title: '신학기·유치원 입학 시즌', type: 'season',
+    start: '2026-02-16', end: '2026-03-31',
+    categories: ['b_furniture', 'b_fashion', 'b_carry', 'b_toy'],
+    platforms: ['momq', 'coupang', 'naver'],
+    summary: '3월 새학기·유치원 입학 대비 구매 집중. 맘 커뮤니티에서 "입학 선물", "유아 책가방" 검색 폭증.',
+    trendScore: 87, search: '+94%', gmv: '+72%',
+    products: [
+      { name: '유아 책가방·백팩 (유치원·어린이집용)', reason: '입학 시즌 최고 수요 품목, 맘큐 커뮤니티 후기 구매 전환 강함', urgency: 'high', category: 'b_carry' },
+      { name: '어린이 책상·의자 세트', reason: '새학기 공부 환경 세팅 수요, 가격대 높아 객단가 우수', urgency: 'high', category: 'b_furniture' },
+      { name: '유아동 실내화·운동화', reason: '유치원·어린이집 필수품, 반복 구매', urgency: 'mid', category: 'b_fashion' },
+      { name: '아동 학습교구·퍼즐 세트', reason: '입학 선물 포지션, 선물세트 구성 용이', urgency: 'mid', category: 'b_toy' },
+    ],
+    checklist: [
+      { d: -21, task: '"새학기 입학 선물" 기획전 페이지 오픈', done: false },
+      { d: -14, task: '맘큐 커뮤니티 게시판 협업 콘텐츠 업로드', done: false },
+      { d: -7, task: '책가방·실내화 재고 3주치 확보', done: false },
+      { d: 0, task: '입학식 당일 SNS 인증 이벤트 오픈', done: false },
+      { d: 7, task: '입학 후기 리뷰 이벤트 마감', done: false },
+    ],
+    pro: '맘큐 커뮤니티 "육아템 후기" 게시판 노출이 전환율에 직결됩니다. 2월 초 커뮤니티 체험단을 먼저 모집하고, 후기 30개 이상 확보 후 광고를 올리세요. 쿠팡·네이버보다 맘큐 자사몰 유입이 2배 높은 시즌입니다.',
+  },
   {
     id: 'e-spring-picnic', title: '봄 피크닉 시즌', type: 'season',
     start: '2026-04-01', end: '2026-04-30',
@@ -268,6 +292,27 @@ export const EVENTS: MarketingEvent[] = [
     pro: '생활용품은 "정기구독"이 핵심입니다. 단발 할인보다 3회 연속 할인으로 습관화 유도하세요.',
   },
   {
+    id: 'e-newborn-care', title: '임산부·신생아 케어 시즌', type: 'season',
+    start: '2026-06-01', end: '2026-06-30',
+    categories: ['b_diaper', 'b_wipe', 'b_formula', 'b_safety', 'l_body'],
+    platforms: ['momq', 'coupang', 'naver'],
+    summary: '임신 중후반·산후 조리 수요가 집중되는 시즌. 맘큐 D2C의 핵심 타깃인 0-12개월 신생아 케어 카테고리 전반 수요 상승.',
+    trendScore: 76, search: '+52%', gmv: '+44%',
+    products: [
+      { name: '신생아 피부 전용 세정·로션 세트', reason: '태열·아토피 민감 피부 수요, 맘큐 커뮤니티 추천 상위', urgency: 'high', category: 'l_body' },
+      { name: '기저귀 대용량 월정기구독 세트', reason: '신생아 가정 필수 소모품, 정기구독 락인 최적 시기', urgency: 'high', category: 'b_diaper' },
+      { name: '임산부 배꼽 밴드·수면 쿠션', reason: '임신 중후반 필수템, 맘큐 산전 카테고리 대표 상품', urgency: 'mid', category: 'b_safety' },
+      { name: '유기농 물티슈 대용량', reason: '신생아 전용 성분 인증 제품 수요, 반복 구매', urgency: 'mid', category: 'b_wipe' },
+    ],
+    checklist: [
+      { d: -14, task: '"신생아 첫 달 필수템" 기획전 페이지 오픈', done: false },
+      { d: -7, task: '맘큐 임신·출산 커뮤니티 게시판 협업 콘텐츠', done: false },
+      { d: 0, task: '기저귀·물티슈 정기구독 첫 달 할인 프로모션', done: false },
+      { d: 14, task: '산후 1개월 후기 이벤트 마감', done: false },
+    ],
+    pro: '맘큐 커뮤니티의 "신생아 용품 추천 후기"는 구매 전환율이 일반 광고의 3배입니다. 신제품 런칭 시 커뮤니티 체험단 20명 확보를 먼저 하고 광고를 집행하세요. 6월은 연간 출산율 피크 중 하나로 신생아 가정 DB 확보의 골든 타임입니다.',
+  },
+  {
     id: 'e-summer-vacation', title: '여름 휴가 시즌', type: 'season',
     start: '2026-07-01', end: '2026-08-31',
     categories: ['b_carry', 'b_safety', 'l_storage', 'l_body'],
@@ -325,6 +370,27 @@ export const EVENTS: MarketingEvent[] = [
     pro: '추석 선물 구매 피크는 9월 10~18일입니다. 9월 19일 이후 주문은 명절 전 도착 보장 불가 안내 필수.',
   },
   {
+    id: 'e-immunity-season', title: '유아 면역·건강 시즌', type: 'season',
+    start: '2026-09-28', end: '2026-10-20',
+    categories: ['b_formula', 'l_health', 'b_safety', 'l_air'],
+    platforms: ['momq', 'coupang', 'naver'],
+    summary: '환절기 어린이집·유치원 개학 이후 감기·면역 관련 수요 급등. 맘큐 커뮤니티에서 "아이 면역력", "유아 영양제" 검색 연중 최고.',
+    trendScore: 74, search: '+63%', gmv: '+47%',
+    products: [
+      { name: '유아 유산균·면역 영양제', reason: '환절기 맘 커뮤니티 검색 1위 품목, 정기구독 전환율 높음', urgency: 'high', category: 'b_formula' },
+      { name: '어린이 코 세척·흡입기 세트', reason: '콧물·비염 시즌 필수템, 재구매 사이클 짧음', urgency: 'high', category: 'b_safety' },
+      { name: '공기청정기·가습기 (유아 전용)', reason: '환절기 실내 공기질 관심 급증', urgency: 'mid', category: 'l_air' },
+      { name: '유아 홍삼·비타민C 액상', reason: '면역력 챙기기 시즌, 선물 포지션도 가능', urgency: 'mid', category: 'l_health' },
+    ],
+    checklist: [
+      { d: -10, task: '"환절기 아이 건강 챙기기" 기획전 오픈', done: false },
+      { d: -5, task: '맘큐 커뮤니티 "우리 아이 면역력" 콘텐츠 업로드', done: false },
+      { d: 0, task: '유산균·영양제 정기구독 첫 달 50% 프로모션', done: false },
+      { d: 7, task: '구매 후기 이벤트 마감', done: false },
+    ],
+    pro: '환절기 유아 건강 수요는 "맘 커뮤니티 입소문"이 핵심입니다. 성분·안전성 인증을 강조한 카드뉴스를 맘큐 게시판에 먼저 올리고, 7일 후 쿠팡·네이버 광고를 집행하면 전환율이 40% 이상 높아집니다.',
+  },
+  {
     id: 'e-halloween-2026', title: '핼러윈', type: 'holiday',
     start: '2026-10-31', end: '2026-10-31',
     categories: ['b_toy', 'b_fashion'],
@@ -356,6 +422,29 @@ export const EVENTS: MarketingEvent[] = [
       { d: 0, task: '당일 한정 쿠폰 발행', done: false },
     ],
     pro: '어린이집 단체 구매 수요가 핵심. 20개 이상 묶음 구성으로 학부모 공동구매 유도.',
+  },
+  {
+    id: 'e-momq-grand-sale', title: '맘큐 연간 최대 기획전', type: 'platform',
+    start: '2026-11-10', end: '2026-11-13',
+    categories: ['b_diaper', 'b_wipe', 'b_formula', 'l_body', 'b_toy', 'l_clean'],
+    platforms: ['momq'],
+    summary: '맘큐 자사몰 연간 최대 D2C 기획전. 블랙프라이데이 직전 4일간 맘큐 회원 전용 특가로 자사몰 매출 극대화.',
+    trendScore: 89, search: '+110%', gmv: '+145%',
+    products: [
+      { name: '맘큐 단독 기저귀·물티슈 연간 구독 패키지', reason: '연중 최저가 포지셔닝, 자사몰 락인 효과 최대', urgency: 'high', category: 'b_diaper' },
+      { name: '유아 스킨케어 풀세트 (맘큐 에디션)', reason: '자사몰 단독 구성, 커뮤니티 인플루언서 협업', urgency: 'high', category: 'l_body' },
+      { name: '프리미엄 분유·이유식 3개월 세트', reason: '맘큐 회원 전용 가격, 재구매 전환 핵심', urgency: 'high', category: 'b_formula' },
+      { name: '생활용품 묶음 기획세트', reason: '블랙프라이데이 전 선점 구매 유도', urgency: 'mid', category: 'l_clean' },
+    ],
+    checklist: [
+      { d: -21, task: '맘큐 회원 대상 기획전 사전 알림 푸시 발송', done: false },
+      { d: -14, task: '단독 기획 상품 구성 및 맘큐 에디션 패키지 제작', done: false },
+      { d: -7, task: '커뮤니티 인플루언서 사전 공개 콘텐츠 업로드', done: false },
+      { d: -3, task: '위시리스트 기능으로 수요 예측 후 재고 확정', done: false },
+      { d: 0, task: '기획전 오픈 + 실시간 재고 모니터링', done: false },
+      { d: 3, task: '기획전 마감 후 재구매 쿠폰 자동 발송', done: false },
+    ],
+    pro: '블랙프라이데이 직전에 여는 것이 핵심입니다. "맘큐 회원만을 위한 특가"라는 소속감 마케팅이 D2C 자사몰의 무기입니다. 쿠팡·네이버에서 살 수 없는 단독 구성을 최소 1개 이상 포함해야 이탈을 막을 수 있습니다.',
   },
   {
     id: 'e-blackfriday-2026', title: '블랙프라이데이', type: 'platform',
