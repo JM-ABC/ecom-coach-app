@@ -584,7 +584,7 @@ export default function MarketingCalendar() {
                 fontSize: 11.5, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
                 whiteSpace: 'nowrap' as const,
               }}>
-                <Icon name="clock" size={10} />{fmtDate(TODAY)}
+                <Icon name="clock" size={10} />{fmtDate(TODAY.toISOString())}
               </span>
               <span style={{ whiteSpace: 'nowrap' as const }}>다가오는 기회 {upcoming.length}건 · 진행 중 {activeEvents.length}건</span>
             </div>
