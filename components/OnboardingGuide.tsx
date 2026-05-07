@@ -8,32 +8,40 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, PenLine, Layout, CalendarDays, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  PencilIcon,
+  Squares2X2Icon,
+  CalendarDaysIcon,
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 
 const STEPS = [
   {
-    icon: Search,
-    title: "① 상품명 최적화로 시작하세요",
-    description: "팔고 싶은 상품의 키워드를 입력하면, 쿠팡·네이버·11번가 각 플랫폼의 검색 알고리즘에 맞춘 최적 상품명을 AI가 만들어드립니다.",
-    tip: "💡 생성된 상품명의 '노출 키워드' 배지를 확인하면 어떤 검색어로 노출되는지 한눈에 파악할 수 있어요.",
+    icon: CalendarDaysIcon,
+    title: "① 마케팅 캘린더로 시즌 기획",
+    description: "어버이날, 맘큐 단독 기획전, 육아 시즌 등 D2C 브랜드에 꼭 필요한 이벤트를 한눈에 확인하세요. 쿠팡·네이버·맘큐 자사몰 일정을 함께 관리할 수 있습니다.",
+    tip: "💡 월간·주간·포커스 탭을 전환하며 다음 시즌 준비 현황을 빠르게 파악하세요.",
   },
   {
-    icon: PenLine,
-    title: "② 카피 생성으로 연결",
-    description: "마음에 드는 상품명 옆 화살표(→)를 클릭하면 바로 카피 생성 탭으로 넘어갑니다. 인스타 공구용, 블로그 체험단용 등 용도에 맞는 문체를 선택하세요.",
-    tip: "💡 톤 슬라이더로 '전문적 ↔ 친근한' 문체를 조절할 수 있어요. AI가 만든 티가 나지 않는 자연스러운 카피가 나옵니다.",
+    icon: MagnifyingGlassIcon,
+    title: "② 포커스 탭으로 기회 포착",
+    description: "기회점수가 높은 이벤트를 우선 정렬해 보여줍니다. D-day 배지로 준비 기한을 놓치지 않고, 맘큐 D2C 브랜드에 맞는 프로모션 우선순위를 잡을 수 있어요.",
+    tip: "💡 기회점수 80점 이상 이벤트는 황금 별★로 표시됩니다. MD 기획 우선순위로 활용하세요.",
   },
   {
-    icon: Layout,
-    title: "③ 상세페이지 완성",
-    description: "생성된 카피를 바탕으로 템플릿을 선택하면, 바로 올릴 수 있는 HTML 상세페이지가 완성됩니다. (Pro 기능)",
-    tip: "💡 무료 사용자도 미리보기는 가능해요. Pro로 업그레이드하면 워터마크 없이 다운로드할 수 있습니다.",
+    icon: Squares2X2Icon,
+    title: "③ 이벤트 상세로 실무 인사이트",
+    description: "각 이벤트 카드를 클릭하면 준비 체크리스트, 전년도 GMV 트렌드, 맘큐 커뮤니티 반응 등 MD 실무에 필요한 인사이트를 확인할 수 있습니다.",
+    tip: "💡 '액션 플랜' 버튼으로 해당 이벤트의 단계별 준비 가이드를 열어보세요.",
   },
   {
-    icon: CalendarDays,
-    title: "④ 캘린더로 타이밍 잡기",
-    description: "블랙프라이데이, 빼빼로데이 등 이커머스 핵심 행사 일정을 캘린더에서 확인하고, 프로모션 준비 타이밍을 놓치지 마세요.",
-    tip: "💡 Pro 사용자는 각 행사별 실무 코멘트(준비 시작일, 광고 세팅 팁 등)를 열람할 수 있어요.",
+    icon: PencilIcon,
+    title: "④ 곧 오픈 — 상품명·카피·상세페이지",
+    description: "맘큐 D2C 브랜드에 최적화된 상품명 자동 생성, 맘 커뮤니티 감성 카피, 자사몰 상세페이지 템플릿이 준비 중입니다.",
+    tip: "💡 오픈 알림을 받으려면 설정에서 이메일을 등록해두세요.",
   },
 ];
 
@@ -64,7 +72,7 @@ const OnboardingGuide = ({ open, onOpenChange }: OnboardingGuideProps) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg">
-            🚀 1분 가이드 — 매출 올리는 순서
+            📋 1분 가이드 — MD 기획 시작하기
           </DialogTitle>
         </DialogHeader>
 
@@ -102,7 +110,7 @@ const OnboardingGuide = ({ open, onOpenChange }: OnboardingGuideProps) => {
           {/* Flow arrow (except last) */}
           {!isLast && (
             <div className="flex justify-center">
-              <ArrowRight className="h-5 w-5 text-primary animate-pulse" />
+              <ArrowRightIcon className="h-5 w-5 text-primary animate-pulse" />
             </div>
           )}
         </div>
@@ -116,7 +124,7 @@ const OnboardingGuide = ({ open, onOpenChange }: OnboardingGuideProps) => {
               disabled={isFirst}
               className="gap-1"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeftIcon className="h-4 w-4" />
               이전
             </Button>
 
@@ -127,7 +135,7 @@ const OnboardingGuide = ({ open, onOpenChange }: OnboardingGuideProps) => {
             ) : (
               <Button size="sm" onClick={() => setStep(step + 1)} className="gap-1">
                 다음
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRightIcon className="h-4 w-4" />
               </Button>
             )}
           </div>

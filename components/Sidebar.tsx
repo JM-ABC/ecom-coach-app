@@ -79,7 +79,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           </svg>
         </div>
         <div style={s.brandName}>
-          Seller<span style={{ color: 'var(--accent)' }}>kit</span>
+          <span style={{ color: 'var(--accent)' }}>맘큐</span> MD 플래너
         </div>
         <div style={{ flex: 1 }} />
         <button style={{ ...s.navItem, padding: 4, marginBottom: 0, color: 'var(--text-subtle)' }}>

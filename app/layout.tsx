@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '셀러 마케팅 툴킷',
-  description: '이커머스 셀러를 위한 마케팅 자동화 툴킷',
+  title: '맘큐 MD 플래너',
+  description: '맘큐 D2C 브랜드 마케팅 기획 툴',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
