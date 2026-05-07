@@ -136,10 +136,10 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
-          <div style={s.avatar}>내</div>
+          <div style={s.avatar}>브</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>내 계정</div>
-            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>쿠팡 셀러</div>
+            <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>브랜드 담당자</div>
+            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>쿠팡 · 네이버 · 맘큐</div>
           </div>
           <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>
         </div>
