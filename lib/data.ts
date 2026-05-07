@@ -257,7 +257,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-parents-day', title: '어버이날', type: 'holiday',
     start: '2026-05-08', end: '2026-05-08',
     categories: ['l_health', 'l_body', 'l_bath'],
-    platforms: ['coupang', 'naver', '11st'],
+    platforms: ['coupang', 'naver', '11st', 'momq'],
     summary: '부모님 선물. 안마기·건강용품·프리미엄 생활용품 최상위.',
     trendScore: 92, search: '+156%', gmv: '+180%',
     products: [
@@ -277,7 +277,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-spring-cleaning', title: '봄맞이 대청소 시즌', type: 'season',
     start: '2026-05-01', end: '2026-05-31',
     categories: ['l_clean', 'l_air', 'l_laundry', 'l_storage'],
-    platforms: ['coupang', 'naver'],
+    platforms: ['coupang', 'naver', 'momq'],
     summary: '환절기 대청소·정리 수요 급상승. "살림템" 검색량 피크 시즌.',
     trendScore: 78, search: '+58%', gmv: '+42%',
     products: [
@@ -335,7 +335,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-back-to-school', title: '개학 준비 시즌', type: 'season',
     start: '2026-08-15', end: '2026-08-31',
     categories: ['b_toy', 'b_furniture', 'b_fashion'],
-    platforms: ['coupang', 'naver', '11st'],
+    platforms: ['coupang', 'naver', '11st', 'momq'],
     summary: '9월 개학 대비 학용품·책상·의류 구매 집중. 학부모 타깃 실용템 수요.',
     trendScore: 72, search: '+48%', gmv: '+38%',
     products: [
@@ -394,7 +394,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-halloween-2026', title: '핼러윈', type: 'holiday',
     start: '2026-10-31', end: '2026-10-31',
     categories: ['b_toy', 'b_fashion'],
-    platforms: ['coupang', 'naver'],
+    platforms: ['coupang', 'naver', 'momq'],
     summary: '유아동 핼러윈 코스튬·소품 수요. MZ 부모 세대 중심으로 수요 증가 추세.',
     trendScore: 55, search: '+92%', gmv: '+30%',
     products: [
@@ -411,7 +411,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-pepero-2026', title: '빼빼로데이', type: 'holiday',
     start: '2026-11-11', end: '2026-11-11',
     categories: ['b_toy', 'b_fashion'],
-    platforms: ['coupang', 'naver', '11st'],
+    platforms: ['coupang', 'naver', '11st', 'momq'],
     summary: '11/11 과자·선물 특수. 어린이집 단체 답례품 수요.',
     trendScore: 60, search: '+75%', gmv: '+25%',
     products: [
@@ -450,7 +450,7 @@ export const EVENTS: MarketingEvent[] = [
     id: 'e-blackfriday-2026', title: '블랙프라이데이', type: 'platform',
     start: '2026-11-27', end: '2026-11-30',
     categories: ['l_laundry', 'l_clean', 'l_electric', 'b_diaper', 'b_wipe'],
-    platforms: ['coupang', 'naver', '11st', 'gmarket'],
+    platforms: ['coupang', 'naver', '11st', 'gmarket', 'momq'],
     summary: '11월 말 글로벌 할인 시즌. 국내 플랫폼 대규모 쿠폰·특가 진행.',
     trendScore: 80, search: '+60%', gmv: '+75%',
     products: [
