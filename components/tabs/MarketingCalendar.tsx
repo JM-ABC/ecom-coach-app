@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,16 +9,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  CalendarDays,
-  List,
-  Grid3X3,
-  ChevronLeft,
-  ChevronRight,
-  Crown,
-  Tag,
-  MapPin,
-  Lock,
-} from "lucide-react";
+  CalendarDaysIcon,
+  Bars3Icon,
+  Squares2X2Icon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  TrophyIcon,
+  TagIcon,
+  MapPinIcon,
+  LockClosedIcon,
+  ExclamationCircleIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CalendarEvent {
@@ -66,28 +68,51 @@ const MONTHS = [
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 const MarketingCalendar = () => {
+  const currentYear = new Date().getFullYear();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"calendar" | "list">("calendar");
+  const [year, setYear] = useState(currentYear);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // 0-indexed
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
-  const [isPro] = useState(false);
+  const [isPro] = useState(false); // TODO: 인증/구독 시스템 연동 후 실제 상태로 교체
+
+  const fetchEvents = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // pro_comment를 제외한 컬럼만 조회 (Pro 유저가 아닌 경우)
+      const columns = isPro
+        ? "id,title,event_type,start_date,end_date,categories,platforms,description,pro_comment,color,year"
+        : "id,title,event_type,start_date,end_date,categories,platforms,description,color,year";
+
+      const { data, error: fetchError } = await supabase
+        .from("calendar_events")
+        .select(columns)
+        .eq("year", year)
+        .order("start_date");
+
+      if (fetchError) {
+        throw new Error(fetchError.message);
+      }
+      setEvents((data as unknown as CalendarEvent[]) || []);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "이벤트를 불러오는 중 오류가 발생했습니다."
+      );
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [year, isPro]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from("calendar_events")
-        .select("*")
-        .eq("year", 2026)
-        .order("start_date");
-      if (!error && data) {
-        setEvents(data as unknown as CalendarEvent[]);
-      }
-      setLoading(false);
-    };
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
   const filteredEvents = useMemo(() => {
     if (selectedCategory === "전체") return events;
@@ -98,24 +123,24 @@ const MarketingCalendar = () => {
     return filteredEvents.filter((e) => {
       const start = new Date(e.start_date);
       const end = e.end_date ? new Date(e.end_date) : start;
-      const monthStart = new Date(2026, currentMonth, 1);
-      const monthEnd = new Date(2026, currentMonth + 1, 0);
+      const monthStart = new Date(year, currentMonth, 1);
+      const monthEnd = new Date(year, currentMonth + 1, 0);
       return start <= monthEnd && end >= monthStart;
     });
-  }, [filteredEvents, currentMonth]);
+  }, [filteredEvents, currentMonth, year]);
 
   // Build calendar grid
   const calendarDays = useMemo(() => {
-    const firstDay = new Date(2026, currentMonth, 1).getDay();
-    const daysInMonth = new Date(2026, currentMonth + 1, 0).getDate();
+    const firstDay = new Date(year, currentMonth, 1).getDay();
+    const daysInMonth = new Date(year, currentMonth + 1, 0).getDate();
     const days: (number | null)[] = [];
     for (let i = 0; i < firstDay; i++) days.push(null);
     for (let i = 1; i <= daysInMonth; i++) days.push(i);
     return days;
-  }, [currentMonth]);
+  }, [currentMonth, year]);
 
   const getEventsForDay = (day: number) => {
-    const dateStr = `2026-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const dateStr = `${year}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const date = new Date(dateStr);
     return filteredEvents.filter((e) => {
       const start = new Date(e.start_date);
@@ -139,34 +164,68 @@ const MarketingCalendar = () => {
     );
   }
 
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-16 gap-3">
+          <ExclamationCircleIcon className="h-8 w-8 text-destructive" />
+          <p className="text-sm text-muted-foreground text-center max-w-sm">
+            {error}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={fetchEvents}
+          >
+            <ArrowPathIcon className="h-3.5 w-3.5" />
+            다시 시도
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {/* Header Controls */}
       <Card>
         <CardContent className="py-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            {/* Month Nav */}
+            {/* Year & Month Nav */}
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => setCurrentMonth((m) => Math.max(0, m - 1))}
-                disabled={currentMonth === 0}
+                onClick={() => {
+                  if (currentMonth === 0) {
+                    setYear((y) => y - 1);
+                    setCurrentMonth(11);
+                  } else {
+                    setCurrentMonth((m) => m - 1);
+                  }
+                }}
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeftIcon className="h-4 w-4" />
               </Button>
-              <span className="text-sm font-semibold min-w-[80px] text-center">
-                2026년 {MONTHS[currentMonth]}
+              <span className="text-sm font-semibold min-w-[100px] text-center">
+                {year}년 {MONTHS[currentMonth]}
               </span>
               <Button
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => setCurrentMonth((m) => Math.min(11, m + 1))}
-                disabled={currentMonth === 11}
+                onClick={() => {
+                  if (currentMonth === 11) {
+                    setYear((y) => y + 1);
+                    setCurrentMonth(0);
+                  } else {
+                    setCurrentMonth((m) => m + 1);
+                  }
+                }}
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRightIcon className="h-4 w-4" />
               </Button>
             </div>
 
@@ -178,7 +237,7 @@ const MarketingCalendar = () => {
                 className="h-7 px-2.5"
                 onClick={() => setView("calendar")}
               >
-                <Grid3X3 className="h-3.5 w-3.5 mr-1" />
+                <Squares2X2Icon className="h-3.5 w-3.5 mr-1" />
                 캘린더
               </Button>
               <Button
@@ -187,7 +246,7 @@ const MarketingCalendar = () => {
                 className="h-7 px-2.5"
                 onClick={() => setView("list")}
               >
-                <List className="h-3.5 w-3.5 mr-1" />
+                <Bars3Icon className="h-3.5 w-3.5 mr-1" />
                 리스트
               </Button>
             </div>
@@ -342,7 +401,7 @@ const MarketingCalendar = () => {
               {/* Date & Type */}
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary">
-                  <CalendarDays className="h-3 w-3 mr-1" />
+                  <CalendarDaysIcon className="h-3 w-3 mr-1" />
                   {formatDate(selectedEvent.start_date)}
                   {selectedEvent.end_date &&
                   selectedEvent.end_date !== selectedEvent.start_date
@@ -369,7 +428,7 @@ const MarketingCalendar = () => {
               {selectedEvent.categories?.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-muted-foreground mb-1 flex items-center gap-1">
-                    <Tag className="h-3 w-3" />
+                    <TagIcon className="h-3 w-3" />
                     관련 카테고리
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -386,7 +445,7 @@ const MarketingCalendar = () => {
               {selectedEvent.platforms?.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-muted-foreground mb-1 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
+                    <MapPinIcon className="h-3 w-3" />
                     판매 플랫폼
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -400,35 +459,34 @@ const MarketingCalendar = () => {
               )}
 
               {/* Pro Comment */}
-              {selectedEvent.pro_comment && (
-                <div className="relative">
+              {isPro && selectedEvent.pro_comment ? (
+                <div>
                   <p className="text-xs font-medium text-muted-foreground mb-1 flex items-center gap-1">
-                    <Crown className="h-3 w-3 text-amber-500" />
+                    <TrophyIcon className="h-3 w-3 text-amber-500" />
                     Pro 실무 코멘트
                   </p>
-                  {isPro ? (
-                    <p className="text-sm leading-relaxed bg-accent/50 rounded-lg p-3">
-                      {selectedEvent.pro_comment}
-                    </p>
-                  ) : (
-                    <div className="relative">
-                      <p className="text-sm leading-relaxed bg-accent/50 rounded-lg p-3 blur-sm select-none">
-                        {selectedEvent.pro_comment}
-                      </p>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/60 rounded-lg backdrop-blur-[2px]">
-                        <Lock className="h-5 w-5 text-muted-foreground mb-1.5" />
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Pro 전용 실무 코멘트
-                        </p>
-                        <Button size="sm" className="h-7 text-xs gap-1">
-                          <Crown className="h-3 w-3" />
-                          Pro로 확인하기
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+                  <p className="text-sm leading-relaxed bg-accent/50 rounded-lg p-3">
+                    {selectedEvent.pro_comment}
+                  </p>
                 </div>
-              )}
+              ) : !isPro ? (
+                <div className="relative">
+                  <p className="text-xs font-medium text-muted-foreground mb-1 flex items-center gap-1">
+                    <TrophyIcon className="h-3 w-3 text-amber-500" />
+                    Pro 실무 코멘트
+                  </p>
+                  <div className="flex flex-col items-center justify-center bg-muted/50 rounded-lg p-6">
+                    <LockClosedIcon className="h-5 w-5 text-muted-foreground mb-1.5" />
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Pro 전용 실무 코멘트
+                    </p>
+                    <Button size="sm" className="h-7 text-xs gap-1">
+                      <TrophyIcon className="h-3 w-3" />
+                      Pro로 확인하기
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </DialogContent>
         )}

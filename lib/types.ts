@@ -9,6 +9,9 @@ export interface Product {
   reason: string;
   urgency: UrgencyLevel;
   category: string;
+  priceRange?: { min: number; max: number };
+  prepDays?: number;
+  momqTip?: string;
 }
 
 export interface ChecklistItem {

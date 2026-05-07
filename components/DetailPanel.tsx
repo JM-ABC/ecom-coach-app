@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Icon from './Icon';
+import PromoPlanPanel from './PromoPlanPanel';
 import { PlatformInsights } from './calendar/CalendarParts';
 import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive } from '@/lib/data';
 import type { MarketingEvent } from '@/lib/types';
@@ -22,6 +23,7 @@ interface DetailPanelProps {
 
 export default function DetailPanel({ event, onClose, initialTab = 'plan' }: DetailPanelProps) {
   const [tab, setTab] = useState<'plan' | 'products' | 'insights'>(initialTab);
+  const [showPromo, setShowPromo] = useState(false);
   const [checked, setChecked] = useState<Record<number, boolean>>(
     Object.fromEntries(event.checklist.map((c, i) => [i, c.done]))
   );
@@ -265,6 +267,16 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
         {/* Footer */}
         <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8, background: 'var(--bg-subtle)' }}>
           <button className="btn sm ghost"><Icon name="share" size={12} />공유</button>
+          <button
+            className="btn sm"
+            onClick={() => setShowPromo(true)}
+            style={{
+              background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)',
+              color: '#fff', border: 'none',
+            }}
+          >
+            <Icon name="sparkles" size={12} />AI 기획서
+          </button>
           <div style={{ flex: 1 }} />
           <button className="btn sm"><Icon name="copy" size={12} />복제</button>
           <button className="btn primary sm">
@@ -272,6 +284,13 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
           </button>
         </div>
       </div>
+
+      {showPromo && (
+        <PromoPlanPanel
+          event={event}
+          onClose={() => setShowPromo(false)}
+        />
+      )}
     </>
   );
 }

@@ -58,6 +58,49 @@ const FilterBar = ({ category, setCategory, filteredLen }) => {
   );
 };
 
+// ---- Weather marketing hint widget (inline)
+const WeatherHintBanner = () => {
+  const [hint, setHint] = useStateMain(null);
+
+  React.useEffect(() => {
+    fetch('/api/weather')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const evts = data.events || [];
+        if (evts.length === 0) {
+          setHint({ icon: '☀️', text: '이번 주 특이 날씨 없음 — 시즌 기본 전략 유지', count: 0 });
+        } else {
+          const top = evts.sort((a, b) => b.trendScore - a.trendScore)[0];
+          const prods = (top.products || []).slice(0, 3).map(p => p.name).join('·');
+          const icons = { '폭염': '☀️', '한파': '❄️', '강수': '🌧️', '적설': '🌨️' };
+          const icon = Object.entries(icons).find(([k]) => top.title.includes(k))?.[1] || '⚡';
+          setHint({ icon, text: `${top.title} — ${prods ? prods + ' 수요 급증 예상' : top.summary}`, count: evts.length });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  if (!hint) return null;
+
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 8,
+      padding: '8px 14px', borderRadius: 8, fontSize: 12.5, color: 'var(--text)', marginBottom: 12,
+      background: hint.count > 0 ? 'linear-gradient(90deg, oklch(0.95 0.04 250) 0%, var(--surface) 100%)' : 'var(--bg-subtle)',
+      border: `1px solid ${hint.count > 0 ? 'oklch(0.85 0.06 250)' : 'var(--border)'}`,
+    }}>
+      <span style={{ fontSize: 16, flexShrink: 0 }}>{hint.icon}</span>
+      <span style={{ flex: 1, lineHeight: 1.5 }}>{hint.text}</span>
+      {hint.count > 1 && (
+        <span style={{ fontSize: 10.5, color: 'var(--text-subtle)', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: 4, flexShrink: 0 }}>
+          +{hint.count - 1}건
+        </span>
+      )}
+    </div>
+  );
+};
+
 const MarketingCalendar = () => {
   const [view, setView] = useStateMain(window.CALENDAR_VIEW_DEFAULT || 'focus');
   const [category, setCategory] = useStateMain('all');
@@ -131,6 +174,9 @@ const MarketingCalendar = () => {
           </div>
         </div>
       </div>
+
+      {/* Weather marketing hint */}
+      <WeatherHintBanner />
 
       {/* Filter bar — grouped by 대카테고리 */}
       <FilterBar category={category} setCategory={setCategory} filteredLen={filteredEvents.length} />

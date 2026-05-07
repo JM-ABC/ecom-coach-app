@@ -1,4 +1,4 @@
-import { Crown, AlertCircle } from "lucide-react";
+import { TrophyIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 
 interface UsageLimitBannerProps {
@@ -12,14 +12,14 @@ const UsageLimitBanner = ({ remaining, limit, isLimitReached }: UsageLimitBanner
     return (
       <div className="rounded-lg border-2 border-amber-300 bg-amber-50 p-5 text-center space-y-3">
         <div className="flex items-center justify-center gap-2">
-          <AlertCircle className="h-5 w-5 text-amber-600" />
+          <ExclamationCircleIcon className="h-5 w-5 text-amber-600" />
           <p className="font-semibold text-amber-900">오늘 무료 사용을 모두 했어요</p>
         </div>
         <p className="text-sm text-amber-700">
           하루 {limit}회 무료 제한에 도달했습니다. 내일 다시 이용하거나 Pro로 업그레이드하세요.
         </p>
         <Button className="gap-1.5 bg-amber-500 hover:bg-amber-600 text-white">
-          <Crown className="h-4 w-4" />
+          <TrophyIcon className="h-4 w-4" />
           Pro 업그레이드 (월 14,900원)
         </Button>
       </div>
