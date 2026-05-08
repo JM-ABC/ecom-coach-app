@@ -1,47 +1,83 @@
 import { NextResponse } from 'next/server';
 import type { MarketingEvent } from '@/lib/types';
-import { parseApiHubResponse, tmefToDate, toIso, type ParsedRow, SEOUL_REG } from '@/lib/weather-parser';
 
-// ──────────────────────────────────────────────────────
-// 기상청 API허브 — 단기예보자료 조회
-// https://apihub.kma.go.kr  >  예특보 > 단기예보 > 단기예보자료(2001년 2월 이후) 조회
-// ──────────────────────────────────────────────────────
-const KMA_HUB_URL = 'https://apihub.kma.go.kr/api/typ01/url/fct_shrt_reg.php';
+// 공공데이터포털 기상청 단기예보 API
+const BASE_URL = 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst';
 
-// ──────────────────────────────────────────────────────
-// 날씨 조건 → 마케팅 이벤트 변환 (기존 로직 유지)
-// ──────────────────────────────────────────────────────
+// 서울 격자 좌표
+const NX = 60;
+const NY = 127;
 
-interface DayCond {
-  date: string;
-  maxTemp: number;
-  minTemp: number;
-  hasRain: boolean;
-  hasSnow: boolean;
+function getBaseDateTime(): { baseDate: string; baseTime: string } {
+  const kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const h = kst.getUTCHours();
+  const baseDate = [
+    kst.getUTCFullYear(),
+    String(kst.getUTCMonth() + 1).padStart(2, '0'),
+    String(kst.getUTCDate()).padStart(2, '0'),
+  ].join('');
+
+  // 발표 시각: 02, 05, 08, 11, 14, 17, 20, 23시 (1시간 후 제공)
+  const slots = [2, 5, 8, 11, 14, 17, 20, 23];
+  let baseHour = 23;
+  for (const t of slots) {
+    if (h - 1 >= t) baseHour = t;
+  }
+  return { baseDate, baseTime: String(baseHour).padStart(2, '0') + '00' };
 }
 
-function generateWeatherEvents(rows: ParsedRow[]): MarketingEvent[] {
-  // 날짜별 집계
-  const byDate: Record<string, { temps: number[]; pres: number[] }> = {};
-  for (const r of rows) {
-    const d = tmefToDate(r.tmef);
-    if (!byDate[d]) byDate[d] = { temps: [], pres: [] };
-    if (!isNaN(r.temp)) byDate[d].temps.push(r.temp);
-    byDate[d].pres.push(r.pre);
+interface FcstItem {
+  category: string;
+  fcstDate: string;
+  fcstTime: string;
+  fcstValue: string;
+}
+
+function toIso(yyyymmdd: string): string {
+  return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
+}
+
+function generateWeatherEvents(items: FcstItem[]): MarketingEvent[] {
+  const byDate: Record<string, { temps: number[]; maxTemps: number[]; minTemps: number[]; ptyCodes: number[] }> = {};
+
+  for (const item of items) {
+    const d = item.fcstDate;
+    if (!byDate[d]) byDate[d] = { temps: [], maxTemps: [], minTemps: [], ptyCodes: [] };
+
+    if (item.category === 'TMP') {
+      const v = parseFloat(item.fcstValue);
+      if (!isNaN(v)) byDate[d].temps.push(v);
+    }
+    if (item.category === 'TMX') {
+      const v = parseFloat(item.fcstValue);
+      if (!isNaN(v)) byDate[d].maxTemps.push(v);
+    }
+    if (item.category === 'TMN') {
+      const v = parseFloat(item.fcstValue);
+      if (!isNaN(v)) byDate[d].minTemps.push(v);
+    }
+    if (item.category === 'PTY') {
+      const v = parseInt(item.fcstValue, 10);
+      if (v > 0) byDate[d].ptyCodes.push(v);
+    }
   }
 
-  const dates = Object.keys(byDate).sort();
-  const conds: DayCond[] = dates.map(d => ({
-    date: d,
-    maxTemp: byDate[d].temps.length ? Math.max(...byDate[d].temps) : -Infinity,
-    minTemp: byDate[d].temps.length ? Math.min(...byDate[d].temps) : Infinity,
-    hasRain: byDate[d].pres.some(v => v === 1 || v === 4),   // 비 or 소나기
-    hasSnow: byDate[d].pres.some(v => v === 2 || v === 3),   // 비/눈 or 눈
-  }));
+  const conds = Object.keys(byDate).sort().map(d => {
+    const data = byDate[d];
+    const maxTemp = data.maxTemps[0] ?? (data.temps.length ? Math.max(...data.temps) : -Infinity);
+    const minTemp = data.minTemps[0] ?? (data.temps.length ? Math.min(...data.temps) : Infinity);
+    return {
+      date: d,
+      maxTemp,
+      minTemp,
+      hasRain: data.ptyCodes.some(v => v === 1 || v === 4),
+      hasSnow: data.ptyCodes.some(v => v === 2 || v === 3),
+    };
+  });
 
   const events: MarketingEvent[] = [];
 
-  // ── 폭염: 최고기온 33°C 이상 2일+ ──
+  // 폭염: 최고기온 33°C 이상 2일+
   const heatDates = conds.filter(c => c.maxTemp >= 33);
   if (heatDates.length >= 2) {
     const maxT = Math.max(...heatDates.map(c => c.maxTemp));
@@ -69,7 +105,7 @@ function generateWeatherEvents(rows: ParsedRow[]): MarketingEvent[] {
     });
   }
 
-  // ── 한파: 최저기온 0°C 이하 2일+ ──
+  // 한파: 최저기온 0°C 이하 2일+
   const coldDates = conds.filter(c => c.minTemp <= 0);
   if (coldDates.length >= 2) {
     const minT = Math.min(...coldDates.map(c => c.minTemp));
@@ -97,7 +133,7 @@ function generateWeatherEvents(rows: ParsedRow[]): MarketingEvent[] {
     });
   }
 
-  // ── 비: 강수 예보 1일+ ──
+  // 강수: 1일+
   const rainDates = conds.filter(c => c.hasRain);
   if (rainDates.length >= 1) {
     events.push({
@@ -124,7 +160,7 @@ function generateWeatherEvents(rows: ParsedRow[]): MarketingEvent[] {
     });
   }
 
-  // ── 눈: 적설 예보 ──
+  // 눈/적설
   const snowDates = conds.filter(c => c.hasSnow);
   if (snowDates.length >= 1) {
     events.push({
@@ -146,74 +182,66 @@ function generateWeatherEvents(rows: ParsedRow[]): MarketingEvent[] {
         { d: 0, task: '방한·방수 제품 배너 즉시 게시', done: false },
         { d: 0, task: '유아 방수 장화 재고 확인', done: false },
       ],
-      pro: '적설 예보는 전날 저녁 발표 직후 구매 급등합니다. 예보 즉시 배너를 올리면 경쟁사보다 12-24시간 앞서 수요를 선점합니다.',
+      pro: '적설 예보는 전날 저녁 발표 직후 구매 급등합니다.',
     });
   }
 
   return events;
 }
 
-// ──────────────────────────────────────────────────────
-// API Route Handler
-// ──────────────────────────────────────────────────────
-
 export async function GET() {
-  const apiKey = process.env.KMA_API_KEY;
+  const serviceKey = process.env.KMA_API_KEY;
 
-  if (!apiKey) {
+  if (!serviceKey) {
     return NextResponse.json({ events: [], status: 'no-api-key' });
   }
 
   try {
-    // tmfc=0 → 최신 발표자료 자동 조회
-    const url = `${KMA_HUB_URL}?tmfc=0&reg=${SEOUL_REG}&disp=0&authKey=${apiKey}`;
+    const { baseDate, baseTime } = getBaseDateTime();
 
-    const res = await fetch(url, {
-      next: { revalidate: 3600 }, // 1시간 캐시
+    const params = new URLSearchParams({
+      serviceKey,
+      pageNo: '1',
+      numOfRows: '1000',
+      dataType: 'JSON',
+      base_date: baseDate,
+      base_time: baseTime,
+      nx: String(NX),
+      ny: String(NY),
     });
 
-    if (!res.ok) {
-      const body = await res.text();
-      throw new Error(`KMA API허브 HTTP ${res.status} — ${body.slice(0, 300)}`);
+    const res = await fetch(`${BASE_URL}?${params}`, { next: { revalidate: 3600 } });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const json = await res.json();
+    const resultCode = json?.response?.header?.resultCode;
+    const resultMsg = json?.response?.header?.resultMsg;
+
+    if (resultCode !== '00') {
+      throw new Error(`API 오류 [${resultCode}]: ${resultMsg}`);
     }
 
-    const text = await res.text();
+    const items: FcstItem[] = json?.response?.body?.items?.item ?? [];
 
-    // API허브 에러 응답 감지 (에러 시 텍스트에 "ERROR" 또는 "authKey" 포함)
-    if (text.includes('ERROR') || text.includes('error') || text.includes('인증키')) {
-      throw new Error(`KMA API허브 응답 에러: ${text.slice(0, 300)}`);
-    }
-
-    const rows = parseApiHubResponse(text);
-
-    // 파싱 결과가 없으면 디버깅용으로 raw 응답 일부 포함
-    if (rows.length === 0) {
-      console.warn('[weather/route] 파싱된 데이터 0건. raw 응답 앞부분:', text.slice(0, 500));
+    if (items.length === 0) {
       return NextResponse.json({
-        events: [],
-        status: 'empty',
-        message: '예보 데이터가 비어있습니다. API허브 응답 형식을 확인해주세요.',
-        rawPreview: text.slice(0, 500),
+        events: [], status: 'empty',
+        message: '예보 데이터가 없습니다.',
         updatedAt: new Date().toISOString(),
       });
     }
 
-    const events = generateWeatherEvents(rows);
+    const events = generateWeatherEvents(items);
 
     return NextResponse.json({
       events,
       status: 'ok',
-      rowCount: rows.length,
-      rows: rows.slice(0, 5),
-      rawPreview: text.slice(0, 2000),
+      rowCount: items.length,
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
     console.error('[weather/route] Error:', err);
-    return NextResponse.json({
-      events: [],
-      status: 'error',
-      message: String(err),
-    });
+    return NextResponse.json({ events: [], status: 'error', message: String(err) });
   }
 }
