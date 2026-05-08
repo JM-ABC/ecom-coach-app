@@ -166,10 +166,11 @@ export interface TrendHint {
 interface EventHeroProps {
   event: MarketingEvent;
   onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendHint?: TrendHint;
 }
 
-export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
+export function EventHero({ event, onOpen, onOpenPromoPlan, trendHint }: EventHeroProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -235,13 +236,18 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
           <button className="btn primary" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
             <Icon name="target" size={13} />액션 플랜 열기
           </button>
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={13} />추천 품목
           </button>
+          {onOpenPromoPlan && (
+            <button className="btn" onClick={(e) => { e.stopPropagation(); onOpenPromoPlan(event); }}>
+              <Icon name="sparkles" size={13} />AI 기획서
+            </button>
+          )}
         </div>
         <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--divider)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>

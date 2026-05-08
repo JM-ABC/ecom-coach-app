@@ -167,7 +167,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
               AI 프로모션 기획서
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-              {event.title} · Gemini Flash
+              {event.title} · Gemini 2.5 Pro
             </div>
           </div>
           <button className="btn ghost icon sm" onClick={onClose}>
@@ -229,7 +229,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
                 className="promo-plan-content"
                 style={{
                   fontSize: 13.5, lineHeight: 1.75,
-                  color: 'var(--text)', whiteSpace: 'pre-wrap',
+                  color: 'var(--text)',
                 }}
                 dangerouslySetInnerHTML={{ __html: renderMarkdown(planText) }}
               />
@@ -241,7 +241,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
               className="promo-plan-content"
               style={{
                 fontSize: 13.5, lineHeight: 1.75,
-                color: 'var(--text)', whiteSpace: 'pre-wrap',
+                color: 'var(--text)',
               }}
               dangerouslySetInnerHTML={{ __html: renderMarkdown(planText) }}
             />
@@ -303,6 +303,10 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
         @keyframes spin { to { transform: rotate(360deg); } }
         .promo-plan-content h2 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
         .promo-plan-content h3 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; color: var(--text); }
+        .promo-plan-content h4 { font-size: 12.5px; font-weight: 600; margin: 12px 0 4px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .promo-plan-content p { margin: 4px 0 8px; }
+        .promo-plan-content blockquote { margin: 8px 0; padding: 8px 14px; border-left: 3px solid var(--accent); background: var(--accent-bg); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-muted); }
+        .promo-plan-content code { background: var(--bg-subtle); padding: 1px 5px; border-radius: 4px; font-size: 12px; font-family: var(--font-mono); }
         .promo-plan-content ul, .promo-plan-content ol { padding-left: 20px; margin: 6px 0; }
         .promo-plan-content li { margin-bottom: 4px; }
         .promo-plan-content table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
@@ -313,27 +317,93 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
   );
 }
 
-/** 간단한 마크다운 → HTML 변환 (의존성 없이) */
+/** 마크다운 → HTML 변환 (라인별 파서) */
 function renderMarkdown(md: string): string {
   if (!md) return '';
-  return md
-    // headings
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    // bold
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // italic
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // unordered list
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    // ordered list
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    // table rows (basic)
-    .replace(/\|---.*\|/g, '')
-    .replace(/^\|(.+)\|$/gm, (_, row: string) => {
-      const cells = row.split('|').map((c: string) => c.trim()).filter(Boolean);
-      return '<tr>' + cells.map((c: string) => `<td>${c}</td>`).join('') + '</tr>';
-    })
-    // line breaks
-    .replace(/\n/g, '<br/>');
+
+  const inline = (t: string) =>
+    t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+     .replace(/\*(.+?)\*/g, '<em>$1</em>')
+     .replace(/`(.+?)`/g, '<code>$1</code>');
+
+  const lines = md.split('\n');
+  const out: string[] = [];
+  let inUl = false, inOl = false, inTable = false, tableFirstRow = true;
+
+  const closeList = () => {
+    if (inUl) { out.push('</ul>'); inUl = false; }
+    if (inOl) { out.push('</ol>'); inOl = false; }
+  };
+  const closeTable = () => {
+    if (inTable) { out.push('</tbody></table>'); inTable = false; tableFirstRow = true; }
+  };
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+
+    // Heading (h1–h4); strip any stray leading markers in heading text
+    const hm = line.match(/^(#{1,4})\s+(.+)$/);
+    if (hm) {
+      closeList(); closeTable();
+      const text = hm[2].replace(/^#{1,4}\s+/, '');
+      out.push(`<h${hm[1].length}>${inline(text)}</h${hm[1].length}>`);
+      continue;
+    }
+
+    // Table separator row — skip
+    if (/^\|[\s\-:|]+\|/.test(line)) continue;
+
+    // Table row
+    if (line.startsWith('|') && line.endsWith('|')) {
+      closeList();
+      if (!inTable) { out.push('<table><tbody>'); inTable = true; tableFirstRow = true; }
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      if (tableFirstRow) {
+        out.push('<tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr>');
+        tableFirstRow = false;
+      } else {
+        out.push('<tr>' + cells.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>');
+      }
+      continue;
+    }
+
+    // Unordered list
+    const ulm = line.match(/^[-*]\s+(.+)$/);
+    if (ulm) {
+      closeTable();
+      if (inOl) { out.push('</ol>'); inOl = false; }
+      if (!inUl) { out.push('<ul>'); inUl = true; }
+      out.push(`<li>${inline(ulm[1])}</li>`);
+      continue;
+    }
+
+    // Ordered list
+    const olm = line.match(/^\d+\.\s+(.+)$/);
+    if (olm) {
+      closeTable();
+      if (inUl) { out.push('</ul>'); inUl = false; }
+      if (!inOl) { out.push('<ol>'); inOl = true; }
+      out.push(`<li>${inline(olm[1])}</li>`);
+      continue;
+    }
+
+    // Blockquote
+    const bqm = line.match(/^>\s*(.*)$/);
+    if (bqm) {
+      closeList(); closeTable();
+      out.push(`<blockquote>${inline(bqm[1])}</blockquote>`);
+      continue;
+    }
+
+    // Blank line
+    if (!line.trim()) { closeList(); closeTable(); continue; }
+
+    // Paragraph
+    closeList(); closeTable();
+    out.push(`<p>${inline(line)}</p>`);
+  }
+
+  closeList();
+  closeTable();
+  return out.join('\n');
 }

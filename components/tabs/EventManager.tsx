@@ -639,7 +639,7 @@ function NewsDetectionPanel() {
       </div>
 
       {/* 서브 탭 */}
-      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 8, border: '1px solid var(--border)', width: 'fit-content', marginBottom: 18 }}>
+      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 8, border: '1px solid var(--border)', maxWidth: '100%', overflowX: 'auto', marginBottom: 18 }}>
         {([
           { id: 'events', label: '플랫폼 행사', icon: 'calendar' },
           { id: 'trends', label: '소비 트렌드', icon: 'trending' },
@@ -649,7 +649,7 @@ function NewsDetectionPanel() {
             onClick={() => setInsightTab(t.id)}
             style={{
               padding: '5px 14px', borderRadius: 6, fontSize: 12.5, fontWeight: 500,
-              display: 'flex', alignItems: 'center', gap: 5,
+              display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, whiteSpace: 'nowrap' as const,
               color: insightTab === t.id ? 'var(--text)' : 'var(--text-muted)',
               background: insightTab === t.id ? 'var(--surface)' : 'transparent',
               boxShadow: insightTab === t.id ? 'var(--shadow-sm)' : 'none',
@@ -797,14 +797,14 @@ export default function EventManager() {
       </div>
 
       {/* 탭 */}
-      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 10, border: '1px solid var(--border)', width: 'fit-content', marginBottom: 24 }}>
+      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 10, border: '1px solid var(--border)', maxWidth: '100%', overflowX: 'auto', marginBottom: 24 }}>
         {panels.map(p => (
           <button
             key={p.id}
             onClick={() => setPanel(p.id)}
             style={{
               padding: '7px 16px', borderRadius: 8, fontSize: 13, fontWeight: 500,
-              display: 'flex', alignItems: 'center', gap: 6,
+              display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, whiteSpace: 'nowrap' as const,
               color: panel === p.id ? 'var(--text)' : 'var(--text-muted)',
               background: panel === p.id ? 'var(--surface)' : 'transparent',
               boxShadow: panel === p.id ? 'var(--shadow-sm)' : 'none',

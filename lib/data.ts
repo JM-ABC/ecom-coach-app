@@ -195,7 +195,7 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '유아 책가방·백팩 (유치원·어린이집용)', reason: '입학 시즌 최고 수요 품목, 맘큐 커뮤니티 후기 구매 전환 강함', urgency: 'high', category: 'b_carry', priceRange: { min: 25000, max: 65000 }, prepDays: 21, momqTip: '프리미엄 회원 5% 추가 할인 + 맘큐 커뮤니티 포토리뷰 200건 확보 후 상단 배치.' },
       { name: '어린이 책상·의자 세트', reason: '새학기 공부 환경 세팅 수요, 가격대 높아 객단가 우수', urgency: 'high', category: 'b_furniture', priceRange: { min: 120000, max: 350000 }, prepDays: 28, momqTip: '스탠다드 이상 회원 무료 설치 서비스 제공. 고객단가 방어 핵심 상품.' },
-      { name: '유아동 실내화·운동화', reason: '유치원·어린이집 필수품, 반복 구매', urgency: 'mid', category: 'b_fashion', priceRange: { min: 15000, max: 35000 }, prepDays: 14, momqTip: '정기구독(3개월 교체 주기) 전환 유도. 라이트 회원 업그레이드 훅으로 활용.' },
+      { name: '유아동 실내화·운동화', reason: '유치원·어린이집 필수품, 반복 구매', urgency: 'mid', category: 'b_fashion', priceRange: { min: 15000, max: 35000 }, prepDays: 14, momqTip: '3개월 교체 주기 기반 재구매 유도. 라이트 회원 업그레이드 훅으로 활용.' },
       { name: '아동 학습교구·퍼즐 세트', reason: '입학 선물 포지션, 선물세트 구성 용이', urgency: 'mid', category: 'b_toy', priceRange: { min: 20000, max: 55000 }, prepDays: 14, momqTip: '선물포장 무료 옵션 추가. 맘큐 단독 번들(교구+퍼즐) 구성으로 차별화.' },
     ],
     checklist: [
@@ -216,7 +216,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 82, search: '+34%', gmv: '+21%',
     products: [
       { name: '피크닉 매트 (대형·방수)', reason: '가족 단위 수요 ↑, 방수 기능 필수', urgency: 'high', category: 'l_storage', priceRange: { min: 15000, max: 45000 }, prepDays: 14, momqTip: '맘큐 단독 "대형 방수" 키워드 썸네일 운영. 프리미엄 회원 쇼핑지원금 활용 유도.' },
-      { name: '휴대용 아기 방수매트', reason: '기저귀 교체+식사 겸용 수요', urgency: 'high', category: 'b_safety', priceRange: { min: 8000, max: 22000 }, prepDays: 7, momqTip: '기저귀 정기구독 고객 대상 크로스셀. 장바구니 추천 배너 삽입.' },
+      { name: '휴대용 아기 방수매트', reason: '기저귀 교체+식사 겸용 수요', urgency: 'high', category: 'b_safety', priceRange: { min: 8000, max: 22000 }, prepDays: 7, momqTip: '기저귀 구매 고객 대상 크로스셀. 장바구니 추천 배너 삽입.' },
       { name: '아기띠·힙시트', reason: '짧은 나들이 필수템, 봄 신상 구매 집중', urgency: 'mid', category: 'b_carry', priceRange: { min: 35000, max: 120000 }, prepDays: 21, momqTip: '고가 상품이므로 스탠다드→프리미엄 업그레이드 훅으로 활용. 가입비 대비 이득 프레임.' },
       { name: '유아 외출용 보냉백', reason: '이유식·간식 보관 수요', urgency: 'mid', category: 'b_carry', priceRange: { min: 12000, max: 30000 }, prepDays: 7, momqTip: '이유식 카테고리 묶음 할인과 연계. 맘큐 커뮤니티 "나들이템 추천" 게시판 노출.' },
     ],
@@ -300,7 +300,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 92, search: '+156%', gmv: '+180%',
     products: [
       { name: '안마기·마사지건', reason: '중장년 선호 최상위', urgency: 'high', category: 'l_health', priceRange: { min: 40000, max: 150000 }, prepDays: 14, momqTip: '프리미엄 회원 전용 선물포장+메시지카드 무료. "체면" 프레임 강조.' },
-      { name: '혈압계·체온계·건강 측정기', reason: '실용 선물 + 재구매 유도', urgency: 'high', category: 'l_health', priceRange: { min: 25000, max: 80000 }, prepDays: 10, momqTip: '실용 선물 포지션 — 맘큐 건강 카테고리 정기구독 전환 시 15% 추가 할인.' },
+      { name: '혈압계·체온계·건강 측정기', reason: '실용 선물 + 재구매 유도', urgency: 'high', category: 'l_health', priceRange: { min: 25000, max: 80000 }, prepDays: 10, momqTip: '실용 선물 포지션 — 맘큐 프리미엄 회원 전용 추가 할인 + 건강 카테고리 재구매 혜택 강조.' },
       { name: '프리미엄 바디로션·핸드크림', reason: '여성 부모 대상 실용 선물', urgency: 'mid', category: 'l_body', priceRange: { min: 15000, max: 45000 }, prepDays: 10, momqTip: '맘큐 단독 기프트 세트 구성. 스탠다드 회원 가입축하 포인트로 실질 무료 체험 유도.' },
     ],
     checklist: [
@@ -325,9 +325,9 @@ export const EVENTS: MarketingEvent[] = [
     ],
     checklist: [
       { d: -7, task: '"봄맞이 살림템" 기획전 페이지', done: false },
-      { d: 0, task: '세제 대용량 정기구독 혜택 세팅', done: false },
+      { d: 0, task: '세제 대용량 장기 할인 혜택 세팅', done: false },
     ],
-    pro: '생활용품은 "정기구독"이 핵심입니다. 단발 할인보다 3회 연속 할인으로 습관화 유도하세요.',
+    pro: '생활용품은 반복구매 습관화가 핵심입니다. 단발 할인보다 "대용량 묶음 구매 → 재구매 혜택" 구조로 고객을 장기 고객으로 육성하세요. 장기 구독 프로그램은 서비스팀과 별도 기획하세요.',
   },
   {
     id: 'e-rainy-season', title: '장마·제습 시즌', type: 'season',
@@ -359,7 +359,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 85, search: '+78%', gmv: '+55%',
     products: [
       { name: '유아 물놀이 용품 세트', reason: '물놀이 시즌 최대 수요', urgency: 'high', category: 'b_safety', priceRange: { min: 20000, max: 60000 }, prepDays: 14, momqTip: '맘큐 커뮤니티 "물놀이 필수템" 체험단 30명 선행 투입. 리뷰 확보 후 광고.' },
-      { name: '아기 자외선차단제 SPF50+', reason: '여름 필수품, 반복구매', urgency: 'high', category: 'l_body', priceRange: { min: 12000, max: 28000 }, prepDays: 7, momqTip: '정기구독 3개월 세트 구성. 프리미엄 회원 매달 쇼핑지원금으로 실질 할인 강조.' },
+      { name: '아기 자외선차단제 SPF50+', reason: '여름 필수품, 반복구매', urgency: 'high', category: 'l_body', priceRange: { min: 12000, max: 28000 }, prepDays: 7, momqTip: '3개월치 대용량 묶음 세트 구성. 프리미엄 회원 매달 쇼핑지원금으로 실질 할인 강조.' },
       { name: '휴대용 유아 물통·보냉백', reason: '캠핑·나들이 필수 아이템', urgency: 'mid', category: 'b_carry', priceRange: { min: 10000, max: 25000 }, prepDays: 7, momqTip: '물놀이 세트 + 보냉백 크로스셀 번들. 맘큐 단독 여름 패키지 구성.' },
     ],
     checklist: [
@@ -415,7 +415,7 @@ export const EVENTS: MarketingEvent[] = [
     summary: '환절기 어린이집·유치원 개학 이후 감기·면역 관련 수요 급등. 맘큐 커뮤니티에서 "아이 면역력", "유아 영양제" 검색 연중 최고.',
     trendScore: 74, search: '+63%', gmv: '+47%',
     products: [
-      { name: '유아 유산균·면역 영양제', reason: '환절기 맘 커뮤니티 검색 1위 품목, 정기구독 전환율 높음', urgency: 'high', category: 'b_formula' },
+      { name: '유아 유산균·면역 영양제', reason: '환절기 맘 커뮤니티 검색 1위 품목, 반복 구매율 높음', urgency: 'high', category: 'b_formula' },
       { name: '어린이 코 세척·흡입기 세트', reason: '콧물·비염 시즌 필수템, 재구매 사이클 짧음', urgency: 'high', category: 'b_safety' },
       { name: '공기청정기·가습기 (유아 전용)', reason: '환절기 실내 공기질 관심 급증', urgency: 'mid', category: 'l_air' },
       { name: '유아 홍삼·비타민C 액상', reason: '면역력 챙기기 시즌, 선물 포지션도 가능', urgency: 'mid', category: 'l_health' },
@@ -423,7 +423,7 @@ export const EVENTS: MarketingEvent[] = [
     checklist: [
       { d: -10, task: '"환절기 아이 건강 챙기기" 기획전 오픈', done: false },
       { d: -5, task: '맘큐 커뮤니티 "우리 아이 면역력" 콘텐츠 업로드', done: false },
-      { d: 0, task: '유산균·영양제 정기구독 첫 달 50% 프로모션', done: false },
+      { d: 0, task: '유산균·영양제 첫 구매 50% 할인 + 2회차 20% 할인 연속 기획', done: false },
       { d: 7, task: '구매 후기 이벤트 마감', done: false },
     ],
     pro: '환절기 유아 건강 수요는 "맘 커뮤니티 입소문"이 핵심입니다. 성분·안전성 인증을 강조한 카드뉴스를 맘큐 게시판에 먼저 올리고, 커뮤니티 신뢰도가 쌓인 후 쿠팡·네이버 광고를 집행하면 전환율이 유의미하게 높아집니다.',
@@ -469,9 +469,9 @@ export const EVENTS: MarketingEvent[] = [
     summary: '맘큐 자사몰 연간 최대 D2C 기획전. 블랙프라이데이 직전 4일간 맘큐 회원 전용 특가로 자사몰 매출 극대화.',
     trendScore: 89, search: '+110%', gmv: '+145%',
     products: [
-      { name: '맘큐 단독 기저귀·물티슈 연간 구독 패키지', reason: '연중 최저가 포지셔닝, 자사몰 락인 효과 최대', urgency: 'high', category: 'b_diaper', priceRange: { min: 150000, max: 350000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 연간 구독 최저가. 비회원→프리미엄 원스텝 가입 유도 (가입비 6,000원 < 절감액).' },
+      { name: '맘큐 단독 기저귀·물티슈 대용량 연간 묶음', reason: '연중 최저가 포지셔닝, 자사몰 락인 효과 최대', urgency: 'high', category: 'b_diaper', priceRange: { min: 150000, max: 350000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 연간 최저가 묶음. 비회원→프리미엄 원스텝 가입 유도 (가입비 6,000원 < 절감액).' },
       { name: '유아 스킨케어 풀세트 (맘큐 에디션)', reason: '자사몰 단독 구성, 커뮤니티 인플루언서 협업', urgency: 'high', category: 'l_body', priceRange: { min: 45000, max: 89000 }, prepDays: 14, momqTip: '맘큐에서만 살 수 있는 단독 구성이 핵심. 커뮤니티 인플루언서 언박싱 영상 5편 이상 확보.' },
-      { name: '프리미엄 분유·이유식 3개월 세트', reason: '맘큐 회원 전용 가격, 재구매 전환 핵심', urgency: 'high', category: 'b_formula', priceRange: { min: 80000, max: 180000 }, prepDays: 14, momqTip: '정기구독 전환율 최상위 상품. 프리미엄 회원 매달 쇼핑지원금 3,000원 적용으로 체감가 극대화.' },
+      { name: '프리미엄 분유·이유식 3개월 세트', reason: '맘큐 회원 전용 가격, 재구매 전환 핵심', urgency: 'high', category: 'b_formula', priceRange: { min: 80000, max: 180000 }, prepDays: 14, momqTip: '재구매율 최상위 상품. 프리미엄 회원 매달 쇼핑지원금 3,000원 적용으로 체감가 극대화.' },
       { name: '생활용품 묶음 기획세트', reason: '블랙프라이데이 전 선점 구매 유도', urgency: 'mid', category: 'l_clean', priceRange: { min: 25000, max: 55000 }, prepDays: 7, momqTip: '대용량 묶음으로 마진 방어. 라이트→스탠다드 업그레이드 시 추가 5% 할인 제공.' },
     ],
     checklist: [
@@ -493,7 +493,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 80, search: '+60%', gmv: '+75%',
     products: [
       { name: '생활용품 대용량 묶음세트', reason: '대규모 할인에 최적화된 구성', urgency: 'high', category: 'l_laundry', priceRange: { min: 30000, max: 70000 }, prepDays: 14, momqTip: '맘큐 자사몰 블프 전용 가격. 대용량 묶음으로 객단가+마진 동시 방어.' },
-      { name: '기저귀·물티슈 박스 세트', reason: '연간 최저가 포지셔닝 기회', urgency: 'high', category: 'b_diaper', priceRange: { min: 40000, max: 95000 }, prepDays: 14, momqTip: '프리미엄 회원 정기구독 전환 시 추가 할인. 맘큐 기획전 직전 구매 유도.' },
+      { name: '기저귀·물티슈 박스 세트', reason: '연간 최저가 포지셔닝 기회', urgency: 'high', category: 'b_diaper', priceRange: { min: 40000, max: 95000 }, prepDays: 14, momqTip: '프리미엄 회원 대상 추가 할인 적용. 맘큐 기획전 직전 구매 유도.' },
     ],
     checklist: [
       { d: -14, task: '블랙프라이데이 특가 상품 선정', done: false },

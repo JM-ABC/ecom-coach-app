@@ -4,6 +4,7 @@ import React, { useState, useMemo, CSSProperties } from 'react';
 import Icon from '@/components/Icon';
 import { EventHero, EventCard, MiniItem } from './CalendarParts';
 import DetailPanel from '@/components/DetailPanel';
+import PromoPlanPanel from '@/components/PromoPlanPanel';
 import {
   EVENTS, CATEGORIES, CATEGORY_GROUPS, EVENT_TYPES,
   TODAY, catColor, typeLabel, fmtDate, daysUntil, isActive,
@@ -173,12 +174,13 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
 }
 
 // ---- FocusView ----
-function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weatherEvents }: {
+function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, trendByKey, weatherEvents }: {
   hero: MarketingEvent | undefined;
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
   filter: string;
   onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendByKey: Record<string, CategoryTrend>;
   weatherEvents: MarketingEvent[];
 }) {
@@ -188,7 +190,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weath
   return (
     <div className="focus-grid" style={{ gap: 16 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {hero && <EventHero event={hero} onOpen={onOpen} trendHint={getEventTrendHint(hero, trendByKey)} />}
+        {hero && <EventHero event={hero} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} trendHint={getEventTrendHint(hero, trendByKey)} />}
 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
@@ -504,6 +506,7 @@ export default function MarketingCalendar() {
   const [category, setCategory] = useState('all');
   const [selected, setSelected] = useState<MarketingEvent | null>(null);
   const [selectedTab, setSelectedTab] = useState<'plan' | 'products' | 'insights'>('plan');
+  const [promoPlanEvent, setPromoPlanEvent] = useState<MarketingEvent | null>(null);
 
   const openPanel = (e: MarketingEvent, tab: 'plan' | 'products' | 'insights' = 'plan') => {
     setSelected(e);
@@ -630,7 +633,7 @@ export default function MarketingCalendar() {
       {view === 'focus' && (
         <FocusView
           hero={hero} thisWeek={thisWeek} upcoming={upcoming}
-          filter={category} onOpen={openPanel}
+          filter={category} onOpen={openPanel} onOpenPromoPlan={setPromoPlanEvent}
           trendByKey={trendByKey} weatherEvents={weatherState.events}
         />
       )}
@@ -642,6 +645,7 @@ export default function MarketingCalendar() {
       )}
 
       {selected && <DetailPanel event={selected} initialTab={selectedTab} onClose={() => setSelected(null)} />}
+      {promoPlanEvent && <PromoPlanPanel event={promoPlanEvent} onClose={() => setPromoPlanEvent(null)} />}
     </div>
   );
 }
