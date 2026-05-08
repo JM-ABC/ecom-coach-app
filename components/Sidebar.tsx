@@ -1,6 +1,6 @@
 'use client';
 
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useState, useEffect, useRef } from 'react';
 import Icon from './Icon';
 import type { TabId } from '@/lib/types';
 
@@ -35,12 +35,6 @@ const s: Record<string, CSSProperties> = {
     background: 'var(--surface)', color: 'var(--text)',
     boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border)',
   },
-  usageBar: {
-    padding: 8, borderRadius: 8, background: 'var(--surface)',
-    border: '1px solid var(--border)', marginBottom: 8,
-  },
-  usageTrack: { height: 4, borderRadius: 2, background: 'var(--bg-sunken)', overflow: 'hidden' },
-  usageFill: { height: '100%', background: 'var(--accent)', borderRadius: 2 },
   avatar: {
     width: 24, height: 24, borderRadius: 6,
     background: 'oklch(0.90 0.02 258)', color: 'var(--accent-text)',
@@ -48,6 +42,77 @@ const s: Record<string, CSSProperties> = {
     fontSize: 11, fontWeight: 600,
   },
 };
+
+const searchItems = [
+  { id: 'calendar' as TabId, label: '마케팅 캘린더', icon: 'calendar', group: '도구' },
+  { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud', group: '도구' },
+];
+
+function SearchModal({ onClose, onTabChange }: { onClose: () => void; onTabChange: (tab: TabId) => void }) {
+  const [query, setQuery] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  const filtered = searchItems.filter(item => item.label.includes(query));
+
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(0,0,0,0.4)', display: 'flex',
+        alignItems: 'flex-start', justifyContent: 'center',
+        paddingTop: 120,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: 'var(--surface)', borderRadius: 12,
+          border: '1px solid var(--border)', width: 480,
+          boxShadow: '0 20px 40px rgba(0,0,0,0.15)', overflow: 'hidden',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
+          <Icon name="search" size={15} />
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="검색..."
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, color: 'var(--text)' }}
+          />
+          <span className="kbd" style={{ fontSize: 10 }}>ESC</span>
+        </div>
+        <div style={{ padding: '8px 0' }}>
+          {filtered.length === 0 ? (
+            <div style={{ padding: 16, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)' }}>
+              결과 없음
+            </div>
+          ) : filtered.map(item => (
+            <div
+              key={item.id}
+              onClick={() => { onTabChange(item.id); onClose(); }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-subtle)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <Icon name={item.icon} size={14} />
+              <span>{item.label}</span>
+              <span style={{ fontSize: 11, color: 'var(--text-subtle)', marginLeft: 'auto' }}>{item.group}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface SidebarProps {
   activeTab: TabId;
@@ -68,82 +133,103 @@ const tools = [
 ];
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
   return (
-    <aside style={s.sidebar} className="sidebar-desktop">
-      <div style={s.brand}>
-        <div style={s.brandMark}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 7l8-4 8 4v10l-8 4-8-4V7z" />
-            <path d="M4 7l8 4 8-4" />
-            <path d="M12 11v10" />
-          </svg>
+    <>
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} onTabChange={onTabChange} />}
+      <aside style={s.sidebar} className="sidebar-desktop">
+        <div style={s.brand}>
+          <div style={s.brandMark}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 7l8-4 8 4v10l-8 4-8-4V7z" />
+              <path d="M4 7l8 4 8-4" />
+              <path d="M12 11v10" />
+            </svg>
+          </div>
+          <div style={s.brandName}>
+            <span style={{ color: 'var(--accent)' }}>맘큐</span> MD 플래너
+          </div>
+          <div style={{ flex: 1 }} />
+          <button style={{ ...s.navItem, padding: 4, marginBottom: 0, color: 'var(--text-subtle)' }}>
+            <Icon name="chevDown" size={14} />
+          </button>
         </div>
-        <div style={s.brandName}>
-          <span style={{ color: 'var(--accent)' }}>맘큐</span> MD 플래너
-        </div>
-        <div style={{ flex: 1 }} />
-        <button style={{ ...s.navItem, padding: 4, marginBottom: 0, color: 'var(--text-subtle)' }}>
-          <Icon name="chevDown" size={14} />
-        </button>
-      </div>
 
-      <div style={{ padding: '0 8px', marginBottom: 6 }}>
-        <button className="btn sm" style={{ width: '100%', justifyContent: 'flex-start', color: 'var(--text-subtle)', gap: 6 }}>
-          <Icon name="search" size={13} />
-          <span>검색</span>
-          <span style={{ flex: 1 }} />
-          <span className="kbd">⌘K</span>
-        </button>
-      </div>
-
-      <div style={{ marginTop: 8 }}>
-        <div style={s.groupLabel as CSSProperties}>도구</div>
-        {tabs.map(t => (
-          <div
-            key={t.id}
-            onClick={t.disabled ? undefined : () => onTabChange(t.id)}
-            style={{
-              ...s.navItem,
-              ...(activeTab === t.id ? s.navItemActive : {}),
-              ...(t.disabled ? { opacity: 0.45, cursor: 'default', pointerEvents: 'none' } : {}),
-            }}
+        <div style={{ padding: '0 8px', marginBottom: 6 }}>
+          <button
+            className="btn sm"
+            onClick={() => setSearchOpen(true)}
+            style={{ width: '100%', justifyContent: 'flex-start', color: 'var(--text-subtle)', gap: 6 }}
           >
-            <Icon name={t.icon} size={15} />
-            <span>{t.label}</span>
-            {t.disabled && (
-              <span style={{ flex: 1 }} />
-            )}
-            {t.disabled && (
-              <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div style={{ marginTop: 8 }}>
-        <div style={s.groupLabel as CSSProperties}>인사이트</div>
-        {tools.map(t => (
-          <div key={t.id} style={s.navItem}>
-            <Icon name={t.icon} size={15} />
-            <span>{t.label}</span>
+            <Icon name="search" size={13} />
+            <span>검색</span>
             <span style={{ flex: 1 }} />
-            <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ flex: 1 }} />
-
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
-          <div style={s.avatar}>브</div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>브랜드 담당자</div>
-            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>쿠팡 · 네이버 · 맘큐</div>
-          </div>
-          <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>
+            <span className="kbd">⌘K</span>
+          </button>
         </div>
-      </div>
-    </aside>
+
+        <div style={{ marginTop: 8 }}>
+          <div style={s.groupLabel as CSSProperties}>도구</div>
+          {tabs.map(t => (
+            <div
+              key={t.id}
+              onClick={t.disabled ? undefined : () => onTabChange(t.id)}
+              style={{
+                ...s.navItem,
+                ...(activeTab === t.id ? s.navItemActive : {}),
+                ...(t.disabled ? { opacity: 0.45, cursor: 'default', pointerEvents: 'none' } : {}),
+              }}
+            >
+              <Icon name={t.icon} size={15} />
+              <span>{t.label}</span>
+              {t.disabled && <span style={{ flex: 1 }} />}
+              {t.disabled && (
+                <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 8 }}>
+          <div style={s.groupLabel as CSSProperties}>인사이트</div>
+          {tools.map(t => (
+            <div
+              key={t.id}
+              style={{ ...s.navItem, opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}
+            >
+              <Icon name={t.icon} size={15} />
+              <span>{t.label}</span>
+              <span style={{ flex: 1 }} />
+              <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ flex: 1 }} />
+
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
+            <div style={s.avatar}>맘</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>맘큐 MD 담당자</div>
+              <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>맘큐 플랫폼</div>
+            </div>
+            <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

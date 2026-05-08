@@ -204,6 +204,8 @@ export async function GET() {
       events,
       status: 'ok',
       rowCount: rows.length,
+      rows: rows.slice(0, 5),
+      rawPreview: text.slice(0, 2000),
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
