@@ -19,7 +19,13 @@ const KEYWORD_GROUPS: { groupName: string; keywords: string[]; ourKey: string }[
     { groupName: '청소세제', keywords: ['청소세제', '주방세제', '다목적세제', '욕실세정제'], ourKey: 'l_clean' },
     { groupName: '샴푸/헤어', keywords: ['샴푸', '린스', '헤어에센스', '두피케어'], ourKey: 'l_hair' },
     { groupName: '건강용품', keywords: ['안마기', '마사지건', '혈압계', '체온계'], ourKey: 'l_health' },
-    { groupName: '냉방/제습', keywords: ['제습기', '선풍기', '이동식에어컨', '냉풍기'], ourKey: 'l_electric' },
+    { groupName: '냉방/제습가전', keywords: ['제습기', '선풍기', '이동식에어컨', '냉풍기'], ourKey: 'l_electric' },
+  ],
+  // 배치 3: 계절성 수요 (장마·여름)
+  [
+    { groupName: '제습/습기제거', keywords: ['습기제거제', '제습제', '방습제', '제습기'], ourKey: 'l_air' },
+    { groupName: '쿨링용품', keywords: ['아이스팩', '쿨링매트', '쿨링패드', '냉감침구'], ourKey: 'l_body' },
+    { groupName: '화장지/티슈', keywords: ['화장지', '두루마리화장지', '미용티슈', '물티슈'], ourKey: 'l_tissue' },
   ],
 ];
 
