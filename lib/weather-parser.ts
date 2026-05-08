@@ -17,7 +17,8 @@ export function parseApiHubResponse(text: string): ParsedRow[] {
   let headerCols: string[] = [];
   for (const line of lines) {
     const trimmed = line.trim();
-    if (trimmed.startsWith('#') && /REG_ID|REG/.test(trimmed)) {
+    // Skip description lines like "#  1. REG_ID   : 예보구역코드" (contain ':')
+    if (trimmed.startsWith('#') && !trimmed.includes(':') && /REG_ID|TMFC|TMEF|TM_ST|TM_ED/.test(trimmed)) {
       headerCols = trimmed.replace(/^#\s*/, '').split(/\s+/);
       break;
     }
@@ -30,8 +31,8 @@ export function parseApiHubResponse(text: string): ParsedRow[] {
   const idx = (name: string) => {
     const candidates: Record<string, string[]> = {
       REG_ID: ['REG_ID', 'REG'],
-      TMFC: ['TMFC'],
-      TMEF: ['TMEF'],
+      TMFC: ['TMFC', 'TM_FC', 'TM_ST'],
+      TMEF: ['TMEF', 'TM_EF', 'TM_ED'],
       SKY: ['SKY'],
       PRE: ['PRE', 'PTY'],
       TEMP: ['TEMP', 'TA', 'TAV'],
