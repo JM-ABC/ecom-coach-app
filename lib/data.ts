@@ -98,8 +98,46 @@ const PLATFORM_TIPS: Record<string, Partial<Record<EventType, PlatformInsight>>>
   },
 };
 
+// 맘큐 유아 카테고리 집합
+const MOMQ_BABY_CATS = new Set(['b_diaper', 'b_wipe', 'b_toy', 'b_fashion', 'b_formula', 'b_bedding', 'b_safety']);
+
+// 이벤트 카테고리가 생활/가전(l_*) 계열일 때 맘큐 대체 인사이트
+const MOMQ_HOUSEHOLD_TIPS: Partial<Record<EventType, PlatformInsight>> = {
+  season: {
+    tip: '봄 대청소·환절기 시즌, 맘큐에선 "성분 걱정 없는" 유아 안심 세정제·물티슈 기획전이 기회입니다. 영유아 가구의 청결 니즈와 직결됩니다.',
+    action: '유아 안심 세정용품 기획전',
+    metric: '신규 카테고리 유입',
+  },
+  holiday: {
+    tip: '명절·공휴일 시즌, 유아 청결·위생용품 선물세트 기획으로 맘큐만의 차별화 포인트를 만드세요.',
+    action: '유아 위생 선물세트 기획',
+    metric: '객단가 향상',
+  },
+  platform: {
+    tip: '대형 플랫폼 행사 기간, 유아 안심 세정·위생용품 번들로 자사몰 단독 기획전을 런칭하세요.',
+    action: '유아 안심 번들 기획전',
+    metric: '자사몰 차별화',
+  },
+  weather: {
+    tip: '날씨 변화 시즌, 유아 피부에 안전한 세정·보습 제품 기획전이 영유아 부모의 니즈와 직결됩니다.',
+    action: '유아 피부 케어 기획전',
+    metric: '시즌 신규 유입',
+  },
+};
+
 export function getPlatformInsight(event: MarketingEvent, platform: string): PlatformInsight | null {
-  return PLATFORM_TIPS[platform]?.[event.type as EventType] ?? null;
+  const tips = PLATFORM_TIPS[platform];
+  if (!tips) return null;
+
+  // 맘큐: 이벤트 카테고리가 유아 계열이 아니면 카테고리 맥락에 맞는 대체 인사이트 사용
+  if (platform === 'momq' && event.categories.length > 0) {
+    const hasBabyCat = event.categories.some(c => MOMQ_BABY_CATS.has(c));
+    if (!hasBabyCat) {
+      return MOMQ_HOUSEHOLD_TIPS[event.type as EventType] ?? tips[event.type as EventType] ?? null;
+    }
+  }
+
+  return tips[event.type as EventType] ?? null;
 }
 
 export function fmtDate(iso: string): string {
