@@ -24,50 +24,130 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
   const platforms = event.platforms || [];
   if (!platforms.length) return null;
 
+  // 맘큐 먼저, 나머지는 뒤로
+  const sortedPlatforms = [...platforms].sort((a, b) => {
+    if (a === 'momq') return -1;
+    if (b === 'momq') return 1;
+    return 0;
+  });
+
+  const [expanded, setExpanded] = useState<Set<string>>(new Set(['momq']));
+  const toggle = (p: string) => setExpanded(prev => {
+    const next = new Set(prev);
+    if (next.has(p)) next.delete(p); else next.add(p);
+    return next;
+  });
+
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: compact ? '1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
-      gap: 8,
-      marginTop: compact ? 10 : 14,
-    }}>
-      {platforms.map(p => {
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: compact ? 10 : 14 }}>
+      {sortedPlatforms.map(p => {
         const meta = PLATFORM_META[p];
         const tip = getPlatformInsight(event, p);
         if (!meta) return null;
+        const isMomq = p === 'momq';
+        const isOpen = expanded.has(p);
+
+        if (isMomq) {
+          return (
+            <div key={p} style={{
+              border: `1.5px solid ${meta.color}`,
+              borderRadius: 10,
+              background: meta.bg,
+              padding: compact ? '11px 13px' : '13px 15px',
+              display: 'flex', flexDirection: 'column', gap: 7,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: 20, height: 20, borderRadius: 5,
+                  background: meta.color, color: 'white',
+                  fontSize: 11, fontWeight: 700,
+                }}>{meta.label[0]}</span>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: meta.color }}>{meta.label}</span>
+                <span style={{
+                  fontSize: 10, color: meta.color, fontWeight: 600,
+                  padding: '2px 7px', borderRadius: 4,
+                  border: `1px solid ${meta.color}`, opacity: 0.75,
+                }}>운영 가이드</span>
+                {tip?.metric && (
+                  <span style={{ marginLeft: 'auto', fontSize: 10.5, color: meta.color, fontWeight: 600 }}>
+                    {tip.metric}
+                  </span>
+                )}
+              </div>
+              {tip ? (
+                <>
+                  <div style={{ fontSize: 11.5, color: 'var(--text)', lineHeight: 1.55 }}>{tip.tip}</div>
+                  {tip.action && (
+                    <div style={{ fontSize: 11, color: meta.color, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Icon name="arrowRight" size={10} stroke={2.4} />
+                      {tip.action}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
+                  맘큐 전략 가이드 준비 중
+                </div>
+              )}
+            </div>
+          );
+        }
+
         return (
           <div key={p} style={{
             border: '1px solid var(--border)', borderRadius: 8,
-            background: 'var(--surface)', padding: compact ? '10px 11px' : '11px 13px',
-            display: 'flex', flexDirection: 'column', gap: 6,
+            background: 'var(--surface)', overflow: 'hidden',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
+                padding: compact ? '9px 11px' : '10px 13px',
+                userSelect: 'none' as const,
+              }}
+              onClick={() => toggle(p)}
+            >
               <span style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 18, height: 18, borderRadius: 4,
                 background: meta.bg, color: meta.color,
-                fontSize: 10, fontWeight: 700, letterSpacing: '-0.02em',
+                fontSize: 10, fontWeight: 700,
               }}>{meta.label[0]}</span>
               <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>{meta.label}</span>
-              {tip?.metric && (
-                <span style={{ marginLeft: 'auto', fontSize: 10.5, color: 'var(--success)', fontWeight: 600 }}>
+              {tip?.metric && !isOpen && (
+                <span style={{ fontSize: 10.5, color: 'var(--success)', fontWeight: 600 }}>
                   {tip.metric}
+                  <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontWeight: 400 }}> 추정</span>
                 </span>
               )}
+              <span style={{
+                marginLeft: 'auto', fontSize: 11, color: 'var(--text-subtle)',
+                display: 'inline-flex', transition: 'transform 150ms',
+                transform: isOpen ? 'rotate(180deg)' : 'none',
+              }}>▾</span>
             </div>
-            {tip ? (
-              <>
-                <div style={{ fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{tip.tip}</div>
-                {tip.action && (
-                  <div style={{ fontSize: 11, color: meta.color, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Icon name="arrowRight" size={10} stroke={2.4} />
-                    {tip.action}
+            {isOpen && (
+              <div style={{ padding: compact ? '0 11px 10px' : '0 13px 11px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {tip?.metric && (
+                  <div style={{ fontSize: 10.5, color: 'var(--success)', fontWeight: 600 }}>
+                    {tip.metric} <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontWeight: 400 }}>추정</span>
                   </div>
                 )}
-              </>
-            ) : (
-              <div style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
-                플랫폼별 전략 가이드 준비 중
+                {tip ? (
+                  <>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{tip.tip}</div>
+                    {tip.action && (
+                      <div style={{ fontSize: 11, color: meta.color, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Icon name="arrowRight" size={10} stroke={2.4} />
+                        {tip.action}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
+                    플랫폼별 전략 가이드 준비 중
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -144,13 +224,14 @@ export function EventHero({ event, onOpen, trendHint }: EventHeroProps) {
         </div>
         <div className="event-hero-metrics" style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
           {[
-            { label: '예상 GMV 증가', value: event.gmv, color: 'var(--success)' },
-            { label: '검색량 변화', value: event.search, color: 'var(--text)' },
-            { label: 'D-Day', value: active ? '진행중' : dU >= 0 ? `D-${dU}` : `D+${Math.abs(dU)}`, color: 'var(--accent-text)' },
+            { label: '예상 GMV 증가', value: event.gmv, color: 'var(--success)', note: '추정치' },
+            { label: '검색량 변화', value: event.search, color: 'var(--text)', note: '추정치' },
+            { label: 'D-Day', value: active ? '진행중' : dU >= 0 ? `D-${dU}` : `D+${Math.abs(dU)}`, color: 'var(--accent-text)', note: '' },
           ].map(m => (
             <div key={m.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
               <div className="event-hero-metric-value" style={{ fontSize: 18, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
+              {m.note && <div style={{ fontSize: 9.5, color: 'var(--text-subtle)' }}>{m.note}</div>}
             </div>
           ))}
         </div>

@@ -14,6 +14,17 @@ const QUERIES = [
   { query: '위메프 특가데이', platform: 'wemakeprice', title: '위메프 특가' },
 ];
 
+// 소비 트렌드 쿼리
+const TREND_QUERIES = [
+  { query: '유아용품 소비 트렌드', tag: '육아', tagColor: 'blue' },
+  { query: '기저귀 분유 시장 동향', tag: '육아용품', tagColor: 'blue' },
+  { query: '맘카페 육아 소비 트렌드', tag: '육아커뮤니티', tagColor: 'blue' },
+  { query: '유아동복 완구 시장 트렌드', tag: '유아패션', tagColor: 'blue' },
+  { query: '이커머스 자사몰 D2C 트렌드', tag: '이커머스', tagColor: 'green' },
+  { query: '온라인 쇼핑 소비 트렌드', tag: '소비트렌드', tagColor: 'green' },
+  { query: '생활용품 세탁세제 소비 트렌드', tag: '생활용품', tagColor: 'orange' },
+];
+
 interface NaverNewsItem {
   title: string;
   description: string;
@@ -33,6 +44,16 @@ interface DetectedEvent {
   sourceLink: string;
   pubDate: string;
   summary: string;
+}
+
+export interface DetectedInsight {
+  id: string;
+  tag: string;
+  tagColor: string;
+  title: string;
+  summary: string;
+  sourceLink: string;
+  pubDate: string;
 }
 
 function stripHtml(s: string): string {
@@ -176,11 +197,54 @@ export async function GET() {
       }
     }
 
-    // 신뢰도 순 정렬
-    const order = { high: 0, mid: 1, low: 2 };
-    detected.sort((a, b) => order[a.confidence] - order[b.confidence]);
+    // 최신 날짜 순 정렬 (start 날짜 내림차순, 동일 날짜면 신뢰도 우선)
+    const confOrder = { high: 0, mid: 1, low: 2 };
+    detected.sort((a, b) => {
+      const dateDiff = b.start.localeCompare(a.start);
+      if (dateDiff !== 0) return dateDiff;
+      return confOrder[a.confidence] - confOrder[b.confidence];
+    });
 
-    return NextResponse.json({ events: detected, status: 'ok', updatedAt: new Date().toISOString() });
+    // 소비 트렌드 기사 병렬 수집
+    const trendResults = await Promise.all(
+      TREND_QUERIES.map(async q => {
+        const params = new URLSearchParams({ query: q.query, display: '3', sort: 'date' });
+        const res = await fetch(`${NAVER_NEWS_URL}?${params}`, {
+          headers,
+          next: { revalidate: 3600 },
+        });
+        if (!res.ok) return { q, items: [] as NaverNewsItem[] };
+        const json = await res.json();
+        return { q, items: (json.items ?? []) as NaverNewsItem[] };
+      })
+    );
+
+    const insights: DetectedInsight[] = [];
+    const seenInsightKeys = new Set<string>();
+
+    for (const { q, items } of trendResults) {
+      for (const item of items.slice(0, 2)) {
+        const title = stripHtml(item.title);
+        const desc = stripHtml(item.description);
+        const key = `${q.tag}-${title.slice(0, 20)}`;
+        if (seenInsightKeys.has(key)) continue;
+        seenInsightKeys.add(key);
+        insights.push({
+          id: `insight-${q.tag}-${toIsoDate(item.pubDate)}-${Math.random().toString(36).slice(2, 6)}`,
+          tag: q.tag,
+          tagColor: q.tagColor,
+          title,
+          summary: desc.slice(0, 120),
+          sourceLink: item.originallink || item.link,
+          pubDate: toIsoDate(item.pubDate),
+        });
+      }
+    }
+
+    // 최신 기사 순 정렬
+    insights.sort((a, b) => b.pubDate.localeCompare(a.pubDate));
+
+    return NextResponse.json({ events: detected, insights, status: 'ok', updatedAt: new Date().toISOString() });
   } catch (err) {
     console.error('[news-events] Error:', err);
     return NextResponse.json({ events: [], status: 'error', message: String(err) });

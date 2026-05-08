@@ -15,10 +15,21 @@ export interface DetectedNewsEvent {
   summary: string;
 }
 
+export interface NewsInsight {
+  id: string;
+  tag: string;
+  tagColor: string;
+  title: string;
+  summary: string;
+  sourceLink: string;
+  pubDate: string;
+}
+
 export type NewsStatus = 'loading' | 'ok' | 'no-api-key' | 'error';
 
 export interface NewsEventsState {
   events: DetectedNewsEvent[];
+  insights: NewsInsight[];
   status: NewsStatus;
   updatedAt: string | null;
 }
@@ -26,6 +37,7 @@ export interface NewsEventsState {
 export function useNewsEvents(): NewsEventsState {
   const [state, setState] = useState<NewsEventsState>({
     events: [],
+    insights: [],
     status: 'loading',
     updatedAt: null,
   });
@@ -36,7 +48,12 @@ export function useNewsEvents(): NewsEventsState {
       .then(r => r.json())
       .then(data => {
         if (cancelled) return;
-        setState({ events: data.events ?? [], status: data.status ?? 'ok', updatedAt: data.updatedAt ?? null });
+        setState({
+          events: data.events ?? [],
+          insights: data.insights ?? [],
+          status: data.status ?? 'ok',
+          updatedAt: data.updatedAt ?? null,
+        });
       })
       .catch(() => {
         if (cancelled) return;

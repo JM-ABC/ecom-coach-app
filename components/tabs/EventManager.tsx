@@ -55,17 +55,51 @@ function StatusBadge({ status, label }: { status: string; label: string }) {
   );
 }
 
+// ── 트렌드 신호 해석 ─────────────────────────────────────────
+function signalInfo(change: number): { label: string; icon: string; color: string; bg: string; border: string; action: string } {
+  if (change >= 20) return {
+    label: '급상승', icon: '↑↑',
+    color: 'oklch(0.40 0.14 145)', bg: 'oklch(0.93 0.06 145)', border: 'oklch(0.82 0.1 145)',
+    action: '재고 2주치 이상 선확보 + 광고 입찰가 즉시 상향',
+  };
+  if (change >= 8) return {
+    label: '상승', icon: '↑',
+    color: 'var(--success)', bg: 'oklch(0.96 0.04 145)', border: 'oklch(0.88 0.07 145)',
+    action: '광고 예산 소폭 증액, 관련 기획전 준비 시작',
+  };
+  if (change >= -8) return {
+    label: '보합', icon: '→',
+    color: 'var(--text-muted)', bg: 'var(--bg-subtle)', border: 'var(--border)',
+    action: '현 운영 유지, 다음 시즌·이벤트 기획 준비',
+  };
+  if (change >= -20) return {
+    label: '하락', icon: '↓',
+    color: 'oklch(0.55 0.18 25)', bg: 'oklch(0.97 0.03 25)', border: 'oklch(0.91 0.06 25)',
+    action: '쿠폰·번들 프로모션으로 수요 방어, 재고 조정 검토',
+  };
+  return {
+    label: '급하락', icon: '↓↓',
+    color: 'var(--danger)', bg: 'oklch(0.97 0.04 15)', border: 'oklch(0.90 0.07 15)',
+    action: '할인 판매로 재고 소진, 신규 발주 축소 검토',
+  };
+}
+
 // ── 트렌드 패널 ───────────────────────────────────────────────
 function TrendPanel() {
-  const { trends, status, updatedAt, byKey } = useTrendData();
+  const { trends, status, updatedAt } = useTrendData();
+
+  const rising  = trends.filter(t => t.changeVsPrevWeek >= 8);
+  const falling = trends.filter(t => t.changeVsPrevWeek <= -8);
+  const stable  = trends.filter(t => t.changeVsPrevWeek > -8 && t.changeVsPrevWeek < 8);
+  const sorted  = [...trends].sort((a, b) => b.changeVsPrevWeek - a.changeVsPrevWeek);
 
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.01em' }}>네이버 쇼핑 트렌드</div>
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.01em' }}>카테고리 수요 신호</div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-            네이버 데이터랩 쇼핑인사이트 기반 카테고리별 트렌드
+            네이버 데이터랩 기반 전주 대비 수요 변화 · MD 액션 가이드
           </div>
         </div>
         <div style={{ flex: 1 }} />
@@ -90,47 +124,103 @@ function TrendPanel() {
         </div>
       )}
 
-      {status === 'ok' && trends.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
-          {trends.map(t => (
-            <div key={t.ourKey} style={{ padding: '12px 14px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text)', marginBottom: 6 }}>{t.title}</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontSize: 22, fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: 'var(--accent-text)' }}>
-                  {Math.round(t.latestRatio)}
-                </span>
-                <span style={{ fontSize: 11, color: 'var(--text-subtle)' }}>/100</span>
-                <span style={{
-                  fontSize: 12, fontWeight: 600, marginLeft: 4,
-                  color: t.changeVsPrevWeek >= 0 ? 'var(--success)' : 'var(--danger)',
-                }}>
-                  {t.changeVsPrevWeek >= 0 ? '+' : ''}{t.changeVsPrevWeek}%
-                </span>
+      {/* 요약 배너 */}
+      {status === 'ok' && trends.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
+          {[
+            {
+              icon: '↑', label: '수요 상승', count: rising.length,
+              sub: rising.length > 0 ? rising.slice(0, 2).map(t => t.title).join(', ') : '해당 없음',
+              color: 'oklch(0.40 0.14 145)', bg: 'oklch(0.93 0.06 145)', border: 'oklch(0.82 0.1 145)',
+            },
+            {
+              icon: '→', label: '보합', count: stable.length,
+              sub: '안정적 수요 유지',
+              color: 'var(--text-muted)', bg: 'var(--bg-subtle)', border: 'var(--border)',
+            },
+            {
+              icon: '↓', label: '수요 하락', count: falling.length,
+              sub: falling.length > 0 ? falling.slice(0, 2).map(t => t.title).join(', ') : '해당 없음',
+              color: 'var(--danger)', bg: 'oklch(0.97 0.04 15)', border: 'oklch(0.90 0.07 15)',
+            },
+          ].map(s => (
+            <div key={s.label} style={{ padding: '12px 14px', borderRadius: 10, background: s.bg, border: `1px solid ${s.border}` }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: s.color, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
+                {s.icon} {s.label}
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 4 }}>전주 대비</div>
-              <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 6, lineHeight: 1.4 }}>
-                {t.keywords?.slice(0, 3).join(' · ')}
+              <div style={{ fontSize: 24, fontWeight: 700, color: s.color, fontVariantNumeric: 'tabular-nums' }}>
+                {s.count}<span style={{ fontSize: 13, fontWeight: 400, marginLeft: 3 }}>개</span>
               </div>
-              {/* 미니 바 차트 */}
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 28, marginTop: 10 }}>
-                {t.data.slice(-6).map((d, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      flex: 1, borderRadius: 2,
-                      background: i === t.data.slice(-6).length - 1 ? 'var(--accent)' : 'var(--bg-sunken)',
-                      height: `${Math.max(10, (d.ratio / 100) * 100)}%`,
-                      transition: 'height 300ms',
-                    }}
-                    title={`${d.period}: ${d.ratio}`}
-                  />
-                ))}
-              </div>
+              <div style={{ fontSize: 11, color: s.color, marginTop: 3, opacity: 0.8, lineHeight: 1.4 }}>{s.sub}</div>
             </div>
           ))}
         </div>
+      )}
+
+      {/* 카테고리 목록 */}
+      {status === 'ok' && trends.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {sorted.map(t => {
+            const sig = signalInfo(t.changeVsPrevWeek);
+            return (
+              <div key={t.ourKey} style={{
+                padding: '12px 14px', borderRadius: 10,
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                display: 'flex', alignItems: 'center', gap: 14,
+              }}>
+                {/* 신호 배지 */}
+                <div style={{
+                  padding: '5px 10px', borderRadius: 7,
+                  background: sig.bg, border: `1px solid ${sig.border}`,
+                  minWidth: 52, textAlign: 'center', flexShrink: 0,
+                }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: sig.color, lineHeight: 1 }}>{sig.icon}</div>
+                  <div style={{ fontSize: 9.5, fontWeight: 700, color: sig.color, marginTop: 2, letterSpacing: '0.02em' }}>{sig.label}</div>
+                </div>
+
+                {/* 카테고리 정보 */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3, flexWrap: 'wrap' as const }}>
+                    <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)' }}>{t.title}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: sig.color }}>
+                      {t.changeVsPrevWeek >= 0 ? '+' : ''}{t.changeVsPrevWeek}%
+                    </span>
+                    <span style={{ fontSize: 10.5, color: 'var(--text-subtle)' }}>전주 대비</span>
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                    <Icon name="arrowRight" size={10} stroke={2.4} />
+                    {sig.action}
+                  </div>
+                  <div style={{ fontSize: 10.5, color: 'var(--text-subtle)' }}>
+                    {t.keywords?.slice(0, 3).join(' · ')}
+                  </div>
+                </div>
+
+                {/* 스파크라인 */}
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 28, width: 52, flexShrink: 0 }}>
+                  {t.data.slice(-7).map((d, i, arr) => (
+                    <div key={i} style={{
+                      flex: 1, borderRadius: 2,
+                      background: i === arr.length - 1 ? sig.color : 'var(--bg-sunken)',
+                      height: `${Math.max(10, (d.ratio / 100) * 100)}%`,
+                      opacity: i === arr.length - 1 ? 1 : 0.5,
+                    }} title={`${d.period}: ${d.ratio}`} />
+                  ))}
+                </div>
+
+                {/* 수치 */}
+                <div style={{ textAlign: 'right', minWidth: 38, flexShrink: 0 }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+                    {Math.round(t.latestRatio)}
+                  </div>
+                  <div style={{ fontSize: 9.5, color: 'var(--text-subtle)', marginTop: 2 }}>/ 100</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : status === 'ok' ? (
-        <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 13 }}>
+        <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 13, background: 'var(--surface)', borderRadius: 10, border: '1px dashed var(--border)' }}>
           트렌드 데이터가 없습니다.
         </div>
       ) : null}
@@ -514,10 +604,17 @@ const CONFIDENCE_STYLE: Record<string, { label: string; bg: string; color: strin
   low:  { label: '날짜 미확인', bg: 'var(--bg-subtle)', color: 'var(--text-muted)' },
 };
 
+const TAG_COLOR: Record<string, { bg: string; color: string }> = {
+  blue:   { bg: 'oklch(0.94 0.04 230)', color: 'oklch(0.42 0.12 230)' },
+  green:  { bg: 'oklch(0.94 0.05 145)', color: 'oklch(0.42 0.12 145)' },
+  orange: { bg: 'oklch(0.96 0.05 60)',  color: 'oklch(0.48 0.14 60)' },
+};
+
 function NewsDetectionPanel() {
-  const { events, status, updatedAt } = useNewsEvents();
+  const { events, insights, status, updatedAt } = useNewsEvents();
   const { add } = useCustomEvents();
   const [added, setAdded] = useState<Set<string>>(new Set());
+  const [insightTab, setInsightTab] = useState<'events' | 'trends'>('events');
 
   const handleAdd = async (ev: DetectedNewsEvent) => {
     const { toMarketingEvent } = await import('@/app/api/news-events/route');
@@ -529,75 +626,142 @@ function NewsDetectionPanel() {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.01em' }}>뉴스 감지 행사</div>
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.01em' }}>뉴스 인사이트</div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-            네이버 뉴스에서 플랫폼 행사 일정을 자동으로 감지합니다. 확인 후 캘린더에 추가하세요.
+            플랫폼 행사 일정 감지 · 소비 트렌드 기사 수집 (네이버 뉴스 자동)
           </div>
         </div>
         <div style={{ flex: 1 }} />
         <StatusBadge
           status={status}
-          label={status === 'ok' ? `${events.length}건 감지` : status === 'loading' ? '검색 중...' : status === 'no-api-key' ? 'API 키 미설정' : '오류'}
+          label={status === 'ok' ? `행사 ${events.length}건 · 트렌드 ${insights.length}건` : status === 'loading' ? '검색 중...' : status === 'no-api-key' ? 'API 키 미설정' : '오류'}
         />
       </div>
 
-      {events.length === 0 && status === 'ok' && (
-        <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 13, background: 'var(--surface)', borderRadius: 10, border: '1px dashed var(--border)' }}>
-          현재 감지된 플랫폼 행사 일정이 없습니다.
-        </div>
-      )}
+      {/* 서브 탭 */}
+      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 8, border: '1px solid var(--border)', width: 'fit-content', marginBottom: 18 }}>
+        {([
+          { id: 'events', label: '플랫폼 행사', icon: 'calendar' },
+          { id: 'trends', label: '소비 트렌드', icon: 'trending' },
+        ] as const).map(t => (
+          <button
+            key={t.id}
+            onClick={() => setInsightTab(t.id)}
+            style={{
+              padding: '5px 14px', borderRadius: 6, fontSize: 12.5, fontWeight: 500,
+              display: 'flex', alignItems: 'center', gap: 5,
+              color: insightTab === t.id ? 'var(--text)' : 'var(--text-muted)',
+              background: insightTab === t.id ? 'var(--surface)' : 'transparent',
+              boxShadow: insightTab === t.id ? 'var(--shadow-sm)' : 'none',
+              border: insightTab === t.id ? '1px solid var(--border)' : '1px solid transparent',
+            }}
+          >
+            <Icon name={t.icon} size={12} />{t.label}
+          </button>
+        ))}
+      </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {events.map(ev => {
-          const conf = CONFIDENCE_STYLE[ev.confidence];
-          const isAdded = added.has(ev.id);
-          return (
-            <div key={ev.id} style={{ padding: '14px 16px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-                    <span style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text)' }}>{ev.title}</span>
-                    <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 999, fontWeight: 600, background: conf.bg, color: conf.color }}>
-                      {conf.label}
-                    </span>
-                    <span style={{ fontSize: 11.5, color: 'var(--text-muted)', padding: '1px 6px', background: 'var(--bg-subtle)', borderRadius: 4, border: '1px solid var(--border)' }}>
-                      {PLATFORM_LABELS[ev.platform] ?? ev.platform}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 6 }}>
-                    {ev.start} ~ {ev.end}
-                  </div>
-                  <a
-                    href={ev.sourceLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: 11.5, color: 'var(--accent-text)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
-                  >
-                    <Icon name="share" size={11} />
-                    {ev.sourceTitle.slice(0, 60)}{ev.sourceTitle.length > 60 ? '…' : ''}
-                  </a>
-                  <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 4 }}>
-                    뉴스 발행: {ev.pubDate}
-                    {ev.confidence !== 'high' && (
-                      <span style={{ marginLeft: 8, color: 'oklch(0.55 0.12 75)' }}>
-                        * 날짜가 추정값입니다. 공식 공지를 확인하세요.
-                      </span>
-                    )}
+      {/* 플랫폼 행사 탭 */}
+      {insightTab === 'events' && (
+        <>
+          {events.length === 0 && status === 'ok' && (
+            <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 13, background: 'var(--surface)', borderRadius: 10, border: '1px dashed var(--border)' }}>
+              현재 감지된 플랫폼 행사 일정이 없습니다.
+            </div>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {events.map(ev => {
+              const conf = CONFIDENCE_STYLE[ev.confidence];
+              const isAdded = added.has(ev.id);
+              return (
+                <div key={ev.id} style={{ padding: '14px 16px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                        <span style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text)' }}>{ev.title}</span>
+                        <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 999, fontWeight: 600, background: conf.bg, color: conf.color }}>
+                          {conf.label}
+                        </span>
+                        <span style={{ fontSize: 11.5, color: 'var(--text-muted)', padding: '1px 6px', background: 'var(--bg-subtle)', borderRadius: 4, border: '1px solid var(--border)' }}>
+                          {PLATFORM_LABELS[ev.platform] ?? ev.platform}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 6 }}>
+                        {ev.start} ~ {ev.end}
+                      </div>
+                      <a href={ev.sourceLink} target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: 11.5, color: 'var(--accent-text)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
+                      >
+                        <Icon name="share" size={11} />
+                        {ev.sourceTitle.slice(0, 60)}{ev.sourceTitle.length > 60 ? '…' : ''}
+                      </a>
+                      <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 4 }}>
+                        뉴스 발행: {ev.pubDate}
+                        {ev.confidence !== 'high' && (
+                          <span style={{ marginLeft: 8, color: 'oklch(0.55 0.12 75)' }}>
+                            * 날짜가 추정값입니다. 공식 공지를 확인하세요.
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      className={`btn sm ${isAdded ? '' : 'primary'}`}
+                      disabled={isAdded}
+                      onClick={() => handleAdd(ev)}
+                      style={{ flexShrink: 0 }}
+                    >
+                      {isAdded ? <><Icon name="check" size={12} />추가됨</> : <><Icon name="plus" size={12} />캘린더 추가</>}
+                    </button>
                   </div>
                 </div>
-                <button
-                  className={`btn sm ${isAdded ? '' : 'primary'}`}
-                  disabled={isAdded}
-                  onClick={() => handleAdd(ev)}
-                  style={{ flexShrink: 0 }}
-                >
-                  {isAdded ? <><Icon name="check" size={12} />추가됨</> : <><Icon name="plus" size={12} />캘린더 추가</>}
-                </button>
-              </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {/* 소비 트렌드 탭 */}
+      {insightTab === 'trends' && (
+        <>
+          {insights.length === 0 && status === 'ok' && (
+            <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 13, background: 'var(--surface)', borderRadius: 10, border: '1px dashed var(--border)' }}>
+              수집된 트렌드 기사가 없습니다.
             </div>
-          );
-        })}
-      </div>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {insights.map(ins => {
+              const tc = TAG_COLOR[ins.tagColor] ?? TAG_COLOR.blue;
+              return (
+                <div key={ins.id} style={{ padding: '13px 16px', borderRadius: 10, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5, flexWrap: 'wrap' as const }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 999, background: tc.bg, color: tc.color }}>
+                          {ins.tag}
+                        </span>
+                        <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{ins.pubDate}</span>
+                      </div>
+                      <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)', marginBottom: 5, lineHeight: 1.4 }}>
+                        {ins.title}
+                      </div>
+                      {ins.summary && (
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 6 }}>
+                          {ins.summary}{ins.summary.length >= 120 ? '…' : ''}
+                        </div>
+                      )}
+                      <a href={ins.sourceLink} target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: 11.5, color: 'var(--accent-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                      >
+                        <Icon name="share" size={11} />기사 원문 보기
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {updatedAt && (
         <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 12 }}>

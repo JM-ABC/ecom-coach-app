@@ -5,6 +5,7 @@ import Icon from './Icon';
 import PromoPlanPanel from './PromoPlanPanel';
 import { PlatformInsights } from './calendar/CalendarParts';
 import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive } from '@/lib/data';
+import { useEventTrend } from '@/hooks/useEventTrend';
 import type { MarketingEvent } from '@/lib/types';
 
 const urgencyStyle = (u: string) => ({
@@ -32,6 +33,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
   const doneCount = Object.values(checked).filter(Boolean).length;
   const total = event.checklist.length;
   const pct = total ? Math.round((doneCount / total) * 100) : 0;
+  const trendData = useEventTrend(event.categories, event.start);
   const dU = daysUntil(event.start);
   const active = isActive(event);
 
@@ -105,9 +107,15 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
                   {[
-                    { label: '기회점수', value: `${event.trendScore}`, sub: '/100', color: 'var(--accent-text)' },
-                    { label: '검색량', value: event.search, color: 'var(--success)' },
-                    { label: '예상 GMV', value: event.gmv, color: 'var(--success)' },
+                    { label: '기회점수', value: `${event.trendScore}`, sub: '/100', ref: '0~100점', color: 'var(--accent-text)' },
+                    {
+                      label: '검색량 변화',
+                      value: trendData?.change ?? event.search,
+                      sub: '',
+                      ref: trendData ? trendData.basis : '추정치',
+                      color: 'var(--success)',
+                    },
+                    { label: '예상 GMV 변화', value: event.gmv, sub: '', ref: '추정치', color: 'var(--success)' },
                   ].map(m => (
                     <div key={m.label} style={{ padding: '10px 12px', borderRadius: 8, background: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>
                       <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
@@ -115,6 +123,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                         {m.value}
                         {m.sub && <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontWeight: 400 }}>{m.sub}</span>}
                       </div>
+                      <div style={{ fontSize: 10, color: 'var(--text-subtle)', marginTop: 2 }}>{m.ref}</div>
                     </div>
                   ))}
                 </div>

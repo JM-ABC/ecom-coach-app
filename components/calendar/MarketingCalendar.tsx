@@ -210,11 +210,11 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weath
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
             <Icon name="calendar" size={14} />
-            <span style={{ fontSize: 13, fontWeight: 600 }}>다음 4주</span>
-            <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{upcomingNotActive.slice(0, 5).length} events</span>
+            <span style={{ fontSize: 13, fontWeight: 600 }}>다음 2개월</span>
+            <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{upcomingNotActive.slice(0, 10).length} events</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {upcomingNotActive.slice(0, 5).map(e => (
+            {upcomingNotActive.slice(0, 10).map(e => (
               <EventCard key={e.id} event={e} onOpen={onOpen} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} />
             ))}
           </div>
@@ -235,7 +235,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, trendByKey, weath
             <span style={{ fontSize: 13, fontWeight: 600 }}>다가오는 기회</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {upcomingNotActive.slice(0, 8).map(e => (
+            {upcomingNotActive.slice(0, 12).map(e => (
               <MiniItem key={e.id} event={e} onOpen={onOpen} />
             ))}
           </div>
@@ -549,7 +549,7 @@ export default function MarketingCalendar() {
 
   const upcoming = useMemo(() =>
     filteredEvents
-      .filter(e => { const d = daysUntil(e.start); return d > 0 && d <= 45; })
+      .filter(e => { const d = daysUntil(e.start); return d > 0 && d <= 62; })
       .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()),
     [filteredEvents]);
 
