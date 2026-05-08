@@ -1,43 +1,51 @@
-# 셀러 마케팅 툴킷 (Sellerkit)
+# 맘큐 MD 플래너
 
-이커머스 셀러를 위한 마케팅 캘린더 & 실무 인사이트 툴킷입니다.  
-쿠팡·네이버·G마켓 등 주요 플랫폼 행사 일정과 시즌 이슈를 한눈에 파악하고, 액션 플랜·추천 품목을 즉시 확인할 수 있습니다.
+맘큐(하기스 중심 유아동 자사몰) MD 담당자를 위한 이커머스 마케팅 플래닝 도구입니다.  
+주요 플랫폼 행사·시즌 이슈를 한눈에 파악하고, AI 기획서·액션 플랜·실시간 트렌드 인사이트를 즉시 확인할 수 있습니다.
 
 ---
 
 ## 주요 기능
 
 ### 마케팅 캘린더
-- **포커스 뷰** — 가장 임박한 이벤트를 중심으로 이번 주·다가오는 기회 정리
+- **포커스 뷰** — 이번 주 핵심 이벤트 + 다음 2개월 주요 기회 정리
 - **월간 뷰** — 달력 형태로 전체 이벤트 조망
-- **타임라인 뷰** — 연말(12월)까지 전체 일정을 가로 스크롤로 확인, 월 이동 버튼 제공
-- **CSV 내보내기** — 필터된 이벤트 목록을 엑셀 호환 CSV로 다운로드
+- **타임라인 뷰** — 연말까지 전체 일정을 가로 스크롤로 확인
+- **카테고리 필터** — 유아용품·생활용품 등 카테고리별 필터링
 
 ### 실시간 데이터 연동
 | 소스 | 내용 | 필요 키 |
 |------|------|---------|
 | 기상청 단기예보 API | 폭염·한파·강수 등 날씨 이벤트 자동 생성 | `KMA_API_KEY` |
-| 네이버 데이터랩 | 카테고리별 검색량 트렌드 (전주 대비 변화율) | `NAVER_CLIENT_ID` / `NAVER_CLIENT_SECRET` |
-| 네이버 뉴스 검색 | 플랫폼 행사 일정 자동 감지 (쿠팡·G마켓·11번가 등) | 동일 |
+| 네이버 DataLab 쇼핑인사이트 | 카테고리별 수요 신호 (전주 대비 변화율 + MD 액션 가이드) | `NAVER_CLIENT_ID` / `NAVER_CLIENT_SECRET` |
+| 네이버 DataLab 검색어트렌드 | 이벤트별 전년 동월 대비 검색량 변화 (실시간) | 동일 |
+| 네이버 뉴스 검색 | 플랫폼 행사 감지 + 소비 트렌드 기사 수집 | 동일 |
+| Google Gemini 2.5 Pro | AI 프로모션 기획서 자동 생성 (스트리밍) | `GOOGLE_GENERATIVE_AI_API_KEY` |
+
+### 플랫폼별 인사이트
+- **맘큐 운영 가이드** — 항상 펼쳐진 피처드 카드로 우선 표시
+- **쿠팡·네이버 등** — 클릭 시 확장되는 아코디언 방식
+- **카테고리 컨텍스트** — 이벤트 카테고리에 따라 맞는 인사이트 자동 선택 (유아/생활 구분)
 
 ### 이벤트 관리 탭
-- **뉴스 감지** — 네이버 뉴스 기반으로 플랫폼 행사 자동 탐지 → 캘린더 추가
+- **뉴스 인사이트** — 플랫폼 행사 감지 / 소비 트렌드 기사 서브탭 구분
+- **카테고리 수요 신호** — 급상승·상승·보합·하락·급하락 신호 배지 + 즉시 실행 액션 가이드
+- **날씨 자동화** — 기상청 API 기반 날씨 마케팅 이벤트 자동 생성
 - **이벤트 직접 등록** — 커스텀 이벤트 생성 (localStorage 저장)
-- **날씨 자동화 / 트렌드 연동** — API 연결 상태 확인
 
-### 액션 플랜 & 추천 품목
-- 이벤트별 D-Day 체크리스트
-- 카테고리·플랫폼별 추천 품목 + 긴급도 표시
-- 실무 인사이트 (BM 관점 전략 가이드)
+### AI 프로모션 기획서
+- Gemini 2.5 Pro 기반 이벤트별 프로모션 기획서 자동 생성
+- 스트리밍 응답으로 실시간 출력
 
 ---
 
 ## 기술 스택
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 16.2.4 (App Router, Turbopack)
 - **Language**: TypeScript
 - **Styling**: CSS Variables (oklch 컬러 시스템) + 인라인 스타일
-- **배포**: Netlify (Next.js Runtime)
+- **AI**: Google Generative AI — Gemini 2.5 Pro
+- **배포**: Vercel
 - **상태 관리**: React useState / localStorage
 
 ---
@@ -52,11 +60,7 @@ npm install
 ```
 
 ### 2. 환경변수 설정
-```bash
-cp .env.local.example .env.local
-```
-
-`.env.local`에 아래 키를 입력하세요:
+`.env.local` 파일을 생성하고 아래 키를 입력하세요:
 
 ```env
 # 기상청 단기예보 API
@@ -65,9 +69,13 @@ KMA_API_KEY=your_key_here
 
 # 네이버 개발자센터 API
 # 발급: https://developers.naver.com → 애플리케이션 등록
-# 필요 권한: 데이터랩(검색어트렌드), 검색
+# 필요 권한: 데이터랩(쇼핑인사이트, 검색어트렌드), 검색(뉴스)
 NAVER_CLIENT_ID=your_client_id
 NAVER_CLIENT_SECRET=your_client_secret
+
+# Google AI Studio
+# 발급: https://aistudio.google.com/app/apikey
+GOOGLE_GENERATIVE_AI_API_KEY=your_key_here
 ```
 
 ### 3. 개발 서버 실행
@@ -78,11 +86,12 @@ npm run dev
 
 ---
 
-## Netlify 배포
+## Vercel 배포
 
-1. GitHub 레포 연결 후 자동 배포 설정
-2. **Site configuration → Environment variables** 에서 위 3개 키 등록
-3. Redeploy 실행
+1. [vercel.com](https://vercel.com) → GitHub 레포 `JM-ABC/ecom-coach-app` Import
+2. Framework: Next.js 자동 감지
+3. **Environment Variables** 에서 위 4개 키 등록
+4. Deploy 클릭
 
 ---
 
@@ -92,16 +101,18 @@ npm run dev
 날씨·뉴스·직접등록 이벤트는 런타임에 병합됩니다.
 
 ```
-allEvents = EVENTS (정적) + weatherState.events (기상청 API) + customEvents (localStorage)
+allEvents = EVENTS (정적) + weatherEvents (기상청 API) + customEvents (localStorage)
 ```
-
-**더미 데이터 없음**: 모든 공휴일·시즌 이벤트는 실제 날짜 기준. 플랫폼 행사(쿠팡·G마켓 등)는 네이버 뉴스 API로 실시간 감지.
 
 ---
 
 ## 카테고리 구조
 
-| 그룹 | 카테고리 |
-|------|---------|
-| 생활용품 | 세탁·청소·화장지·공기청정·욕실·전기용품·수납 등 |
-| 출산·유아동 | 기저귀·물티슈·분유·장난감·패션·이동·침구·안전용품 등 |
+| 그룹 | ID | 설명 |
+|------|----|------|
+| 유아용품 | `b_diaper`, `b_wipe`, `b_toy`, `b_fashion`, `b_formula`, `b_bedding`, `b_safety` | 기저귀·물티슈·완구·유아동복·분유·침구·안전용품 |
+| 생활용품 | `l_laundry`, `l_clean`, `l_hair`, `l_health`, `l_electric`, `l_air`, `l_body`, `l_tissue` | 세탁·청소·헤어·건강·냉방·공기청정·쿨링·화장지 |
+
+## 플랫폼
+
+`coupang` / `naver` / `11st` / `gmarket` / `kakao` / `wemakeprice` / `momq`
