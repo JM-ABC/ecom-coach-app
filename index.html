@@ -10,10 +10,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
         
         :root {
-            --momq-main: #f04e51;
-            --momq-sub: #ff8e91;
-            --momq-light: #fffafa;
-            --dark: #1a1a1a;
+            --momq-main: oklch(65% 0.22 20); 
+            --momq-sub: oklch(75% 0.15 20);
+            --dark: oklch(25% 0.02 0);
         }
 
         body {
@@ -26,7 +25,6 @@
             padding: 0;
         }
 
-        /* 모바일 뷰포트 높이 이슈 해결을 위한 설정 */
         .full-h {
             height: 100vh;
             height: calc(var(--vh, 1vh) * 100);
@@ -54,18 +52,11 @@
             box-shadow: 0 50px 100px -20px rgba(240, 78, 81, 0.1), 0 30px 60px -30px rgba(0, 0, 0, 0.1);
         }
 
-        .text-gradient {
-            background: linear-gradient(135deg, #f04e51, #ff8e91);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         html {
             scroll-behavior: smooth;
         }
     </style>
     <script>
-        // 모바일 주소창을 제외한 실제 뷰포트 높이 계산
         function setVh() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -104,7 +95,6 @@
                 </a>
             </div>
         </div>
-        <!-- Scroll Indicator -->
         <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50 text-white">
             <i class="fas fa-chevron-down text-xl"></i>
         </div>
@@ -211,8 +201,65 @@
         </div>
     </section>
 
+    <!-- Tech & Cost Section (비개발자 친화적으로 개편) -->
+    <section id="tech" class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Tool & Efficiency</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight">도구 및 운영 효율</h3>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b-2 border-gray-100 uppercase text-[11px] md:text-xs font-bold text-gray-400 tracking-wider">
+                            <th class="py-4 px-4 md:px-6">구성 요소</th>
+                            <th class="py-4 px-4 md:px-6">역할</th>
+                            <th class="py-4 px-4 md:px-6">비용 (예상)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-xs md:text-sm">
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                            <td class="py-6 px-4 md:px-6 font-bold text-gray-800 flex items-center gap-3">
+                                <span class="text-lg">🧠</span> Google Gemini 2.5
+                            </td>
+                            <td class="py-6 px-4 md:px-6 text-gray-500 leading-relaxed">
+                                MD 액션 플랜 수립 및 실시간 데이터 인사이트 도출 엔진
+                            </td>
+                            <td class="py-6 px-4 md:px-6 font-semibold text-[#f04e51]">~$15 / Month</td>
+                        </tr>
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                            <td class="py-6 px-4 md:px-6 font-bold text-gray-800 flex items-center gap-3">
+                                <span class="text-lg">⚡</span> Next.js 프레임워크
+                            </td>
+                            <td class="py-6 px-4 md:px-6 text-gray-500 leading-relaxed">
+                                빠른 응답 속도와 모바일 환경 최적화를 위한 시스템 기반
+                            </td>
+                            <td class="py-6 px-4 md:px-6 font-semibold text-gray-400">$0 (Open Source)</td>
+                        </tr>
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                            <td class="py-6 px-4 md:px-6 font-bold text-gray-800 flex items-center gap-3">
+                                <span class="text-lg">📦</span> Vercel Cloud
+                            </td>
+                            <td class="py-6 px-4 md:px-6 text-gray-500 leading-relaxed">
+                                별도의 서버 관리 없이 24시간 안정적인 서비스 배포/운영
+                            </td>
+                            <td class="py-6 px-4 md:px-6 font-semibold text-green-500">Free Tier</td>
+                        </tr>
+                        <tr class="bg-gray-50 font-bold">
+                            <td class="py-6 px-4 md:px-6 text-gray-800">합계</td>
+                            <td class="py-6 px-4 md:px-6"></td>
+                            <td class="py-6 px-4 md:px-6 text-[#f04e51] text-base md:text-lg">약 ₩20,000 / 월</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-8 text-center text-gray-400 text-[11px] md:text-xs">※ 데이터 사용량 및 AI API 호출 빈도에 따라 변동될 수 있습니다.</p>
+        </div>
+    </section>
+
     <!-- Roadmap -->
-    <section id="roadmap" class="py-16 md:py-24 bg-white overflow-hidden">
+    <section id="roadmap" class="py-16 md:py-24 bg-gray-50 overflow-hidden">
         <div class="max-w-4xl mx-auto px-6 relative">
             <div class="text-center mb-12 md:mb-20">
                 <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Roadmap</h2>
