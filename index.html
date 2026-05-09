@@ -1,282 +1,681 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Intro | MomQ MD Planner</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
-        
-        :root {
-            /* 맘큐 브랜드 컬러 반영: Warm Red & Coral */
-            --momq-main: #f04e51;
-            --momq-sub: #ff8e91;
-            --momq-light: #fff5f5;
-            --dark: #2d3436;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>맘큐 MD 플래너 프로젝트 소개서</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --momq-red: #ff4f72;
+      --momq-red-dark: #ef3e63;
+      --momq-soft: #fff1f4;
+      --momq-border: #f2dfe4;
+      --momq-light-red: #fff1f4;
+      --momq-pink: #fff5f7;
+      --momq-green: #dff0d8;
+      --text-primary: #2f2f2f;
+      --text-secondary: #666;
+      --line: #ebe7e9;
+      --bg: #f6f6f7;
+      --white: #fff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.06);
+      --radius: 24px;
+    }
 
-        body {
-            font-family: 'Pretendard', sans-serif;
-            background-color: #ffffff;
-            color: var(--dark);
-            word-break: keep-all;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #f04e51 0%, #ff8e91 100%);
-        }
+    body {
+      font-family: 'Outfit', 'Pretendard', sans-serif;
+      background: #f6f6f7;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
 
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(240, 78, 81, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
 
-        .step-gradient {
-            background: linear-gradient(to bottom, #f04e51, #ff8e91);
-            width: 4px;
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-        }
+    .hero {
+      background:
+        linear-gradient(135deg, #ff5a78 0%, #ff6b88 100%);
+      border-radius: 42px;
+      padding: 88px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 40px;
+      align-items: center;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
 
-        .mockup-shadow {
-            box-shadow: 0 50px 100px -20px rgba(240, 78, 81, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
-        }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-        .accent-text {
-            color: var(--momq-main);
-        }
-    </style>
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -220px;
+      right: -120px;
+      filter: blur(20px);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.14);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      font-size: 15px;
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 72px;
+      line-height: 0.95;
+      margin-bottom: 32px;
+      font-weight: 800;
+      letter-spacing: -4px;
+      color: white;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-logo,
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .momq-logo {
+      font-family: 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -5px;
+      font-size: 1em;
+      line-height: 1;
+    }
+
+    .planner-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      letter-spacing: -3px;
+      font-size: 0.92em;
+      color: white;
+    }
+
+    .hero p {
+      font-size: 22px;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 42px;
+      max-width: 760px;
+      font-weight: 500;
+      word-break: keep-all;
+      line-height: 1.45;
+      position: relative;
+      z-index: 2;
+      letter-spacing: -1px;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.5);
+      transition: all 0.35s ease;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-8px) rotate(-1deg);
+      box-shadow: 0 28px 60px rgba(227,40,50,0.15);
+    }
+
+    .hero-card img {
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-card-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 80px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      letter-spacing: -2px;
+      letter-spacing: -1px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(227,40,50,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 24px 50px rgba(255,79,114,0.12);
+      border-color: rgba(227,40,50,0.12);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--momq-light-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .card ul {
+      padding-left: 18px;
+      color: var(--text-secondary);
+    }
+
+    .card li {
+      margin-bottom: 10px;
+    }
+
+    .timeline {
+      background: var(--white);
+      border-radius: 36px;
+      padding: 48px;
+      box-shadow: var(--shadow);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-label {
+      color: var(--momq-red);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .timeline-content h4 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .timeline-content p {
+      color: var(--text-secondary);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 42px;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 18px 34px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+    }
+
+    .primary-btn {
+      background: white;
+      color: var(--momq-red-dark);
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-6px) scale(1.03);
+    }
+
+    .stack-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stack {
+      background: rgba(255,255,255,0.16);
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+
+    .stack:hover {
+      background: rgba(255,255,255,0.22);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #fff3f5 0%, #ffffff 100%);
+      border-radius: 36px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .highlight-box {
+      background: rgba(255,255,255,0.82);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      transition: all 0.35s ease;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .highlight-box:hover {
+      transform: scale(1.03);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 20px 40px rgba(255,79,114,0.10);
+    }
+
+    .highlight-box h4 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .highlight-box p {
+      color: var(--text-secondary);
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      padding: 64px 48px;
+      background: linear-gradient(135deg, #ff5a78 0%, #ff6b88 100%);
+      color: white;
+      border-radius: 42px;
+    }
+
+    .footer h2 {
+      font-size: 52px;
+      margin-bottom: 16px;
+    }
+
+    .footer p {
+      opacity: 0.92;
+      margin-bottom: 24px;
+    }
+
+    .github-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.96);
+      color: var(--momq-red-dark);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+
+    .github-btn:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 14px 30px rgba(255,255,255,0.25);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        padding: 56px 28px;
+      }
+
+      .grid,
+      .highlight {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 46px;
+        line-height: 1;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+        font-size: 18px;
+        padding: 18px 24px;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased">
+<body>
+  <div class="container">
 
-    <!-- Hero Section -->
-    <header class="relative h-screen flex items-center justify-center text-white overflow-hidden gradient-bg">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="relative z-10 text-center px-6">
-            <div class="inline-block px-4 py-1 border border-white/40 rounded-full text-sm font-semibold mb-6 bg-white/10 backdrop-blur-md">
-                Internal Project Showcase
-            </div>
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
-                MomQ MD Planner
-            </h1>
-            <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto leading-relaxed opacity-90">
-                파편화된 이커머스 데이터를 통합하고 AI로 기획의 병목을 해결하는 <br class="hidden md:block">
-                <strong>마케팅 솔루션입니다.</strong>
+    <section class="hero">
+      <div>
+        <div class="badge">Internal Project</div>
+        <h1 class="hero-logo">
+          <span class="momq-logo">momQ</span>
+          <span class="planner-text">MD Planner</span>
+        </h1>
+        <p>
+          파편화된 이커머스 데이터를 통합하고
+          AI 기반 액션 플래닝으로 MD 의사결정을 더 빠르게 연결하는
+          마케팅 솔루션입니다.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#overview" class="primary-btn">기획 배경 및 스토리</a>
+          <a href="https://github.com/JM-ABC/ecom-coach-app" target="_blank" class="secondary-btn">Repository</a>
+        </div>
+
+        <div class="stack-wrap">
+          <div class="stack">Next.js 16</div>
+          <div class="stack">TypeScript</div>
+          <div class="stack">Gemini 2.5 Pro</div>
+          <div class="stack">Vercel</div>
+        </div>
+      </div>
+
+      </section>
+
+    <section class="section" id="overview">
+      <h2 class="section-title">프로젝트 개요</h2>
+      <p class="section-subtitle">
+        실제 이커머스 MD 업무 흐름을 기반으로 기획된 AI 마케팅 플래닝 도구
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-label">BACKGROUND</div>
+          <div class="timeline-content">
+            <h4>MD 운영 효율 강화를 위한 통합 기획</h4>
+            <p>
+              시즌 행사, 플랫폼 프로모션, 날씨 변화, 소비 트렌드를
+              하나의 화면에서 빠르게 연결하고 활용할 수 있도록 설계한 프로젝트입니다.
             </p>
-            <div class="mt-10 flex flex-col md:flex-row justify-center gap-4">
-                <a href="#why" class="bg-white text-[#f04e51] px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:bg-red-50 transition">기획 배경 및 스토리</a>
-                <a href="https://github.com/JM-ABC/ecom-coach-app" target="_blank" class="bg-red-900/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg hover:bg-red-900/40 transition">
-                    <i class="fab fa-github mr-2"></i>Repository
-                </a>
-            </div>
+          </div>
         </div>
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
-            <i class="fas fa-chevron-down text-2xl"></i>
-        </div>
-    </header>
 
-    <!-- Why Section -->
-    <section id="why" class="py-24 bg-white">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Background</h2>
-                <h3 class="text-4xl font-bold">기획 의도</h3>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div class="flex gap-6">
-                        <div class="w-14 h-14 shrink-0 bg-red-50 text-[#f04e51] rounded-2xl flex items-center justify-center text-2xl shadow-sm">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">정보의 파편화</h4>
-                            <p class="text-gray-500 leading-relaxed text-sm">플랫폼별 일정과 날씨, 뉴스, 트렌드 데이터가 흩어져 있어 MD의 기획 리소스가 단순 데이터 수집에 낭비되는 문제를 해결하고자 했습니다.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="w-14 h-14 shrink-0 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
-                            <i class="fas fa-hourglass-half"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">기획의 병목 현상</h4>
-                            <p class="text-gray-500 leading-relaxed text-sm">시장 변화에 따른 프로모션 기획서를 수동으로 작성하는 방식의 한계를 극복하고 대응 속도를 높이는 데 집중했습니다.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="w-14 h-14 shrink-0 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">심리스한 연결</h4>
-                            <p class="text-gray-500 leading-relaxed text-sm">데이터 분석부터 기획안 도출까지 하나의 흐름으로 이어지는 효율적인 업무 환경 구축을 목표로 했습니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="bg-gray-50 rounded-3xl p-10 mockup-shadow border border-gray-100">
-                        <div class="text-center italic text-gray-400 mb-8 font-medium">"MD의 업무 효율을 극대화하는 도구"</div>
-                        <div class="space-y-5">
-                            <div class="h-4 w-full bg-white rounded-full shadow-sm"></div>
-                            <div class="h-4 w-5/6 bg-white rounded-full shadow-sm"></div>
-                            <div class="h-4 w-4/6 bg-white rounded-full shadow-sm"></div>
-                            <div class="h-24 w-full bg-[#f04e51]/5 rounded-2xl border border-[#f04e51]/20 border-dashed flex items-center justify-center text-[#f04e51] font-bold">
-                                업무 프로세스 자동화
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-24 bg-[#fffafa]">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Key Features</h2>
-                <h3 class="text-4xl font-bold">주요 기능</h3>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
-                    <div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center text-3xl mb-6">📅</div>
-                    <h4 class="text-2xl font-extrabold mb-4">통합 마케팅 캘린더</h4>
-                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">주요 플랫폼 이벤트를 한눈에 파악하고 전략적으로 배분할 수 있는 통합 뷰를 제공합니다.</p>
-                    <ul class="space-y-2 text-xs text-[#f04e51] font-bold">
-                        <li><i class="fas fa-check mr-1"></i> 카테고리별 스마트 필터링</li>
-                        <li><i class="fas fa-check mr-1"></i> 커스텀 이벤트 관리</li>
-                    </ul>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
-                    <div class="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center text-3xl mb-6">🛰️</div>
-                    <h4 class="text-2xl font-extrabold mb-4">외부 데이터 연동</h4>
-                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">기상청 API 및 네이버 쇼핑 트렌드를 실시간 연동하여 기획에 필요한 객관적 근거를 제공합니다.</p>
-                    <ul class="space-y-2 text-xs text-orange-600 font-bold">
-                        <li><i class="fas fa-check mr-1"></i> 날씨 마케팅 소스 제공</li>
-                        <li><i class="fas fa-check mr-1"></i> 실시간 뉴스 브리핑</li>
-                    </ul>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
-                    <div class="w-14 h-14 bg-pink-50 rounded-xl flex items-center justify-center text-3xl mb-6">🪄</div>
-                    <h4 class="text-2xl font-extrabold mb-4">AI 기획서 생성</h4>
-                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">Gemini 모델을 통해 선택한 이벤트에 최적화된 기획 초안을 즉시 생성하여 업무 속도를 높입니다.</p>
-                    <ul class="space-y-2 text-xs text-pink-600 font-bold">
-                        <li><i class="fas fa-check mr-1"></i> 맞춤형 프로모션 전략 제안</li>
-                        <li><i class="fas fa-check mr-1"></i> 실시간 텍스트 생성 기술</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tech Stack Section -->
-    <section id="tech" class="py-24 bg-white">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row gap-16 items-center">
-                <div class="md:w-1/2">
-                    <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Tech Stack</h2>
-                    <h3 class="text-4xl font-bold mb-8">기술 스택</h3>
-                    <p class="text-gray-600 mb-10 leading-relaxed text-sm">
-                        현업에서 즉시 활용 가능한 안정적인 기술 스택을 기반으로 <br>사용자 중심의 인터페이스를 구축했습니다.
-                    </p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
-                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Framework</span>
-                            <span class="text-sm font-bold">Next.js / TypeScript</span>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
-                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Styling</span>
-                            <span class="text-sm font-bold">Tailwind CSS</span>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
-                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">AI Engine</span>
-                            <span class="text-sm font-bold">Google Gemini Pro</span>
-                        </div>
-                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
-                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Deployment</span>
-                            <span class="text-sm font-bold">Vercel / GitHub</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="relative w-80 h-80">
-                        <div class="absolute inset-0 bg-red-100 rounded-full animate-pulse"></div>
-                        <div class="absolute inset-4 bg-white rounded-full flex flex-col items-center justify-center text-center p-8 shadow-inner">
-                            <i class="fas fa-code text-[#f04e51] text-4xl mb-4"></i>
-                            <h5 class="font-bold text-lg mb-2">Modern Web</h5>
-                            <p class="text-xs text-gray-400">Scalable & Fast Architecture</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap -->
-    <section id="roadmap" class="py-24 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-6 relative">
-            <div class="text-center mb-20">
-                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Status</h2>
-                <h3 class="text-4xl font-bold">프로젝트 진행 현황</h3>
-            </div>
-            
-            <div class="relative space-y-12">
-                <div class="step-gradient"></div>
-                
-                <div class="relative flex gap-10 items-center">
-                    <div class="w-10 h-10 rounded-full bg-[#f04e51] text-white flex items-center justify-center shrink-0 z-10 shadow-lg">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 flex-1 shadow-sm">
-                        <h4 class="text-lg font-bold mb-1">인사이트 허브 구축 (완료)</h4>
-                        <p class="text-gray-500 text-sm">외부 데이터 통합 및 AI 엔진 연동</p>
-                    </div>
-                </div>
-
-                <div class="relative flex gap-10 items-center">
-                    <div class="w-10 h-10 rounded-full bg-white border-4 border-[#f04e51] text-[#f04e51] flex items-center justify-center shrink-0 z-10 shadow-md">
-                        <i class="fas fa-circle text-[8px]"></i>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-[#f04e51]/30 flex-1 shadow-md">
-                        <h4 class="text-lg font-bold mb-1 text-[#f04e51]">카테고리 최적화 (진행 중)</h4>
-                        <p class="text-gray-600 text-sm">유아/생활용품 카테고리 세부 로직 고도화</p>
-                    </div>
-                </div>
-
-                <div class="relative flex gap-10 items-center opacity-40">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center shrink-0 z-10">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 flex-1">
-                        <h4 class="text-lg font-bold mb-1 text-gray-400">자동화 범위 확장 (계획)</h4>
-                        <p class="text-gray-400 text-sm">마케팅 카피 및 비주얼 가이드 자동화</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final Section -->
-    <section class="py-24 gradient-bg text-white text-center">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-4xl font-bold mb-8 italic">"Data-Driven, AI-Powered, MD-First"</h2>
-            <p class="text-xl opacity-90 leading-relaxed font-light">
-                MomQ MD 플래너는 데이터 기반의 <br class="md:hidden"> 효율적인 기획 문화를 만들어갑니다.
+        <div class="timeline-item">
+          <div class="timeline-label">GOAL</div>
+          <div class="timeline-content">
+            <h4>실시간 데이터 기반 액션 플래닝</h4>
+            <p>
+              데이터 탐색 → 인사이트 해석 → 프로모션 기획 → 실행 액션까지
+              하나의 화면에서 연결되는 업무 경험을 목표로 설계했습니다.
             </p>
+          </div>
         </div>
+
+        <div class="timeline-item">
+          <div class="timeline-label">RESULT</div>
+          <div class="timeline-content">
+            <h4>AI 기반 MD 어시스턴트 형태 구현</h4>
+            <p>
+              캘린더, 뉴스, 날씨, 검색 트렌드, 플랫폼 행사 정보를 통합하고
+              Gemini 기반 AI 기획서를 실시간 스트리밍 형태로 생성하도록 구현했습니다.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <footer class="py-12 bg-white border-t border-gray-100 text-center">
-        <p class="text-gray-400 text-xs font-medium uppercase tracking-widest">&copy; 2026 MomQ MD Planner Project Team.</p>
-    </footer>
+    <section class="section">
+      <h2 class="section-title">핵심 기능</h2>
+      <p class="section-subtitle">
+        MD 실무에서 바로 사용할 수 있도록 설계된 기능 구성
+      </p>
 
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">📅</div>
+          <h3>마케팅 캘린더</h3>
+          <ul>
+            <li>포커스 뷰 기반 핵심 일정 요약</li>
+            <li>월간 캘린더 형태 일정 확인</li>
+            <li>연말까지 타임라인 스크롤 제공</li>
+            <li>유아/생활 카테고리 필터 지원</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>실시간 데이터 연동</h3>
+          <ul>
+            <li>기상청 API 기반 날씨 이벤트 생성</li>
+            <li>네이버 쇼핑인사이트 수요 신호 분석</li>
+            <li>검색어 트렌드 실시간 반영</li>
+            <li>뉴스 기반 플랫폼 행사 탐지</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>AI 프로모션 기획</h3>
+          <ul>
+            <li>Gemini 2.5 Pro 기반 기획서 생성</li>
+            <li>스트리밍 방식 실시간 출력</li>
+            <li>이벤트 맞춤 액션 플랜 제공</li>
+            <li>카테고리별 컨텍스트 자동 반영</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="highlight">
+        <div class="highlight-box">
+          <h4>플랫폼 인사이트 구조</h4>
+          <p>
+            맘큐 운영 가이드를 기본 피처드 카드로 우선 노출하고,
+            쿠팡·네이버·11번가 등 플랫폼별 전략을 아코디언 형태로 확장할 수 있도록 설계했습니다.
+          </p>
+        </div>
+
+        <div class="highlight-box">
+          <h4>실시간 수요 신호 분석</h4>
+          <p>
+            급상승·상승·보합·하락·급하락 신호를 자동 분석하고,
+            각 상황에 맞는 MD 액션 가이드를 즉시 제안합니다.
+          </p>
+        </div>
+
+        <div class="highlight-box">
+          <h4>이벤트 자동 생성</h4>
+          <p>
+            날씨 API와 뉴스 데이터를 활용해 폭염·장마·한파·플랫폼 행사 등을 자동 이벤트화하여
+            시즌성 대응 속도를 높였습니다.
+          </p>
+        </div>
+
+        <div class="highlight-box">
+          <h4>MD 실무 중심 UX</h4>
+          <p>
+            실제 MD 업무 흐름에 맞춰 복잡한 리포트 형태가 아닌
+            빠른 탐색과 즉시 실행 중심 인터페이스로 설계했습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">기술 스택</h2>
+      <p class="section-subtitle">
+        AI와 실시간 데이터 연동 중심의 프론트엔드 아키텍처
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Frontend</h3>
+          <ul>
+            <li>Next.js 16.2.4 App Router</li>
+            <li>TypeScript 기반 구조</li>
+            <li>Turbopack 개발 환경</li>
+            <li>CSS Variables 기반 디자인 시스템</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <h3>AI & Data</h3>
+          <ul>
+            <li>Google Gemini 2.5 Pro</li>
+            <li>네이버 DataLab API</li>
+            <li>기상청 단기예보 API</li>
+            <li>뉴스 데이터 기반 이벤트 탐지</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🚀</div>
+          <h3>Deployment</h3>
+          <ul>
+            <li>Vercel 배포 환경</li>
+            <li>localStorage 상태 저장</li>
+            <li>실시간 스트리밍 응답 처리</li>
+            <li>API 기반 서버리스 구조</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer">
+      <h2 class="footer-logo">
+        <span class="momq-logo">momQ</span>
+        <span class="planner-text">MD Planner</span>
+      </h2>
+      <p>
+        이커머스 MD의 데이터 탐색과 실행을 더 빠르게 만드는 AI 기반 플래닝 프로젝트
+      </p>
+      <a class="github-btn" href="https://github.com/JM-ABC/ecom-coach-app" target="_blank">
+        GitHub Repository 보기
+      </a>
+    </section>
+
+  </div>
 </body>
 </html>
