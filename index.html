@@ -7,12 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
         
         :root {
+            /* 맘큐 브랜드 컬러 반영: Warm Red & Coral */
             --momq-main: #f04e51;
             --momq-sub: #ff8e91;
-            --dark: #1a1a1a;
+            --momq-light: #fff5f5;
+            --dark: #2d3436;
         }
 
         body {
@@ -20,7 +22,6 @@
             background-color: #ffffff;
             color: var(--dark);
             word-break: keep-all;
-            letter-spacing: -0.02em;
         }
 
         .gradient-bg {
@@ -44,6 +45,10 @@
         .mockup-shadow {
             box-shadow: 0 50px 100px -20px rgba(240, 78, 81, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
         }
+
+        .accent-text {
+            color: var(--momq-main);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -55,7 +60,7 @@
             <div class="inline-block px-4 py-1 border border-white/40 rounded-full text-sm font-semibold mb-6 bg-white/10 backdrop-blur-md">
                 Internal Project Showcase
             </div>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
                 MomQ MD Planner
             </h1>
             <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto leading-relaxed opacity-90">
@@ -74,60 +79,203 @@
         </div>
     </header>
 
-    <!-- (이전과 동일한 섹션들 생략 - Why, Features, Tech Stack, Roadmap) -->
-    <!-- 중간 섹션들은 동일하게 유지하되 디자인적 완성도를 위해 hero의 font-black 등을 적용했습니다. -->
-
-    <!-- Why Section (배경) -->
+    <!-- Why Section -->
     <section id="why" class="py-24 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-20">
                 <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Background</h2>
-                <h3 class="text-4xl font-extrabold tracking-tight">기획 의도</h3>
+                <h3 class="text-4xl font-bold">기획 의도</h3>
             </div>
+            
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
                     <div class="flex gap-6">
-                        <div class="w-14 h-14 shrink-0 bg-red-50 text-[#f04e51] rounded-2xl flex items-center justify-center text-2xl shadow-sm"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="w-14 h-14 shrink-0 bg-red-50 text-[#f04e51] rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
                         <div>
                             <h4 class="text-xl font-bold mb-2">정보의 파편화</h4>
-                            <p class="text-gray-500 leading-relaxed text-sm">플랫폼별 일정과 날씨, 뉴스, 트렌드 데이터가 흩어져 있어 MD의 기획 리소스가 낭비되는 문제를 해결하고자 했습니다.</p>
+                            <p class="text-gray-500 leading-relaxed text-sm">플랫폼별 일정과 날씨, 뉴스, 트렌드 데이터가 흩어져 있어 MD의 기획 리소스가 단순 데이터 수집에 낭비되는 문제를 해결하고자 했습니다.</p>
                         </div>
                     </div>
                     <div class="flex gap-6">
-                        <div class="w-14 h-14 shrink-0 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl shadow-sm"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="w-14 h-14 shrink-0 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
                         <div>
                             <h4 class="text-xl font-bold mb-2">기획의 병목 현상</h4>
                             <p class="text-gray-500 leading-relaxed text-sm">시장 변화에 따른 프로모션 기획서를 수동으로 작성하는 방식의 한계를 극복하고 대응 속도를 높이는 데 집중했습니다.</p>
                         </div>
                     </div>
+                    <div class="flex gap-6">
+                        <div class="w-14 h-14 shrink-0 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-2">심리스한 연결</h4>
+                            <p class="text-gray-500 leading-relaxed text-sm">데이터 분석부터 기획안 도출까지 하나의 흐름으로 이어지는 효율적인 업무 환경 구축을 목표로 했습니다.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="relative">
-                    <div class="bg-gray-50 rounded-3xl p-10 mockup-shadow border border-gray-100 text-center italic text-gray-400">"MD의 업무 효율을 극대화하는 도구"</div>
+                    <div class="bg-gray-50 rounded-3xl p-10 mockup-shadow border border-gray-100">
+                        <div class="text-center italic text-gray-400 mb-8 font-medium">"MD의 업무 효율을 극대화하는 도구"</div>
+                        <div class="space-y-5">
+                            <div class="h-4 w-full bg-white rounded-full shadow-sm"></div>
+                            <div class="h-4 w-5/6 bg-white rounded-full shadow-sm"></div>
+                            <div class="h-4 w-4/6 bg-white rounded-full shadow-sm"></div>
+                            <div class="h-24 w-full bg-[#f04e51]/5 rounded-2xl border border-[#f04e51]/20 border-dashed flex items-center justify-center text-[#f04e51] font-bold">
+                                업무 프로세스 자동화
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Roadmap Section (중략) -->
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-[#fffafa]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Key Features</h2>
+                <h3 class="text-4xl font-bold">주요 기능</h3>
+            </div>
 
-    <!-- Final Section: 수정된 부분 -->
-    <section class="py-32 gradient-bg text-white text-center">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
+                    <div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center text-3xl mb-6">📅</div>
+                    <h4 class="text-2xl font-extrabold mb-4">통합 마케팅 캘린더</h4>
+                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">주요 플랫폼 이벤트를 한눈에 파악하고 전략적으로 배분할 수 있는 통합 뷰를 제공합니다.</p>
+                    <ul class="space-y-2 text-xs text-[#f04e51] font-bold">
+                        <li><i class="fas fa-check mr-1"></i> 카테고리별 스마트 필터링</li>
+                        <li><i class="fas fa-check mr-1"></i> 커스텀 이벤트 관리</li>
+                    </ul>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
+                    <div class="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center text-3xl mb-6">🛰️</div>
+                    <h4 class="text-2xl font-extrabold mb-4">외부 데이터 연동</h4>
+                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">기상청 API 및 네이버 쇼핑 트렌드를 실시간 연동하여 기획에 필요한 객관적 근거를 제공합니다.</p>
+                    <ul class="space-y-2 text-xs text-orange-600 font-bold">
+                        <li><i class="fas fa-check mr-1"></i> 날씨 마케팅 소스 제공</li>
+                        <li><i class="fas fa-check mr-1"></i> 실시간 뉴스 브리핑</li>
+                    </ul>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-10 rounded-3xl border border-red-50 card-hover transition-all duration-300">
+                    <div class="w-14 h-14 bg-pink-50 rounded-xl flex items-center justify-center text-3xl mb-6">🪄</div>
+                    <h4 class="text-2xl font-extrabold mb-4">AI 기획서 생성</h4>
+                    <p class="text-gray-500 mb-6 text-sm leading-relaxed">Gemini 모델을 통해 선택한 이벤트에 최적화된 기획 초안을 즉시 생성하여 업무 속도를 높입니다.</p>
+                    <ul class="space-y-2 text-xs text-pink-600 font-bold">
+                        <li><i class="fas fa-check mr-1"></i> 맞춤형 프로모션 전략 제안</li>
+                        <li><i class="fas fa-check mr-1"></i> 실시간 텍스트 생성 기술</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-16 items-center">
+                <div class="md:w-1/2">
+                    <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Tech Stack</h2>
+                    <h3 class="text-4xl font-bold mb-8">기술 스택</h3>
+                    <p class="text-gray-600 mb-10 leading-relaxed text-sm">
+                        현업에서 즉시 활용 가능한 안정적인 기술 스택을 기반으로 <br>사용자 중심의 인터페이스를 구축했습니다.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Framework</span>
+                            <span class="text-sm font-bold">Next.js / TypeScript</span>
+                        </div>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Styling</span>
+                            <span class="text-sm font-bold">Tailwind CSS</span>
+                        </div>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">AI Engine</span>
+                            <span class="text-sm font-bold">Google Gemini Pro</span>
+                        </div>
+                        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                            <span class="block text-[#f04e51] font-bold mb-1 text-xs">Deployment</span>
+                            <span class="text-sm font-bold">Vercel / GitHub</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-80 h-80">
+                        <div class="absolute inset-0 bg-red-100 rounded-full animate-pulse"></div>
+                        <div class="absolute inset-4 bg-white rounded-full flex flex-col items-center justify-center text-center p-8 shadow-inner">
+                            <i class="fas fa-code text-[#f04e51] text-4xl mb-4"></i>
+                            <h5 class="font-bold text-lg mb-2">Modern Web</h5>
+                            <p class="text-xs text-gray-400">Scalable & Fast Architecture</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" class="py-24 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-6 relative">
+            <div class="text-center mb-20">
+                <h2 class="text-[#f04e51] font-bold tracking-widest uppercase text-sm mb-3">Status</h2>
+                <h3 class="text-4xl font-bold">프로젝트 진행 현황</h3>
+            </div>
+            
+            <div class="relative space-y-12">
+                <div class="step-gradient"></div>
+                
+                <div class="relative flex gap-10 items-center">
+                    <div class="w-10 h-10 rounded-full bg-[#f04e51] text-white flex items-center justify-center shrink-0 z-10 shadow-lg">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 flex-1 shadow-sm">
+                        <h4 class="text-lg font-bold mb-1">인사이트 허브 구축 (완료)</h4>
+                        <p class="text-gray-500 text-sm">외부 데이터 통합 및 AI 엔진 연동</p>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-10 items-center">
+                    <div class="w-10 h-10 rounded-full bg-white border-4 border-[#f04e51] text-[#f04e51] flex items-center justify-center shrink-0 z-10 shadow-md">
+                        <i class="fas fa-circle text-[8px]"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-[#f04e51]/30 flex-1 shadow-md">
+                        <h4 class="text-lg font-bold mb-1 text-[#f04e51]">카테고리 최적화 (진행 중)</h4>
+                        <p class="text-gray-600 text-sm">유아/생활용품 카테고리 세부 로직 고도화</p>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-10 items-center opacity-40">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center shrink-0 z-10">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 flex-1">
+                        <h4 class="text-lg font-bold mb-1 text-gray-400">자동화 범위 확장 (계획)</h4>
+                        <p class="text-gray-400 text-sm">마케팅 카피 및 비주얼 가이드 자동화</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Section -->
+    <section class="py-24 gradient-bg text-white text-center">
         <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-4xl md:text-6xl font-black mb-10 tracking-tighter uppercase leading-tight">
-                Data-Driven.<br class="md:hidden"> 
-                AI-Powered.<br class="md:hidden"> 
-                MD-First.
-            </h2>
-            <div class="w-16 h-1 bg-white/30 mx-auto mb-10"></div>
-            <p class="text-xl md:text-2xl opacity-90 leading-relaxed font-medium">
-                MomQ MD 플래너는 데이터 기반의<br> 
-                효율적인 기획 문화를 만들어갑니다.
+            <h2 class="text-4xl font-bold mb-8 italic">"Data-Driven, AI-Powered, MD-First"</h2>
+            <p class="text-xl opacity-90 leading-relaxed font-light">
+                MomQ MD 플래너는 데이터 기반의 <br class="md:hidden"> 효율적인 기획 문화를 만들어갑니다.
             </p>
         </div>
     </section>
 
     <footer class="py-12 bg-white border-t border-gray-100 text-center">
-        <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">&copy; 2026 MomQ MD Planner Project Team.</p>
+        <p class="text-gray-400 text-xs font-medium uppercase tracking-widest">&copy; 2026 MomQ MD Planner Project Team.</p>
     </footer>
 
 </body>
