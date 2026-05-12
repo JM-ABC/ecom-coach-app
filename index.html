@@ -89,6 +89,8 @@
   .ai-out-item { font-size: 12px; color: var(--text-sub); padding: 3px 0; border-bottom: 1px solid var(--border); }
   .ai-out-item:last-child { border-bottom: none; }
   @media (max-width: 640px) { .ai-flow { flex-direction: column; gap: 10px; } .ai-arrow { transform: rotate(90deg); height: 28px; width: auto; } .ai-output { grid-template-columns: 1fr; } }
+  .ai-inputs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  @media (max-width: 640px) { .ai-inputs-grid { grid-template-columns: repeat(2, 1fr); } .ai-hero { padding: 24px 20px; } }
 
   /* ── ROADMAP ── */
   .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 32px; }
@@ -326,7 +328,7 @@
 
     <div class="ai-hero">
       <!-- 입력 소스 -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+      <div class="ai-inputs-grid">
         <div class="ai-step">
           <div style="font-size:18px;margin-bottom:6px;">📰</div>
           <h4>경쟁사 행사</h4>
