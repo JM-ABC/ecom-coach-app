@@ -338,7 +338,12 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, filter, 
           <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em', marginBottom: 6 }}>
             {event.title}
           </div>
-          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: event.mdBrief ? 8 : 12 }}>
+          <div style={{
+            fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55,
+            marginBottom: event.mdBrief ? 8 : 12,
+            display: '-webkit-box', WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
+          }}>
             {event.summary}
           </div>
           {event.mdBrief && (
