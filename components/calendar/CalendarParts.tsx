@@ -90,6 +90,29 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                   맘큐 전략 가이드 준비 중
                 </div>
               )}
+              {event.counterStrategy && (
+                <div style={{
+                  marginTop: 8,
+                  padding: '9px 11px',
+                  borderRadius: 7,
+                  background: 'oklch(0.96 0.025 15)',
+                  border: '1px solid oklch(0.88 0.08 15)',
+                }}>
+                  <div style={{
+                    fontSize: 10.5,
+                    fontWeight: 700,
+                    color: 'var(--accent-text)',
+                    textTransform: 'uppercase' as const,
+                    letterSpacing: '0.05em',
+                    marginBottom: 4,
+                  }}>
+                    ⚡ MomQ 대응 전략
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.55 }}>
+                    {event.counterStrategy}
+                  </div>
+                </div>
+              )}
             </div>
           );
         }
@@ -170,7 +193,7 @@ interface EventHeroProps {
   trendHint?: TrendHint;
 }
 
-export function EventHero({ event, onOpen, onOpenPromoPlan, trendHint }: EventHeroProps) {
+export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPromoPlan, trendHint }: EventHeroProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -261,7 +284,7 @@ export function EventHero({ event, onOpen, onOpenPromoPlan, trendHint }: EventHe
       </div>
     </div>
   );
-}
+});
 
 // ---- EventCard ----
 interface EventCardProps {
@@ -271,7 +294,7 @@ interface EventCardProps {
   trendHint?: TrendHint;
 }
 
-export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) {
+export const EventCard = React.memo(function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -423,7 +446,7 @@ export function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) 
       </div>
     </div>
   );
-}
+});
 
 // ---- MiniItem ----
 interface MiniItemProps {
@@ -431,7 +454,7 @@ interface MiniItemProps {
   onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
 }
 
-export function MiniItem({ event, onOpen }: MiniItemProps) {
+export const MiniItem = React.memo(function MiniItem({ event, onOpen }: MiniItemProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -476,4 +499,4 @@ export function MiniItem({ event, onOpen }: MiniItemProps) {
       </div>
     </div>
   );
-}
+});
