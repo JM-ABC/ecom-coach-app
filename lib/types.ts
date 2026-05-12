@@ -37,6 +37,7 @@ export interface MarketingEvent {
   pro: string;
   source?: EventSource;
   counterStrategy?: string;
+  sourceLink?: string;
 }
 
 export interface Category {

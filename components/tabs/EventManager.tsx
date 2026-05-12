@@ -236,7 +236,7 @@ function TrendPanel() {
 
 // ── 날씨 상태 패널 ─────────────────────────────────────────────
 function WeatherPanel() {
-  const { events, status, updatedAt } = useWeatherEvents();
+  const { events, status, updatedAt, error } = useWeatherEvents();
 
   return (
     <div>
@@ -266,6 +266,19 @@ function WeatherPanel() {
           <div style={{ fontSize: 12, color: 'oklch(0.55 0.12 75)' }}>
             공공데이터포털(data.go.kr)에서 "기상청_단기예보" API 키를 발급받아 .env.local에 추가하세요.
           </div>
+        </div>
+      )}
+
+      {status === 'error' && (
+        <div style={{ padding: 16, borderRadius: 10, background: 'var(--danger-bg)', border: '1px solid oklch(0.88 0.08 15)', marginBottom: 16 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--danger)', marginBottom: 4 }}>
+            날씨 API 호출 실패
+          </div>
+          {error && (
+            <div style={{ fontSize: 11.5, color: 'var(--danger)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' as const }}>
+              {error}
+            </div>
+          )}
         </div>
       )}
 

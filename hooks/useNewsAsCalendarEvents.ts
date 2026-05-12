@@ -40,6 +40,7 @@ function toCalendarEvent(ev: DetectedNewsEvent): MarketingEvent {
     checklist: [],
     pro: `출처: ${ev.sourceTitle}`,
     source: 'news',
+    sourceLink: ev.sourceLink,
     counterStrategy: isCompetitor
       ? (COUNTER_STRATEGIES[ev.platform] ?? `${ev.platform} 행사 기간 → 맘큐 단독 혜택으로 차별화 대응`)
       : undefined,

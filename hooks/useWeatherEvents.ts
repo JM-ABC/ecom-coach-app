@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { MarketingEvent } from '@/lib/types';
 
-export type WeatherStatus = 'loading' | 'ok' | 'no-api-key' | 'error';
+export type WeatherStatus = 'loading' | 'ok' | 'empty' | 'no-api-key' | 'error';
 
 export interface WeatherState {
   events: MarketingEvent[];

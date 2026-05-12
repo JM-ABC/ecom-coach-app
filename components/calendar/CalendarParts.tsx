@@ -316,6 +316,48 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, filter, 
     } : {}),
   };
 
+  if (event.source === 'news') {
+    return (
+      <div style={cardStyle} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+        <div style={{ padding: '14px 16px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+            <span className={`chip ${typeChip(event.type)}`}>
+              <span className="dot" />
+              플랫폼 행사 현황
+            </span>
+            <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
+              {fmtDate(event.start)}{event.end !== event.start && ` – ${fmtDate(event.end)}`}
+            </span>
+            {active && (
+              <span style={{
+                marginLeft: 'auto', fontSize: 9.5, fontWeight: 700,
+                color: 'var(--danger)', letterSpacing: '0.06em',
+              }}>LIVE</span>
+            )}
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em', marginBottom: 6 }}>
+            {event.title}
+          </div>
+          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: 12 }}>
+            {event.summary}
+          </div>
+          {event.sourceLink && (
+            <a
+              href={event.sourceLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn sm"
+              style={{ textDecoration: 'none' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              기사 원문 보기 <Icon name="arrowRight" size={11} />
+            </a>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={cardStyle} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => onOpen(event)}>
       <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'flex-start', gap: 12 }}>

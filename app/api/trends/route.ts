@@ -58,7 +58,7 @@ export async function GET() {
   try {
     const endDate = new Date();
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 28);
+    startDate.setDate(startDate.getDate() - 35); // 5주치 — 마지막 주는 미완성이므로 여유분 확보
 
     const headers = {
       'Content-Type': 'application/json',
@@ -93,8 +93,9 @@ export async function GET() {
         (result: { title: string; data: TrendDataPoint[] }, i: number) => {
           const meta = KEYWORD_GROUPS[batchIdx][i];
           const data: TrendDataPoint[] = result.data ?? [];
-          const latest = data[data.length - 1]?.ratio ?? 0;
-          const prev = data[data.length - 2]?.ratio ?? latest;
+          // data[-1]은 현재 진행 중인 주(미완성) → 직전 완성 주 2개를 비교
+          const latest = data[data.length - 2]?.ratio ?? data[data.length - 1]?.ratio ?? 0;
+          const prev = data[data.length - 3]?.ratio ?? latest;
           const changeVsPrevWeek = prev > 0 ? Math.round(((latest - prev) / prev) * 100) : 0;
           return {
             title: result.title,

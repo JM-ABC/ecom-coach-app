@@ -1,6 +1,6 @@
 'use client';
 
-import React, { CSSProperties, useState, useEffect, useRef } from 'react';
+import React, { CSSProperties } from 'react';
 import Icon from './Icon';
 import type { TabId } from '@/lib/types';
 
@@ -43,76 +43,6 @@ const s: Record<string, CSSProperties> = {
   },
 };
 
-const searchItems = [
-  { id: 'calendar' as TabId, label: '마케팅 캘린더', icon: 'calendar', group: '도구' },
-  { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud', group: '도구' },
-];
-
-function SearchModal({ onClose, onTabChange }: { onClose: () => void; onTabChange: (tab: TabId) => void }) {
-  const [query, setQuery] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [onClose]);
-
-  const filtered = searchItems.filter(item => item.label.includes(query));
-
-  return (
-    <div
-      style={{
-        position: 'fixed', inset: 0, zIndex: 9999,
-        background: 'rgba(0,0,0,0.4)', display: 'flex',
-        alignItems: 'flex-start', justifyContent: 'center',
-        paddingTop: 120,
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          background: 'var(--surface)', borderRadius: 12,
-          border: '1px solid var(--border)', width: 480,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.15)', overflow: 'hidden',
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
-          <Icon name="search" size={15} />
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="검색..."
-            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 14, color: 'var(--text)' }}
-          />
-          <span className="kbd" style={{ fontSize: 10 }}>ESC</span>
-        </div>
-        <div style={{ padding: '8px 0' }}>
-          {filtered.length === 0 ? (
-            <div style={{ padding: 16, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)' }}>
-              결과 없음
-            </div>
-          ) : filtered.map(item => (
-            <div
-              key={item.id}
-              onClick={() => { onTabChange(item.id); onClose(); }}
-              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-subtle)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-            >
-              <Icon name={item.icon} size={14} />
-              <span>{item.label}</span>
-              <span style={{ fontSize: 11, color: 'var(--text-subtle)', marginLeft: 'auto' }}>{item.group}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 interface SidebarProps {
   activeTab: TabId;
@@ -121,10 +51,10 @@ interface SidebarProps {
 
 const tabs = [
   { id: 'calendar' as TabId, label: '마케팅 캘린더', icon: 'calendar' },
+  { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud' },
   { id: 'product-name' as TabId, label: '상품명 최적화', icon: 'search', disabled: true },
   { id: 'copy' as TabId, label: '카피 생성', icon: 'pen', disabled: true },
   { id: 'detail-page' as TabId, label: '상세페이지', icon: 'layout', disabled: true },
-  { id: 'event-manager' as TabId, label: '이벤트 관리', icon: 'cloud' },
 ];
 
 const tools = [
@@ -133,22 +63,8 @@ const tools = [
 ];
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const [searchOpen, setSearchOpen] = useState(false);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setSearchOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
-
   return (
     <>
-      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} onTabChange={onTabChange} />}
       <aside style={s.sidebar} className="sidebar-desktop">
         <div style={s.brand}>
           <div style={s.brandMark}>
@@ -164,19 +80,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           <div style={{ flex: 1 }} />
           <button style={{ ...s.navItem, padding: 4, marginBottom: 0, color: 'var(--text-subtle)' }}>
             <Icon name="chevDown" size={14} />
-          </button>
-        </div>
-
-        <div style={{ padding: '0 8px', marginBottom: 6 }}>
-          <button
-            className="btn sm"
-            onClick={() => setSearchOpen(true)}
-            style={{ width: '100%', justifyContent: 'flex-start', color: 'var(--text-subtle)', gap: 6 }}
-          >
-            <Icon name="search" size={13} />
-            <span>검색</span>
-            <span style={{ flex: 1 }} />
-            <span className="kbd">⌘K</span>
           </button>
         </div>
 

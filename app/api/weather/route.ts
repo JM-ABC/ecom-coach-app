@@ -11,18 +11,26 @@ const NY = 127;
 function getBaseDateTime(): { baseDate: string; baseTime: string } {
   const kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
   const h = kst.getUTCHours();
-  const baseDate = [
-    kst.getUTCFullYear(),
-    String(kst.getUTCMonth() + 1).padStart(2, '0'),
-    String(kst.getUTCDate()).padStart(2, '0'),
-  ].join('');
 
   // 발표 시각: 02, 05, 08, 11, 14, 17, 20, 23시 (1시간 후 제공)
   const slots = [2, 5, 8, 11, 14, 17, 20, 23];
-  let baseHour = 23;
+  let baseHour = -1;
   for (const t of slots) {
     if (h - 1 >= t) baseHour = t;
   }
+
+  // KST 03:00 이전(baseHour=-1)이면 전날 23:00 슬롯 사용
+  const target = baseHour === -1
+    ? new Date(kst.getTime() - 24 * 60 * 60 * 1000)
+    : kst;
+  if (baseHour === -1) baseHour = 23;
+
+  const baseDate = [
+    target.getUTCFullYear(),
+    String(target.getUTCMonth() + 1).padStart(2, '0'),
+    String(target.getUTCDate()).padStart(2, '0'),
+  ].join('');
+
   return { baseDate, baseTime: String(baseHour).padStart(2, '0') + '00' };
 }
 
@@ -214,7 +222,16 @@ export async function GET() {
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const json = await res.json();
+    const text = await res.text();
+
+    // data.go.kr 인증 오류 시 JSON 대신 XML 반환 — 파싱 전 체크
+    if (text.trimStart().startsWith('<')) {
+      const code = text.match(/<returnReasonCode>(\w+)<\/returnReasonCode>/)?.[1] ?? 'UNKNOWN';
+      const msg  = text.match(/<returnAuthMsg>([^<]+)<\/returnAuthMsg>/)?.[1] ?? 'XML 오류 응답';
+      throw new Error(`KMA API 인증 오류 [${code}]: ${msg} — KMA_API_KEY를 확인하세요`);
+    }
+
+    const json = JSON.parse(text);
     const resultCode = json?.response?.header?.resultCode;
     const resultMsg = json?.response?.header?.resultMsg;
 
