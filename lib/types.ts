@@ -1,7 +1,7 @@
 export type EventType = 'holiday' | 'season' | 'platform' | 'promo' | 'trend' | 'weather';
 export type UrgencyLevel = 'high' | 'mid' | 'low';
 export type TabId = 'calendar' | 'product-name' | 'copy' | 'detail-page' | 'event-manager';
-export type EventSource = 'static' | 'weather-api' | 'naver-trend' | 'custom';
+export type EventSource = 'static' | 'weather-api' | 'naver-trend' | 'custom' | 'news';
 export type ViewMode = 'focus' | 'grid' | 'timeline';
 
 export interface Product {
@@ -36,6 +36,7 @@ export interface MarketingEvent {
   checklist: ChecklistItem[];
   pro: string;
   source?: EventSource;
+  counterStrategy?: string;
 }
 
 export interface Category {
