@@ -38,6 +38,7 @@ export interface MarketingEvent {
   source?: EventSource;
   counterStrategy?: string;
   sourceLink?: string;
+  mdBrief?: { items: string; concept: string; insight: string };
 }
 
 export interface Category {

@@ -338,9 +338,21 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, filter, 
           <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em', marginBottom: 6 }}>
             {event.title}
           </div>
-          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: 12 }}>
+          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: event.mdBrief ? 8 : 12 }}>
             {event.summary}
           </div>
+          {event.mdBrief && (
+            <div style={{
+              display: 'flex', flexWrap: 'wrap' as const, gap: '4px 10px',
+              marginBottom: 12, fontSize: 11.5, color: 'var(--text-subtle)', lineHeight: 1.4,
+            }}>
+              <span><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>품목</span> {event.mdBrief.items}</span>
+              <span style={{ color: 'var(--border-strong)' }}>·</span>
+              <span><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>컨셉</span> {event.mdBrief.concept}</span>
+              <span style={{ color: 'var(--border-strong)' }}>·</span>
+              <span><span style={{ fontWeight: 600, color: 'var(--accent-text)' }}>MD</span> {event.mdBrief.insight}</span>
+            </div>
+          )}
           {event.sourceLink && (
             <a
               href={event.sourceLink}
