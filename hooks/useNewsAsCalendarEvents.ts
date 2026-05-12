@@ -25,7 +25,7 @@ function isBlocked(ev: DetectedNewsEvent): boolean {
 function toCalendarEvent(ev: DetectedNewsEvent): MarketingEvent {
   const isCompetitor = ev.platform !== 'momq';
   return {
-    id: `news-${ev.id}`,
+    id: ev.id,
     title: ev.title,
     type: 'platform',
     start: ev.start,

@@ -535,12 +535,18 @@ export default function MarketingCalendar() {
   const newsEvents = useNewsAsCalendarEvents();
   const { byKey: trendByKey } = useTrendData();
 
-  const allEvents = useMemo(() => [
-    ...EVENTS,
-    ...weatherState.events,
-    ...customEvents,
-    ...newsEvents,
-  ], [weatherState.events, customEvents, newsEvents]);
+  const allEvents = useMemo(() => {
+    const confirmedNewsIds = new Set(
+      customEvents.filter(e => e.id.startsWith('custom-news-')).map(e => e.id.slice('custom-news-'.length))
+    );
+    const dedupedNews = newsEvents.filter(e => !confirmedNewsIds.has(e.id));
+    return [
+      ...EVENTS,
+      ...weatherState.events,
+      ...customEvents,
+      ...dedupedNews,
+    ];
+  }, [weatherState.events, customEvents, newsEvents]);
 
   const currentMonth = TODAY.getMonth() + monthOffset;
   const currentYear = TODAY.getFullYear() + Math.floor(currentMonth / 12);
