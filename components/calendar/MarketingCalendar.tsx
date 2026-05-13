@@ -176,7 +176,7 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
 }
 
 // ---- FocusView ----
-function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, trendByKey, weatherEvents }: {
+function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, trendByKey, weatherEvents, heroOverlaps }: {
   hero: MarketingEvent | undefined;
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
@@ -185,6 +185,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendByKey: Record<string, CategoryTrend>;
   weatherEvents: MarketingEvent[];
+  heroOverlaps: MarketingEvent[];
 }) {
   const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id);
   const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id);
@@ -657,6 +658,7 @@ export default function MarketingCalendar() {
           hero={hero} thisWeek={thisWeek} upcoming={upcoming}
           filter={category} onOpen={openPanel} onOpenPromoPlan={setPromoPlanEvent}
           trendByKey={trendByKey} weatherEvents={weatherState.events}
+          heroOverlaps={heroOverlaps}
         />
       )}
       {view === 'grid' && (
