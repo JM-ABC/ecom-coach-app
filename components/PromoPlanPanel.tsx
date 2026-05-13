@@ -140,7 +140,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
       />
       <div style={{
         position: 'fixed', top: 0, right: 0, bottom: 0,
-        width: 620,
+        width: 620, maxWidth: '100vw',
         background: 'var(--surface)',
         borderLeft: '1px solid var(--border)',
         boxShadow: 'var(--shadow-lg)',

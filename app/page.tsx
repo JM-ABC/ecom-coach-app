@@ -12,10 +12,10 @@ import type { TabId } from '@/lib/types';
 
 const mobileTabs: { id: TabId; label: string; icon: string }[] = [
   { id: 'calendar', label: '캘린더', icon: 'calendar' },
+  { id: 'event-manager', label: '이벤트', icon: 'cloud' },
   { id: 'product-name', label: '상품명', icon: 'search' },
   { id: 'copy', label: '카피', icon: 'pen' },
   { id: 'detail-page', label: '상세', icon: 'layout' },
-  { id: 'event-manager', label: '이벤트', icon: 'cloud' },
 ];
 
 export default function Home() {
