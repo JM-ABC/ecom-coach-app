@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Icon from '@/components/Icon';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
 import { useTrendData } from '@/hooks/useTrendData';
+import { useAutoTrendEvents } from '@/hooks/useAutoTrendEvents';
 import { useWeatherEvents } from '@/hooks/useWeatherEvents';
 import { useNewsEvents } from '@/hooks/useNewsEvents';
 import type { DetectedNewsEvent } from '@/hooks/useNewsEvents';
@@ -87,6 +88,7 @@ function signalInfo(change: number): { label: string; icon: string; color: strin
 // ── 트렌드 패널 ───────────────────────────────────────────────
 function TrendPanel() {
   const { trends, status, updatedAt } = useTrendData();
+  const { events: autoEvents } = useAutoTrendEvents();
 
   const rising  = trends.filter(t => t.changeVsPrevWeek >= 8);
   const falling = trends.filter(t => t.changeVsPrevWeek <= -8);
@@ -228,6 +230,39 @@ function TrendPanel() {
       {updatedAt && (
         <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 12 }}>
           마지막 업데이트: {new Date(updatedAt).toLocaleString('ko-KR')}
+        </div>
+      )}
+
+      {autoEvents.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <Icon name="sparkles" size={13} />
+            <div style={{ fontSize: 13.5, fontWeight: 700, letterSpacing: '-0.01em' }}>자동 생성된 트렌드 이벤트</div>
+            <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 4, background: 'oklch(0.93 0.06 280)', color: 'oklch(0.45 0.18 280)', fontWeight: 600 }}>
+              {autoEvents.length}건
+            </span>
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
+            전주 대비 +{20}% 이상 급등 카테고리에서 자동 생성 — 캘린더에 즉시 반영됩니다
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {autoEvents.map(ev => (
+              <div key={ev.id} style={{
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '10px 14px', borderRadius: 10,
+                background: 'var(--surface)', border: '1px solid var(--border)',
+              }}>
+                <span style={{ width: 10, height: 10, borderRadius: '50%', background: catColor(ev.type), flexShrink: 0 }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{ev.title}</div>
+                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 2 }}>{ev.start} ~ {ev.end}</div>
+                </div>
+                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'oklch(0.93 0.06 280)', color: 'oklch(0.45 0.18 280)', flexShrink: 0 }}>
+                  자동 생성
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

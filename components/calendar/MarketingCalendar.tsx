@@ -13,6 +13,7 @@ import type { MarketingEvent, ViewMode } from '@/lib/types';
 import { useWeatherEvents } from '@/hooks/useWeatherEvents';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
 import { useTrendData } from '@/hooks/useTrendData';
+import { useAutoTrendEvents } from '@/hooks/useAutoTrendEvents';
 import { useNewsAsCalendarEvents } from '@/hooks/useNewsAsCalendarEvents';
 import type { TrendHint } from './CalendarParts';
 import type { CategoryTrend } from '@/app/api/trends/route';
@@ -534,6 +535,7 @@ export default function MarketingCalendar() {
   const { events: customEvents } = useCustomEvents();
   const newsEvents = useNewsAsCalendarEvents();
   const { byKey: trendByKey } = useTrendData();
+  const { events: autoTrendEvents } = useAutoTrendEvents();
 
   const allEvents = useMemo(() => {
     const confirmedNewsIds = new Set(
@@ -543,10 +545,11 @@ export default function MarketingCalendar() {
     return [
       ...EVENTS,
       ...weatherState.events,
+      ...autoTrendEvents,
       ...customEvents,
       ...dedupedNews,
     ];
-  }, [weatherState.events, customEvents, newsEvents]);
+  }, [weatherState.events, autoTrendEvents, customEvents, newsEvents]);
 
   const currentMonth = TODAY.getMonth() + monthOffset;
   const currentYear = TODAY.getFullYear() + Math.floor(currentMonth / 12);
