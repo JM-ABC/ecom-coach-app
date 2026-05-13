@@ -191,9 +191,10 @@ interface EventHeroProps {
   onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendHint?: TrendHint;
+  overlappingEvents?: MarketingEvent[];
 }
 
-export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPromoPlan, trendHint }: EventHeroProps) {
+export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPromoPlan, trendHint, overlappingEvents }: EventHeroProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -235,7 +236,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             </span>
           )}
         </div>
-        <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 14 }}>
+        <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: overlappingEvents && overlappingEvents.length > 0 ? 8 : 14 }}>
           {fmtDateFull(event.start)}
           {event.end !== event.start && ` — ${fmtDateFull(event.end)}`}
           {' · '}
@@ -243,6 +244,28 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             {typeLabel(event.type)}
           </span>
         </div>
+        {overlappingEvents && overlappingEvents.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 12, flexWrap: 'wrap' as const }}>
+            <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', flexShrink: 0, whiteSpace: 'nowrap' as const }}>
+              동시 진행
+            </span>
+            {overlappingEvents.map(e => (
+              <button
+                key={e.id}
+                onClick={(ev) => { ev.stopPropagation(); onOpen(e); }}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  padding: '3px 9px', borderRadius: 999, fontSize: 11.5, fontWeight: 500,
+                  background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                  color: 'var(--text-muted)', cursor: 'pointer',
+                }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: catColor(e.type), flexShrink: 0 }} />
+                {e.title}
+              </button>
+            ))}
+          </div>
+        )}
         <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.55, marginBottom: 14 }}>
           {event.summary}
         </div>

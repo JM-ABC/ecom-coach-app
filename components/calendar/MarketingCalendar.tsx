@@ -192,7 +192,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   return (
     <div className="focus-grid" style={{ gap: 16 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {hero && <EventHero event={hero} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} trendHint={getEventTrendHint(hero, trendByKey)} />}
+        {hero && <EventHero event={hero} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} trendHint={getEventTrendHint(hero, trendByKey)} overlappingEvents={heroOverlaps} />}
 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
@@ -569,6 +569,16 @@ export default function MarketingCalendar() {
     [filteredEvents]);
 
   const hero = activeEvents.find(e => e.trendScore >= 80) || activeEvents[0] || upcoming[0];
+
+  const heroOverlaps = useMemo(() => {
+    if (!hero) return [];
+    return allEvents.filter(e =>
+      e.type === 'platform' &&
+      e.id !== hero.id &&
+      e.start <= hero.end &&
+      e.end >= hero.start
+    );
+  }, [hero, allEvents]);
 
   const thisWeek = useMemo(() =>
     filteredEvents.filter(e => {
