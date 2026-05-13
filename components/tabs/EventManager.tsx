@@ -548,7 +548,7 @@ function CustomEventList() {
         </div>
         <div style={{ flex: 1 }} />
         {!showForm && !editing && (
-          <button className="btn primary sm" onClick={() => setShowForm(true)}>
+          <button className="btn primary sm" style={{ flexShrink: 0, whiteSpace: 'nowrap' }} onClick={() => setShowForm(true)}>
             <Icon name="plus" size={13} />이벤트 추가
           </button>
         )}

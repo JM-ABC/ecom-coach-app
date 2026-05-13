@@ -50,10 +50,10 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
         onClick={onClose}
       />
       <div className="detail-panel" style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0, width: 540,
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: 540, maxWidth: '100vw',
         background: 'var(--surface)', borderLeft: '1px solid var(--border)',
         boxShadow: 'var(--shadow-lg)', zIndex: 51,
-        display: 'flex', flexDirection: 'column',
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
         animation: 'slideIn 220ms var(--easing)',
       }}>
         {/* Header */}

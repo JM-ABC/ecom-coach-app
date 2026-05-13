@@ -290,11 +290,12 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
 interface EventCardProps {
   event: MarketingEvent;
   onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpenPromoPlan?: (e: MarketingEvent) => void;
   filter: string;
   trendHint?: TrendHint;
 }
 
-export const EventCard = React.memo(function EventCard({ event, onOpen, filter, trendHint }: EventCardProps) {
+export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPromoPlan, filter, trendHint }: EventCardProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -487,21 +488,28 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, filter, 
       )}
 
       <div className="event-card-footer">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-muted)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--text-muted)', fontSize: 11 }}>
           <Icon name="checkCircle" size={12} />
-          체크리스트 {event.checklist.filter(c => c.done).length}/{event.checklist.length}
-        </div>
-        <div style={{ display: 'flex', gap: 4 }}>
-          {event.platforms.slice(0, 3).map(p => (
-            <span key={p} style={{ fontSize: 11, color: 'var(--text-muted)', padding: '0 4px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4 }}>
-              {PLATFORMS[p] || p}
-            </span>
-          ))}
+          {event.checklist.filter(c => c.done).length}/{event.checklist.length}
         </div>
         <div style={{ flex: 1 }} />
-        <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
-          액션 플랜 보기 <Icon name="arrowRight" size={11} />
-        </button>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' as const }}>
+          <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
+            <Icon name="target" size={11} />액션 플랜
+          </button>
+          <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
+            <Icon name="package" size={11} />추천 품목
+          </button>
+          {onOpenPromoPlan && (
+            <button
+              className="btn sm"
+              onClick={(e) => { e.stopPropagation(); onOpenPromoPlan(event); }}
+              style={{ background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)', color: '#fff', border: 'none' }}
+            >
+              <Icon name="sparkles" size={11} />AI 기획서
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
