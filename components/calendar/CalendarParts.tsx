@@ -345,7 +345,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
     padding: 18, position: 'relative', overflow: 'hidden', cursor: 'pointer',
     transition: 'box-shadow 140ms, transform 140ms, border-color 140ms',
     ...(hover ? {
-      borderColor: 'var(--border-strong)',
+      border: '1px solid var(--border-strong)',
       boxShadow: '0 1px 2px oklch(0 0 0 / 0.04), 0 8px 20px oklch(0 0 0 / 0.06)',
       transform: 'translateY(-1px)',
     } : {}),
@@ -547,7 +547,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
     overflow: 'hidden', cursor: 'pointer',
     transition: 'box-shadow 140ms, transform 140ms, border-color 140ms',
     ...(hover ? {
-      borderColor: 'var(--border-strong)',
+      border: '1px solid var(--border-strong)',
       boxShadow: '0 1px 2px oklch(0 0 0 / 0.04), 0 8px 20px oklch(0 0 0 / 0.06)',
       transform: 'translateY(-1px)',
     } : {}),

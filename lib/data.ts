@@ -83,7 +83,7 @@ const PLATFORM_TIPS: Record<string, Partial<Record<EventType, PlatformInsight>>>
     platform: { tip: '십일절·슈퍼특가 등 대형 행사 중심. 단일 행사 집중 투자가 유리합니다.', action: '대형 행사 선택 집중', metric: 'GMV +70%' },
   },
   gmarket: {
-    platform: { tip: '스마일클럽 타깃 정기구독 유입 최적. 빅스마일데이 1달 전 입점 신청.', action: '스마일클럽 쿠폰 세팅', metric: '정기구독 +28%' },
+    platform: { tip: '스마일클럽 멤버십 타깃 광고 효율 최고. 빅스마일데이 1달 전 입점 신청.', action: '스마일클럽 쿠폰 세팅', metric: '노출 +28%' },
     season: { tip: '40~50대 구매층이 두텁습니다. "가성비·대용량" 프레임이 유리.', action: '대용량 패키지 구성', metric: '객단가 +15%' },
   },
   kakao: {
@@ -327,7 +327,7 @@ export const EVENTS: MarketingEvent[] = [
       { d: -7, task: '"봄맞이 살림템" 기획전 페이지', done: false },
       { d: 0, task: '세제 대용량 장기 할인 혜택 세팅', done: false },
     ],
-    pro: '생활용품은 반복구매 습관화가 핵심입니다. 단발 할인보다 "대용량 묶음 구매 → 재구매 혜택" 구조로 고객을 장기 고객으로 육성하세요. 장기 구독 프로그램은 서비스팀과 별도 기획하세요.',
+    pro: '생활용품은 반복구매 습관화가 핵심입니다. 단발 할인보다 "대용량 묶음 구매 → 재구매 혜택" 구조로 고객을 장기 고객으로 육성하세요. CRM 재구매 쿠폰과 번들 기획으로 충성 고객층을 쌓으세요.',
   },
   {
     id: 'e-rainy-season', title: '장마·제습 시즌', type: 'season',
