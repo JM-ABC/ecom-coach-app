@@ -3,7 +3,7 @@
 import React, { useState, CSSProperties } from 'react';
 import Icon from '@/components/Icon';
 import {
-  PLATFORM_META, PLATFORMS, getPlatformInsight,
+  PLATFORM_META, PLATFORMS, CATEGORIES, EVENTS, getPlatformInsight,
   catColor, typeLabel, typeChip, fmtDate, fmtDateFull, daysUntil, isActive,
 } from '@/lib/data';
 import type { MarketingEvent } from '@/lib/types';
@@ -12,6 +12,37 @@ function dDayBadge(dU: number, active: boolean): { text: string; urgent: boolean
   if (active) return { text: '진행중', urgent: true };
   if (dU <= 0) return null;
   return { text: `D-${dU}`, urgent: dU <= 3 };
+}
+
+// ---- PlatformInsights helpers ----
+
+function getPlatformEventStatus(currentEvent: MarketingEvent, platformId: string) {
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const candidateEvents = EVENTS.filter(e =>
+    e.type === 'platform' &&
+    e.id !== currentEvent.id &&
+    e.platforms.includes(platformId)
+  );
+
+  const cs = new Date(currentEvent.start).getTime();
+  const ce = new Date(currentEvent.end).getTime();
+
+  const overlapping = candidateEvents.filter(e => {
+    const s = new Date(e.start).getTime();
+    const en = new Date(e.end).getTime();
+    return s <= ce && en >= cs;
+  });
+  if (overlapping.length > 0) return { status: 'overlap' as const, events: overlapping };
+
+  const nearby = candidateEvents.filter(e => {
+    const s = new Date(e.start).getTime();
+    const en = new Date(e.end).getTime();
+    const gap = Math.max(0, Math.max(cs - en, s - ce));
+    return gap / msPerDay <= 90;
+  });
+  if (nearby.length > 0) return { status: 'opportunity' as const, events: nearby };
+
+  return { status: 'none' as const, events: [] as MarketingEvent[] };
 }
 
 // ---- PlatformInsights ----
@@ -117,11 +148,14 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
           );
         }
 
+        const pStatus = getPlatformEventStatus(event, p);
+
         return (
           <div key={p} style={{
             border: '1px solid var(--border)', borderRadius: 8,
             background: 'var(--surface)', overflow: 'hidden',
           }}>
+            {/* 행 헤더 */}
             <div
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
@@ -143,12 +177,43 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                   <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontWeight: 400 }}> 추정</span>
                 </span>
               )}
-              <span style={{
-                marginLeft: 'auto', fontSize: 11, color: 'var(--text-subtle)',
-                display: 'inline-flex', transition: 'transform 150ms',
-                transform: isOpen ? 'rotate(180deg)' : 'none',
-              }}>▾</span>
+              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
+                {pStatus.status === 'overlap' && (
+                  <span style={{
+                    fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+                    background: 'oklch(0.96 0.04 15)', color: 'oklch(0.52 0.20 15)',
+                    border: '1px solid oklch(0.88 0.08 15)', whiteSpace: 'nowrap' as const,
+                  }}>
+                    행사 {pStatus.events.length}건 겹침
+                  </span>
+                )}
+                {pStatus.status === 'opportunity' && (
+                  <span style={{
+                    fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+                    background: 'oklch(0.95 0.04 240)', color: 'oklch(0.45 0.20 240)',
+                    border: '1px solid oklch(0.85 0.08 240)', whiteSpace: 'nowrap' as const,
+                  }}>
+                    연동 기회 {pStatus.events.length}건
+                  </span>
+                )}
+                {pStatus.status === 'none' && (
+                  <span style={{
+                    fontSize: 9.5, fontWeight: 500, padding: '2px 7px', borderRadius: 999,
+                    background: 'var(--bg-subtle)', color: 'var(--text-subtle)',
+                    border: '1px solid var(--border)', whiteSpace: 'nowrap' as const,
+                  }}>
+                    기간 내 행사 없음
+                  </span>
+                )}
+                <span style={{
+                  fontSize: 11, color: 'var(--text-subtle)',
+                  display: 'inline-flex', transition: 'transform 150ms',
+                  transform: isOpen ? 'rotate(180deg)' : 'none',
+                }}>▾</span>
+              </div>
             </div>
+
+            {/* 펼친 상태 */}
             {isOpen && (
               <div style={{ padding: compact ? '0 11px 10px' : '0 13px 11px', display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {tip?.metric && (
@@ -171,6 +236,82 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                     플랫폼별 전략 가이드 준비 중
                   </div>
                 )}
+
+                {/* 플랫폼 행사 카드 섹션 */}
+                <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--divider)' }}>
+                  <div style={{
+                    fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)',
+                    textTransform: 'uppercase' as const, letterSpacing: '0.05em',
+                    marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4,
+                  }}>
+                    <Icon name="share" size={10} stroke={2} />
+                    플랫폼 행사
+                  </div>
+
+                  {pStatus.events.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                      {pStatus.events.map(pe => {
+                        const isOverlap = pStatus.status === 'overlap';
+                        const borderL = isOverlap ? 'oklch(0.78 0.12 15)' : 'oklch(0.68 0.15 240)';
+                        const bg = isOverlap ? 'oklch(0.985 0.012 15)' : 'oklch(0.985 0.012 240)';
+                        const accent = isOverlap ? 'oklch(0.52 0.20 15)' : 'oklch(0.45 0.20 240)';
+                        const borderThin = isOverlap ? 'oklch(0.93 0.03 15)' : 'oklch(0.93 0.03 240)';
+                        const catLabels = pe.categories.slice(0, 2)
+                          .map(c => CATEGORIES.find(x => x.id === c)?.label ?? c)
+                          .join(' · ');
+                        return (
+                          <div key={pe.id} style={{
+                            padding: '9px 11px', borderRadius: 6,
+                            background: bg,
+                            border: `1px solid ${borderThin}`,
+                            borderLeft: `3px solid ${borderL}`,
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 2 }}>
+                              <span style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
+                                {pe.title}
+                              </span>
+                              <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
+                                {fmtDate(pe.start)}{pe.end !== pe.start && ` – ${fmtDate(pe.end)}`}
+                              </span>
+                            </div>
+                            {catLabels && (
+                              <div style={{ fontSize: 10, color: 'var(--text-subtle)', marginBottom: 3 }}>{catLabels}</div>
+                            )}
+                            <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.4, marginBottom: 6 }}>
+                              {pe.summary.length > 60 ? pe.summary.slice(0, 60) + '…' : pe.summary}
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <span style={{ fontSize: 10, color: accent, fontWeight: 600 }}>
+                                {isOverlap ? '⚠ 경쟁 구간 — 입찰가·재고 점검 필요' : '◎ 연동 마케팅 기회'}
+                              </span>
+                              <button
+                                onClick={e => e.stopPropagation()}
+                                style={{
+                                  marginLeft: 'auto', fontSize: 10, fontWeight: 600,
+                                  padding: '3px 8px', borderRadius: 5,
+                                  background: 'transparent', color: accent,
+                                  border: `1px solid ${borderL}`, cursor: 'pointer',
+                                  whiteSpace: 'nowrap' as const,
+                                }}
+                              >
+                                {isOverlap ? '입찰가 점검' : '참여 신청'}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div style={{
+                      padding: '8px 10px', borderRadius: 6,
+                      background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                    }}>
+                      <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
+                        이 플랫폼의 기간 내 예정 행사가 없습니다.
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
