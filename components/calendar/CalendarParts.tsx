@@ -457,9 +457,10 @@ interface EventCardProps {
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   filter: string;
   trendHint?: TrendHint;
+  overlappingPlatformEvents?: MarketingEvent[];
 }
 
-export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPromoPlan, filter, trendHint }: EventCardProps) {
+export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPromoPlan, filter, trendHint, overlappingPlatformEvents = [] }: EventCardProps) {
   const [hover, setHover] = useState(false);
   const dU = daysUntil(event.start);
   const active = isActive(event);
@@ -647,6 +648,61 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
                 </button>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {overlappingPlatformEvents.length > 0 && (
+        <div style={{ padding: '0 16px 10px' }}>
+          <div style={{ paddingTop: 10, borderTop: '1px solid var(--divider)' }}>
+            <div style={{
+              fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)',
+              textTransform: 'uppercase' as const, letterSpacing: '0.05em',
+              marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4,
+            }}>
+              <Icon name="share" size={10} stroke={2} />
+              동시 진행 플랫폼 행사 ({overlappingPlatformEvents.length})
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+              {overlappingPlatformEvents.map(pe => (
+                <div key={pe.id} style={{
+                  padding: '8px 10px', borderRadius: 7,
+                  background: 'var(--bg-subtle)',
+                  border: '1px solid var(--border)',
+                  borderLeft: '3px solid var(--cat-platform)',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 2, flexWrap: 'wrap' as const }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>{pe.title}</span>
+                    <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
+                      {fmtDate(pe.start)}{pe.end !== pe.start && ` – ${fmtDate(pe.end)}`}
+                    </span>
+                  </div>
+                  <div style={{
+                    fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.45,
+                    display: '-webkit-box', WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
+                  }}>
+                    {pe.summary}
+                  </div>
+                  {pe.mdBrief && (
+                    <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 3 }}>
+                      <span style={{ fontWeight: 600, color: 'oklch(0.55 0.15 280)' }}>MD</span> {pe.mdBrief.insight}
+                    </div>
+                  )}
+                  {pe.sourceLink && (
+                    <a
+                      href={pe.sourceLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 5, fontSize: 10.5, color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      기사 원문 <Icon name="arrowRight" size={9} />
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

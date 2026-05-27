@@ -176,7 +176,7 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
 }
 
 // ---- FocusView ----
-function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, trendByKey, weatherEvents, heroOverlaps }: {
+function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, trendByKey, weatherEvents, heroOverlaps, newsPlatformEvents }: {
   hero: MarketingEvent | undefined;
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
@@ -186,9 +186,13 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   trendByKey: Record<string, CategoryTrend>;
   weatherEvents: MarketingEvent[];
   heroOverlaps: MarketingEvent[];
+  newsPlatformEvents: MarketingEvent[];
 }) {
-  const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id);
-  const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id);
+  const isNewsPlatform = (e: MarketingEvent) => e.source === 'news' && e.type === 'platform';
+  const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id && !isNewsPlatform(e));
+  const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id && !isNewsPlatform(e));
+  const getOverlappingPlatform = (ev: MarketingEvent) =>
+    newsPlatformEvents.filter(np => np.start <= ev.end && np.end >= ev.start);
 
   return (
     <div className="focus-grid" style={{ gap: 16 }}>
@@ -203,7 +207,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {thisWeekFiltered.length > 0 ? (
-              thisWeekFiltered.map(e => <EventCard key={e.id} event={e} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} />)
+              thisWeekFiltered.map(e => <EventCard key={e.id} event={e} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} overlappingPlatformEvents={getOverlappingPlatform(e)} />)
             ) : (
               <div style={{ padding: 24, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)', background: 'var(--surface)', border: '1px dashed var(--border)', borderRadius: 10 }}>
                 이번 주에 해당하는 이벤트가 없습니다.
@@ -220,7 +224,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {upcomingNotActive.slice(0, 10).map(e => (
-              <EventCard key={e.id} event={e} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} />
+              <EventCard key={e.id} event={e} onOpen={onOpen} onOpenPromoPlan={onOpenPromoPlan} filter={filter} trendHint={getEventTrendHint(e, trendByKey)} overlappingPlatformEvents={getOverlappingPlatform(e)} />
             ))}
           </div>
         </div>
@@ -535,6 +539,7 @@ export default function MarketingCalendar() {
   const weatherState = useWeatherEvents();
   const { events: customEvents } = useCustomEvents();
   const newsEvents = useNewsAsCalendarEvents();
+  const newsPlatformEvents = useMemo(() => newsEvents.filter(e => e.type === 'platform'), [newsEvents]);
   const { byKey: trendByKey } = useTrendData();
   const { events: autoTrendEvents } = useAutoTrendEvents();
 
@@ -658,7 +663,7 @@ export default function MarketingCalendar() {
           hero={hero} thisWeek={thisWeek} upcoming={upcoming}
           filter={category} onOpen={openPanel} onOpenPromoPlan={setPromoPlanEvent}
           trendByKey={trendByKey} weatherEvents={weatherState.events}
-          heroOverlaps={heroOverlaps}
+          heroOverlaps={heroOverlaps} newsPlatformEvents={newsPlatformEvents}
         />
       )}
       {view === 'grid' && (
