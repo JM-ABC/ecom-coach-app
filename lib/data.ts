@@ -603,6 +603,24 @@ export const EVENTS: MarketingEvent[] = [
     pro: '어린이집·유치원 학부모 단체 구매는 맘큐 커뮤니티 "공동구매" 게시판 활용이 가장 효과적입니다. 20개 이상 묶음 할인 구조를 미리 준비하세요.',
   },
   {
+    id: 'e-local-election-day', title: '지방선거 공휴일', type: 'holiday',
+    start: '2026-06-03', end: '2026-06-03',
+    categories: ['l_laundry', 'l_clean', 'b_diaper', 'b_wipe', 'l_tissue'],
+    platforms: ['coupang', 'naver', 'momq'],
+    summary: '6월 3일 지방선거 공휴일. 투표 참여로 외출이 줄고 모바일 쇼핑 체류 시간이 늘어납니다. 선거일 전주(5/28~6/2) 선반영 프로모션이 핵심.',
+    trendScore: 52, search: '+18%', gmv: '+12%',
+    products: [
+      { name: '생활필수품 대용량 세트 (세탁세제·화장지)', reason: '공휴일 집콕 재보충 구매 수요', urgency: 'mid', category: 'l_laundry', priceRange: { min: 15000, max: 45000 }, prepDays: 5, momqTip: '"선거일 연휴 집콕 정리" 프레임. 대용량 번들 + 맘큐 쇼핑지원금 활용 안내.' },
+      { name: '기저귀·물티슈 정기 보충', reason: '공휴일 집에서 아기 돌봄 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 20000, max: 55000 }, prepDays: 3, momqTip: '선거 당일 재고 보충 알림 푸시. 맘큐 프리미엄 회원 혜택 강조.' },
+    ],
+    checklist: [
+      { d: -5, task: '"선거일 연휴 집콕 세일" 기획전 오픈', done: false },
+      { d: -2, task: '생활필수품 재고 확인 및 프로모션 배너 예약', done: false },
+      { d: 0, task: '모바일 전용 당일 쿠폰 발행', done: false },
+    ],
+    pro: '선거일은 이동 자제로 모바일 쇼핑 세션이 평소 대비 20~30% 증가합니다(추정치). 선거 전주(5/28~6/2)에 "선반영 프로모션"을 집행하고, 당일은 모바일 전용 쿠폰으로 전환을 극대화하세요.',
+  },
+  {
     id: 'e-early-summer-cooling', title: '초여름 냉방·위생 준비', type: 'season',
     start: '2026-06-01', end: '2026-06-14',
     categories: ['l_electric', 'l_clean', 'l_air', 'b_wipe'],
