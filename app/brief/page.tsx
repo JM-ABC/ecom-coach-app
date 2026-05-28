@@ -13,9 +13,9 @@ const CATEGORIES = [
   { id: 'l_hair', label: '샴푸/헤어', group: '생활' },
   { id: 'l_health', label: '건강용품', group: '생활' },
   { id: 'l_electric', label: '냉방/제습가전', group: '생활' },
-  { id: 'l_air', label: '제습/습기제거', group: '계절' },
-  { id: 'l_body', label: '쿨링용품', group: '계절' },
-  { id: 'l_tissue', label: '화장지/티슈', group: '계절' },
+  { id: 'l_air', label: '제습/습기제거', group: '생활' },
+  { id: 'l_body', label: '쿨링용품', group: '생활' },
+  { id: 'l_tissue', label: '화장지/티슈', group: '생활' },
 ] as const;
 
 const PLATFORMS = [
@@ -24,11 +24,10 @@ const PLATFORMS = [
   { id: '11st', label: '11번가' },
   { id: 'gmarket', label: 'G마켓' },
   { id: 'kakao', label: '카카오' },
-  { id: 'wemakeprice', label: '위메프' },
   { id: 'momq', label: '맘큐' },
 ] as const;
 
-const GROUPS = ['유아', '생활', '계절'] as const;
+const GROUPS = ['유아', '생활'] as const;
 
 interface TrendItem {
   title: string;
