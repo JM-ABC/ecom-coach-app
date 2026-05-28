@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 
 const CATEGORIES = [
   { id: 'b_diaper', label: '기저귀', group: '유아' },
@@ -95,33 +95,27 @@ function LoadingText({ text = '불러오는 중...' }: { text?: string }) {
   return <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>{text}</div>;
 }
 
-function renderLines(lines: string[]) {
-  return lines.map((line, j) => (
-    <span key={j}>{line}{j < lines.length - 1 && <br />}</span>
-  ));
-}
+const LINE_STYLE: CSSProperties = {
+  fontSize: '13px', color: 'var(--text)', lineHeight: 1.7,
+  wordBreak: 'break-word', overflowWrap: 'anywhere', display: 'block',
+};
 
 function AiSummaryBlock({ text }: { text: string }) {
   const paragraphs = text.trim().split(/\n{2,}/);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div>
       {paragraphs.map((para, i) => {
         const lines = para.trim().split('\n');
         const firstLine = lines[0].replace(/^\*+|\*+$/g, '').trim();
         const isHeader = firstLine.length <= 20 && !/^[▶•\d]/.test(firstLine) && lines.length > 1;
-        if (isHeader) {
-          return (
-            <div key={i}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '5px' }}>{firstLine}</div>
-              <div style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
-                {renderLines(lines.slice(1))}
-              </div>
-            </div>
-          );
-        }
         return (
-          <div key={i} style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
-            {renderLines(lines)}
+          <div key={i} style={{ marginBottom: i < paragraphs.length - 1 ? '12px' : 0 }}>
+            {isHeader && (
+              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '5px' }}>{firstLine}</div>
+            )}
+            {(isHeader ? lines.slice(1) : lines).filter(l => l.trim()).map((line, j) => (
+              <div key={j} style={LINE_STYLE}>{line}</div>
+            ))}
           </div>
         );
       })}
