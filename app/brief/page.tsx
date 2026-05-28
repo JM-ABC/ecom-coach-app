@@ -414,7 +414,9 @@ export default function BriefPage() {
                brief.aiLoading ? <LoadingText text="Gemini 분석 중..." /> :
                brief.aiSummary ? (
                 <div style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{brief.aiSummary}</div>
-               ) : null}
+               ) : (
+                <div style={{ fontSize: '12.5px', color: 'var(--danger)' }}>AI 요약 생성 실패 — API 키를 확인하거나 잠시 후 다시 시도해주세요</div>
+               )}
             </SectionCard>
 
             {/* 복사 CTA */}
