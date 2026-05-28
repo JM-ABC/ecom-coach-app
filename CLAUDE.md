@@ -19,7 +19,7 @@
 app/
   api/
     weather/route.ts        # 기상청 단기예보 (data.go.kr)
-    trends/route.ts         # 네이버 DataLab 쇼핑인사이트 (주간 트렌드)
+    trends/route.ts         # 네이버 DataLab 검색어 트렌드 (v1/datalab/search, 주간)
     event-trend/route.ts    # 네이버 DataLab 검색어트렌드 (이벤트별 YoY)
     news-events/route.ts    # 네이버 뉴스 API (플랫폼 행사 감지 + 소비 트렌드)
     promo-plan/route.ts     # Gemini 2.5 Pro AI 프로모션 기획서 스트리밍
@@ -36,7 +36,7 @@ components/
   WeatherWidget.tsx         # 날씨 위젯
 
 hooks/
-  useTrendData.ts           # 네이버 DataLab 쇼핑인사이트 훅
+  useTrendData.ts           # 네이버 DataLab 검색어 트렌드 훅 (v1/datalab/search)
   useEventTrend.ts          # 이벤트별 검색량 변화 훅
   useNewsEvents.ts          # 뉴스 감지 + 소비 트렌드 훅
   useWeatherEvents.ts       # 날씨 이벤트 훅
@@ -53,7 +53,7 @@ lib/
 NAVER_CLIENT_ID=            # 네이버 오픈API (DataLab + 뉴스)
 NAVER_CLIENT_SECRET=        # 네이버 오픈API
 KMA_API_KEY=                # 공공데이터포털 기상청 단기예보 API
-GOOGLE_GENERATIVE_AI_API_KEY=  # Gemini AI (AI 기획서)
+GEMINI_API_KEY=                 # Gemini AI (AI 기획서) — process.env.GEMINI_API_KEY 로 참조
 ```
 
 ## 핵심 데이터 구조
