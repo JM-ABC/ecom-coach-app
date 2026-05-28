@@ -95,6 +95,12 @@ function LoadingText({ text = '불러오는 중...' }: { text?: string }) {
   return <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>{text}</div>;
 }
 
+function renderLines(lines: string[]) {
+  return lines.map((line, j) => (
+    <span key={j}>{line}{j < lines.length - 1 && <br />}</span>
+  ));
+}
+
 function AiSummaryBlock({ text }: { text: string }) {
   const paragraphs = text.trim().split(/\n{2,}/);
   return (
@@ -104,16 +110,19 @@ function AiSummaryBlock({ text }: { text: string }) {
         const firstLine = lines[0].replace(/^\*+|\*+$/g, '').trim();
         const isHeader = firstLine.length <= 20 && !/^[▶•\d]/.test(firstLine) && lines.length > 1;
         if (isHeader) {
-          const bodyLines = lines.slice(1).join('\n');
           return (
             <div key={i}>
               <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '5px' }}>{firstLine}</div>
-              <div style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }}>{bodyLines}</div>
+              <div style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
+                {renderLines(lines.slice(1))}
+              </div>
             </div>
           );
         }
         return (
-          <div key={i} style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }}>{para}</div>
+          <div key={i} style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.7, wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
+            {renderLines(lines)}
+          </div>
         );
       })}
     </div>
