@@ -42,6 +42,10 @@ export default function Home() {
             {t.label}
           </button>
         ))}
+        <a href="/brief" className="mobile-nav-item" style={{ textDecoration: 'none' }}>
+          <Icon name="trending" size={18} />
+          브리핑
+        </a>
       </nav>
     </div>
   );
