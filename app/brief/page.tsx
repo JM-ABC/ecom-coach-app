@@ -221,22 +221,38 @@ export default function BriefPage() {
     const today = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
     const catLabels = [...selectedCats].map(id => CATEGORIES.find(c => c.id === id)?.label ?? id).join(', ');
 
-    const trendLines = (brief.trends ?? []).slice(0, 3).map(t => {
+    const trendLines = (brief.trends ?? []).slice(0, 4).map(t => {
       const dir = t.changeVsPrevWeek > 0 ? `↑${t.changeVsPrevWeek}%` : t.changeVsPrevWeek < 0 ? `↓${Math.abs(t.changeVsPrevWeek)}%` : '→';
       return `${t.title} ${dir}`;
-    }).join(' | ') || '-';
+    }).join(' / ') || '-';
 
-    const weatherLine = (brief.weather ?? []).slice(0, 1).map(e => e.title).join('') || '특이없음';
-    const eventLine = (brief.events ?? []).slice(0, 2).map(e => `${e.title} ${e.start.slice(5)}`).join(', ') || '-';
-    const aiLine = brief.aiSummary?.split('\n').find(l => l.trim()) ?? '';
+    const weatherLine = (brief.weather ?? []).slice(0, 2).map(e => e.title).join(', ') || '특이없음';
+
+    const seen = new Set<string>();
+    const eventLine = (brief.events ?? [])
+      .filter(e => { if (seen.has(e.title)) return false; seen.add(e.title); return true; })
+      .slice(0, 3)
+      .map(e => {
+        const s = e.start.slice(5).replace('-', '/');
+        const en = e.end.slice(5).replace('-', '/');
+        return s === en ? `${e.title}(${s})` : `${e.title}(${s}~${en})`;
+      }).join(', ') || '감지된 행사 없음';
+
+    // 섹션 헤더(짧은 줄)를 건너뛰고 실제 내용만 추출
+    const aiContent = brief.aiSummary
+      ? brief.aiSummary.trim().split('\n')
+          .filter(l => l.trim().length > 20 || /^[▶•]/.test(l.trim()))
+          .slice(0, 3)
+          .join('\n')
+      : '';
 
     const text = [
       `📊 맘큐 주간 수요 브리핑 (${today})`,
-      `📌 ${catLabels}`,
+      `📌 분석 카테고리: ${catLabels}`,
       `📈 트렌드: ${trendLines}`,
       `🌤 날씨: ${weatherLine}`,
       `🛒 행사: ${eventLine}`,
-      aiLine ? `💡 ${aiLine}` : '',
+      aiContent ? `💡 AI 인사이트\n${aiContent}` : '',
     ].filter(Boolean).join('\n');
 
     try {
