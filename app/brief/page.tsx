@@ -223,9 +223,9 @@ export default function BriefPage() {
       <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '13px 16px', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <a href="/" style={{ fontSize: '12.5px', color: 'var(--text-muted)', flexShrink: 0 }}>← 메인</a>
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em' }}>주간 수요 브리핑</div>
-            <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '1px' }}>트렌드 · 날씨 · 행사 실시간 수요 신호</div>
+            <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '1px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>트렌드 · 날씨 · 행사 실시간 수요 신호</div>
           </div>
         </div>
       </div>
@@ -343,11 +343,11 @@ export default function BriefPage() {
                     const dir = up ? `↑${t.changeVsPrevWeek}%` : down ? `↓${Math.abs(t.changeVsPrevWeek)}%` : '→ 보합';
                     return (
                       <div key={t.ourKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                        <div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
                           <span style={{ fontSize: '13px', fontWeight: 500 }}>{t.title}</span>
                           <span style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginLeft: '6px' }}>비율 {t.latestRatio}</span>
                         </div>
-                        <span style={{ fontSize: '14px', fontWeight: 700, color, whiteSpace: 'nowrap' }}>{dir}</span>
+                        <span style={{ fontSize: '14px', fontWeight: 700, color, whiteSpace: 'nowrap', flexShrink: 0 }}>{dir}</span>
                       </div>
                     );
                   })}
@@ -385,8 +385,8 @@ export default function BriefPage() {
                         width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0, marginTop: '5px',
                         background: e.confidence === 'high' ? 'var(--success)' : e.confidence === 'mid' ? 'var(--warning)' : 'var(--text-disabled)',
                       }} />
-                      <div>
-                        <div style={{ fontSize: '13px', fontWeight: 600 }}>{e.title}</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '13px', fontWeight: 600, wordBreak: 'break-word' }}>{e.title}</div>
                         <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '2px' }}>{e.start} ~ {e.end}</div>
                       </div>
                     </div>
