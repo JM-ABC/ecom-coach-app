@@ -174,8 +174,9 @@ export default function BriefPage() {
 
       const allWeather: WeatherEvent[] = weatherRes.status === 'fulfilled' ? (weatherRes.value?.events ?? []) : [];
 
+      const todayStr = new Date().toISOString().slice(0, 10);
       const allEvents: PlatformEvent[] = newsRes.status === 'fulfilled' ? (newsRes.value?.events ?? []) : [];
-      const filteredEvents = allEvents.filter(e => platIds.includes(e.platform));
+      const filteredEvents = allEvents.filter(e => platIds.includes(e.platform) && e.end >= todayStr);
       const insights: TrendInsight[] = newsRes.status === 'fulfilled' ? ((newsRes.value?.insights ?? []) as TrendInsight[]).slice(0, 2) : [];
 
       setBrief({
