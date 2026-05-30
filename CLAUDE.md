@@ -89,6 +89,30 @@ GEMINI_API_KEY=                 # Gemini AI (AI 기획서) — process.env.GEMIN
 - 타입 체크: `npx tsc --noEmit`으로 항상 확인 후 커밋
 - 브랜치: `master` → `origin/master` 직접 push
 
+## 디자인 시스템 가드레일
+
+> 전체 스펙은 `DESIGN.md` 참조. 새 컴포넌트 작성 전 반드시 확인.
+
+**폰트 사이즈 — CSS 변수만 사용:**
+```
+--fs-2xs: 10px  --fs-xs: 11px  --fs-sm: 12px  --fs-base: 13px
+--fs-md: 15px   --fs-lg: 18px  --fs-xl: 22px  --fs-2xl: 24px
+```
+- 인라인 스타일: `fontSize: 'var(--fs-sm)'`
+- **금지**: 반픽셀(`11.5`, `12.5`…), 문자열 px(`'13px'`), 스케일 외 임의 값
+
+**컬러 — 토큰만 사용:**
+- 텍스트: `var(--text)` / `--text-muted` / `--text-subtle` / `--text-disabled`
+- 서피스: `var(--surface)` / `--bg` / `--bg-subtle`
+- 액센트: `var(--accent)` 계열
+- 하드코딩 hex 금지 (`#333`, `rgba(0,0,0,0.5)` 등)
+
+**간격 · 라디우스:**
+- border-radius는 `var(--radius-sm/md/lg/xl)` 사용
+- shadow는 `var(--shadow-sm/md/lg)` 사용
+
+**검증:** 새 컴포넌트 추가 후 `grep -n "fontSize: [0-9]*\." <파일>` 으로 반픽셀 잔존 여부 확인
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
