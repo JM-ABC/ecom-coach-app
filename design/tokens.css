@@ -79,6 +79,16 @@
   --duration-fast: 120ms;
   --duration: 180ms;
   --easing: cubic-bezier(0.2, 0.0, 0.2, 1.0);
+
+  /* Typography scale */
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 15px;
+  --fs-lg: 18px;
+  --fs-xl: 22px;
+  --fs-2xl: 24px;
 }
 
 * { box-sizing: border-box; }

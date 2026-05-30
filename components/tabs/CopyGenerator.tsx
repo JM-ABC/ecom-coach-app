@@ -31,7 +31,7 @@ export default function CopyGenerator() {
 
   const panel: React.CSSProperties = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: 18, marginBottom: 14 };
   const chipStyle = (active: boolean): React.CSSProperties => ({
-    padding: '5px 11px', borderRadius: 999, fontSize: 12.5, fontWeight: 500,
+    padding: '5px 11px', borderRadius: 999, fontSize: 13, fontWeight: 500,
     color: active ? 'var(--accent-text)' : 'var(--text-muted)',
     border: `1px solid ${active ? 'var(--accent-border)' : 'var(--border)'}`,
     background: active ? 'var(--accent-bg)' : 'var(--bg-subtle)',
@@ -91,7 +91,7 @@ export default function CopyGenerator() {
                 <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-text)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {c.title}
                 </div>
-                <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{c.body}</div>
+                <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>{c.body}</div>
                 <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
                   <button className="btn sm"><Icon name="copy" size={11} />복사</button>
                   <button className="btn sm primary"><Icon name="arrowRight" size={11} />상세페이지로</button>

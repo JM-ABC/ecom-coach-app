@@ -79,7 +79,7 @@ export default function WeatherWidget() {
         ? 'linear-gradient(90deg, oklch(0.95 0.04 250) 0%, var(--surface) 100%)'
         : 'var(--bg-subtle)',
       border: `1px solid ${hasWeatherEvents ? 'oklch(0.85 0.06 250)' : 'var(--border)'}`,
-      fontSize: 12.5,
+      fontSize: 13,
       color: 'var(--text)',
       marginBottom: 12,
     }}>
@@ -87,7 +87,7 @@ export default function WeatherWidget() {
       <span style={{ flex: 1, lineHeight: 1.5 }}>{text}</span>
       {events.length > 1 && (
         <span style={{
-          fontSize: 10.5,
+          fontSize: 11,
           color: 'var(--text-subtle)',
           background: 'var(--bg-subtle)',
           padding: '2px 6px',

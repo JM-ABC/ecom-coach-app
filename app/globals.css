@@ -76,6 +76,16 @@
   --duration-fast: 120ms;
   --duration: 180ms;
   --easing: cubic-bezier(0.2, 0.0, 0.2, 1.0);
+
+  /* Typography scale */
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 15px;
+  --fs-lg: 18px;
+  --fs-xl: 22px;
+  --fs-2xl: 24px;
 }
 
 @keyframes fadeIn {
@@ -95,7 +105,7 @@ body {
   font-feature-settings: 'ss02', 'tnum', 'cv11';
   color: var(--text);
   background: var(--bg);
-  font-size: 13.5px;
+  font-size: var(--fs-base);
   line-height: 1.5;
   font-weight: 420;
   letter-spacing: -0.005em;
@@ -237,7 +247,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 11.5px;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -359,9 +369,9 @@ a { color: inherit; text-decoration: none; }
     flex-wrap: wrap;
     gap: 8px;
     padding: 8px 12px;
-    font-size: 11.5px;
+    font-size: var(--fs-sm);
   }
-  .event-card-footer .btn { font-size: 11.5px; padding: 4px 10px; height: 28px; }
+  .event-card-footer .btn { font-size: var(--fs-sm); padding: 4px 10px; height: 28px; }
 
   /* EventHero 폰트 스케일 */
   .event-hero-title { font-size: 16px !important; }

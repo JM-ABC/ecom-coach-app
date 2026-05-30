@@ -79,8 +79,8 @@ function SectionCard({ icon, title, children }: { icon: string; title: string; c
   return (
     <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
       <div style={{ padding: '11px 16px', borderBottom: '1px solid var(--divider)', display: 'flex', alignItems: 'center', gap: '7px' }}>
-        <span style={{ fontSize: '15px' }}>{icon}</span>
-        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text)' }}>{title}</span>
+        <span style={{ fontSize: 15 }}>{icon}</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{title}</span>
       </div>
       <div style={{ padding: '14px 16px' }}>{children}</div>
     </div>
@@ -88,15 +88,15 @@ function SectionCard({ icon, title, children }: { icon: string; title: string; c
 }
 
 function ErrorBlock() {
-  return <div style={{ fontSize: '12.5px', color: 'var(--danger)' }}>데이터 로드 실패 — 잠시 후 다시 시도해주세요</div>;
+  return <div style={{ fontSize: 13, color: 'var(--danger)' }}>데이터 로드 실패 — 잠시 후 다시 시도해주세요</div>;
 }
 
 function LoadingText({ text = '불러오는 중...' }: { text?: string }) {
-  return <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>{text}</div>;
+  return <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{text}</div>;
 }
 
 const LINE_STYLE: CSSProperties = {
-  fontSize: '13px', color: 'var(--text)', lineHeight: 1.7,
+  fontSize: 13, color: 'var(--text)', lineHeight: 1.7,
   wordBreak: 'break-word', overflowWrap: 'anywhere', display: 'block',
 };
 
@@ -111,7 +111,7 @@ function AiSummaryBlock({ text }: { text: string }) {
         return (
           <div key={i} style={{ marginBottom: i < paragraphs.length - 1 ? '12px' : 0 }}>
             {isHeader && (
-              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '5px' }}>{firstLine}</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '5px' }}>{firstLine}</div>
             )}
             {(isHeader ? lines.slice(1) : lines).filter(l => l.trim()).map((line, j) => (
               <div key={j} style={LINE_STYLE}>{line}</div>
@@ -267,10 +267,10 @@ export default function BriefPage() {
       {/* 상단 헤더 */}
       <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '13px 16px', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ maxWidth: '560px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <a href="/" style={{ fontSize: '12.5px', color: 'var(--text-muted)', flexShrink: 0 }}>← 메인</a>
+          <a href="/" style={{ fontSize: 13, color: 'var(--text-muted)', flexShrink: 0 }}>← 메인</a>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em' }}>주간 수요 브리핑</div>
-            <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '1px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>트렌드 · 날씨 · 행사 실시간 수요 신호</div>
+            <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.01em' }}>주간 수요 브리핑</div>
+            <div style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: '1px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>트렌드 · 날씨 · 행사 실시간 수요 신호</div>
           </div>
         </div>
       </div>
@@ -282,12 +282,12 @@ export default function BriefPage() {
 
           {/* 카테고리 선택 */}
           <div>
-            <div style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '10px' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '10px' }}>
               카테고리 선택
             </div>
             {GROUPS.map(group => (
               <div key={group} style={{ marginBottom: '10px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-disabled)', marginBottom: '5px' }}>{group}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-disabled)', marginBottom: '5px' }}>{group}</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {CATEGORIES.filter(c => c.group === group).map(cat => {
                     const sel = selectedCats.has(cat.id);
@@ -302,7 +302,7 @@ export default function BriefPage() {
                           border: `1.5px solid ${sel ? 'var(--accent)' : 'var(--border)'}`,
                           background: sel ? 'var(--accent-bg)' : 'var(--surface)',
                           color: sel ? 'var(--accent-text)' : 'var(--text-muted)',
-                          fontSize: '13px',
+                          fontSize: 13,
                           fontWeight: sel ? 600 : 400,
                           cursor: 'pointer',
                           transition: 'border-color 120ms, background 120ms, color 120ms',
@@ -319,7 +319,7 @@ export default function BriefPage() {
 
           {/* 플랫폼 선택 */}
           <div>
-            <div style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '8px' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '8px' }}>
               플랫폼 선택
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -336,7 +336,7 @@ export default function BriefPage() {
                       border: `1.5px solid ${sel ? 'var(--cat-platform)' : 'var(--border)'}`,
                       background: sel ? 'var(--cat-platform-bg)' : 'var(--surface)',
                       color: sel ? 'var(--cat-platform)' : 'var(--text-muted)',
-                      fontSize: '13px',
+                      fontSize: 13,
                       fontWeight: sel ? 600 : 400,
                       cursor: 'pointer',
                       transition: 'border-color 120ms, background 120ms, color 120ms',
@@ -360,7 +360,7 @@ export default function BriefPage() {
               border: 'none',
               background: loading ? 'var(--text-disabled)' : 'var(--accent)',
               color: '#fff',
-              fontSize: '15px',
+              fontSize: 15,
               fontWeight: 700,
               letterSpacing: '-0.01em',
               cursor: loading ? 'not-allowed' : 'pointer',
@@ -379,7 +379,7 @@ export default function BriefPage() {
             <SectionCard icon="📈" title="네이버 검색 트렌드">
               {brief.trendsError ? <ErrorBlock /> :
                brief.trends === null ? <LoadingText /> :
-               brief.trends.length === 0 ? <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>선택 카테고리에 트렌드 데이터 없음</div> : (
+               brief.trends.length === 0 ? <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>선택 카테고리에 트렌드 데이터 없음</div> : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
                   {brief.trends.map(t => {
                     const up = t.changeVsPrevWeek > 0;
@@ -389,10 +389,10 @@ export default function BriefPage() {
                     return (
                       <div key={t.ourKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <span style={{ fontSize: '13px', fontWeight: 500 }}>{t.title}</span>
-                          <span style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginLeft: '6px' }}>비율 {t.latestRatio}</span>
+                          <span style={{ fontSize: 13, fontWeight: 500 }}>{t.title}</span>
+                          <span style={{ fontSize: 12, color: 'var(--text-subtle)', marginLeft: '6px' }}>비율 {t.latestRatio}</span>
                         </div>
-                        <span style={{ fontSize: '14px', fontWeight: 700, color, whiteSpace: 'nowrap', flexShrink: 0 }}>{dir}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color, whiteSpace: 'nowrap', flexShrink: 0 }}>{dir}</span>
                       </div>
                     );
                   })}
@@ -404,12 +404,12 @@ export default function BriefPage() {
             <SectionCard icon="🌤" title="날씨 수요 신호">
               {brief.weatherError ? <ErrorBlock /> :
                brief.weather === null ? <LoadingText /> :
-               brief.weather.length === 0 ? <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>이번 주 특이 날씨 없음</div> : (
+               brief.weather.length === 0 ? <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>이번 주 특이 날씨 없음</div> : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {brief.weather.map(e => (
                     <div key={e.id}>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--cat-weather)', marginBottom: '3px' }}>{e.title}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.55 }}>{e.summary}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--cat-weather)', marginBottom: '3px' }}>{e.title}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.55 }}>{e.summary}</div>
                     </div>
                   ))}
                 </div>
@@ -422,7 +422,7 @@ export default function BriefPage() {
                brief.events === null ? <LoadingText /> : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {brief.events.length === 0 && (brief.insights ?? []).length === 0 && (
-                    <div style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>선택 플랫폼 행사 없음</div>
+                    <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>선택 플랫폼 행사 없음</div>
                   )}
                   {brief.events.map(e => (
                     <div key={e.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
@@ -431,19 +431,19 @@ export default function BriefPage() {
                         background: e.confidence === 'high' ? 'var(--success)' : e.confidence === 'mid' ? 'var(--warning)' : 'var(--text-disabled)',
                       }} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: '13px', fontWeight: 600, wordBreak: 'break-word' }}>{e.title}</div>
-                        <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '2px' }}>{e.start} ~ {e.end}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, wordBreak: 'break-word' }}>{e.title}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: '2px' }}>{e.start} ~ {e.end}</div>
                       </div>
                     </div>
                   ))}
                   {(brief.insights ?? []).length > 0 && (
                     <div style={{ borderTop: '1px solid var(--divider)', paddingTop: '10px', marginTop: '2px' }}>
-                      <div style={{ fontSize: '10.5px', color: 'var(--text-disabled)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>소비 트렌드</div>
+                      <div style={{ fontSize: 11, color: 'var(--text-disabled)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>소비 트렌드</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {(brief.insights ?? []).map(ins => (
                           <div key={ins.id}>
-                            <div style={{ fontSize: '12.5px', fontWeight: 500, lineHeight: 1.4 }}>{ins.title}</div>
-                            <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', lineHeight: 1.4, marginTop: '2px' }}>{ins.summary}</div>
+                            <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.4 }}>{ins.title}</div>
+                            <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.4, marginTop: '2px' }}>{ins.summary}</div>
                           </div>
                         ))}
                       </div>
@@ -460,7 +460,7 @@ export default function BriefPage() {
                brief.aiSummary ? (
                 <AiSummaryBlock text={brief.aiSummary} />
                ) : (
-                <div style={{ fontSize: '12.5px', color: 'var(--danger)' }}>AI 요약 생성 실패 — API 키를 확인하거나 잠시 후 다시 시도해주세요</div>
+                <div style={{ fontSize: 13, color: 'var(--danger)' }}>AI 요약 생성 실패 — API 키를 확인하거나 잠시 후 다시 시도해주세요</div>
                )}
             </SectionCard>
 
@@ -475,7 +475,7 @@ export default function BriefPage() {
                   border: '1.5px solid var(--border-strong)',
                   background: 'var(--surface)',
                   color: 'var(--text)',
-                  fontSize: '14px',
+                  fontSize: 14,
                   fontWeight: 600,
                   cursor: 'pointer',
                   display: 'flex',
@@ -501,7 +501,7 @@ export default function BriefPage() {
           position: 'fixed', bottom: '28px', left: '50%', transform: 'translateX(-50%)',
           background: 'oklch(0.18 0.012 260)', color: '#fff',
           padding: '10px 20px', borderRadius: 'var(--radius-md)',
-          fontSize: '13px', fontWeight: 500, whiteSpace: 'nowrap',
+          fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
           boxShadow: 'var(--shadow-lg)', zIndex: 100, animation: 'fadeIn 150ms ease',
         }}>
           {toast}

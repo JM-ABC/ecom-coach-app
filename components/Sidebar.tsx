@@ -99,7 +99,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
               <span>{t.label}</span>
               {t.disabled && <span style={{ flex: 1 }} />}
               {t.disabled && (
-                <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
+                <span className="chip" style={{ fontSize: 10, padding: '0 5px', height: 16 }}>Soon</span>
               )}
             </div>
           ))}
@@ -116,7 +116,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             <Icon name="trending" size={15} />
             <span>주간 수요 브리핑</span>
             <span style={{ flex: 1 }} />
-            <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16, color: 'var(--success)', background: 'var(--success-bg)', borderColor: 'transparent' }}>New</span>
+            <span className="chip" style={{ fontSize: 10, padding: '0 5px', height: 16, color: 'var(--success)', background: 'var(--success-bg)', borderColor: 'transparent' }}>New</span>
           </a>
           {tools.map(t => (
             <div
@@ -126,7 +126,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
               <Icon name={t.icon} size={15} />
               <span>{t.label}</span>
               <span style={{ flex: 1 }} />
-              <span className="chip" style={{ fontSize: 9.5, padding: '0 5px', height: 16 }}>Soon</span>
+              <span className="chip" style={{ fontSize: 10, padding: '0 5px', height: 16 }}>Soon</span>
             </div>
           ))}
         </div>
@@ -137,7 +137,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
             <div style={s.avatar}>맘</div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)' }}>맘큐 MD 담당자</div>
+              <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>맘큐 MD 담당자</div>
               <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>맘큐 플랫폼</div>
             </div>
             <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>

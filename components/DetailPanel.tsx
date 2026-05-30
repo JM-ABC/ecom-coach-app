@@ -62,12 +62,12 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
               <span className={`chip ${typeChip(event.type)}`}>{typeLabel(event.type)}</span>
-              <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: 12, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
                 {fmtDateFull(event.start)}
                 {event.end !== event.start && ` – ${fmtDateFull(event.end)}`}
               </span>
             </div>
-            <div style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-0.015em', color: 'var(--text)', marginBottom: 4 }}>
+            <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.015em', color: 'var(--text)', marginBottom: 4 }}>
               {event.title}
             </div>
             <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
@@ -84,7 +84,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
               key={t.id}
               onClick={() => setTab(t.id)}
               style={{
-                padding: '10px 12px', fontSize: 12.5, fontWeight: 500,
+                padding: '10px 12px', fontSize: 13, fontWeight: 500,
                 color: tab === t.id ? 'var(--text)' : 'var(--text-muted)',
                 borderBottom: tab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
                 marginBottom: -1, display: 'flex', alignItems: 'center', gap: 5,
@@ -118,7 +118,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                     { label: '예상 GMV 변화', value: event.gmv, sub: '', ref: '추정치', color: 'var(--success)' },
                   ].map(m => (
                     <div key={m.label} style={{ padding: '10px 12px', borderRadius: 8, background: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>
-                      <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
+                      <div style={{ fontSize: 11, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
                       <div style={{ fontSize: 18, fontWeight: 700, color: m.color, fontVariantNumeric: 'tabular-nums', marginTop: 3 }}>
                         {m.value}
                         {m.sub && <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontWeight: 400 }}>{m.sub}</span>}
@@ -136,7 +136,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                     <Icon name="checkCircle" size={11} />실행 체크리스트
                   </div>
                   <div style={{ flex: 1 }} />
-                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
                     {doneCount}/{total} · {pct}%
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                         }}>
                           {item.task}
                           {isActiveItem && !isDone && (
-                            <span style={{ marginLeft: 8, fontSize: 10.5, fontWeight: 600, color: 'var(--danger)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                            <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 600, color: 'var(--danger)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                               지금 해야 함
                             </span>
                           )}
@@ -192,17 +192,17 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                   <Icon name="tag" size={11} />연결 정보
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
-                  <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', marginRight: 4 }}>플랫폼:</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-subtle)', marginRight: 4 }}>플랫폼:</span>
                   {event.platforms.length > 0 ? event.platforms.map(p => (
                     <span key={p} className="chip">{PLATFORMS[p] || p}</span>
-                  )) : <span style={{ fontSize: 11.5, color: 'var(--text-subtle)' }}>해당 없음</span>}
+                  )) : <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>해당 없음</span>}
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', marginRight: 4 }}>카테고리:</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-subtle)', marginRight: 4 }}>카테고리:</span>
                   {event.categories.length > 0 ? event.categories.map(c => {
                     const cat = CATEGORIES.find(x => x.id === c);
                     return <span key={c} className="chip">{cat?.label || c}</span>;
-                  }) : <span style={{ fontSize: 11.5, color: 'var(--text-subtle)' }}>전체</span>}
+                  }) : <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>전체</span>}
                 </div>
               </div>
             </>
@@ -210,7 +210,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
 
           {tab === 'products' && (
             <div style={{ marginBottom: 22 }}>
-              <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.5 }}>
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.5 }}>
                 이 이벤트에서 특히 잘 팔릴 가능성이 높은 품목을 기회점수·검색량 기반으로 제안합니다.
               </div>
               {event.products.map((p, i) => (
@@ -230,7 +230,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-                      <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)' }}>{p.name}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{p.name}</span>
                       <span style={{
                         fontSize: 10, fontWeight: 600, padding: '2px 6px', borderRadius: 4,
                         textTransform: 'uppercase', letterSpacing: '0.04em',
@@ -248,7 +248,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                 </div>
               ))}
               {event.products.length === 0 && (
-                <div style={{ padding: 24, textAlign: 'center', fontSize: 12.5, color: 'var(--text-subtle)' }}>
+                <div style={{ padding: 24, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)' }}>
                   이 이벤트는 품목별 제안보다는 브랜드 이미지 차원에서 접근하는 것을 추천합니다.
                 </div>
               )}
@@ -262,10 +262,10 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
                 background: 'linear-gradient(135deg, oklch(0.97 0.03 75) 0%, var(--surface) 100%)',
                 border: '1px solid var(--cat-season-border)',
               }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, fontWeight: 600, color: 'var(--cat-season)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 600, color: 'var(--cat-season)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>
                   실무 인사이트
                 </div>
-                <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>
+                <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.65, whiteSpace: 'pre-line' }}>
                   {event.pro}
                 </div>
               </div>

@@ -49,7 +49,7 @@ export default function DetailPageDesign() {
                 <div style={{ height: 6, background: 'var(--border)', borderRadius: 2, width: '60%' }} />
               </div>
               <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 2 }}>{l.label}</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>{l.desc}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{l.desc}</div>
             </div>
           ))}
         </div>
@@ -73,7 +73,7 @@ export default function DetailPageDesign() {
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{s.title}</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 6 }}>{s.desc}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 6 }}>{s.desc}</div>
               <div style={{
                 height: Math.min(60, s.h / 5),
                 background: 'repeating-linear-gradient(135deg, var(--surface), var(--surface) 8px, var(--bg-sunken) 8px, var(--bg-sunken) 9px)',

@@ -26,7 +26,7 @@ export default function ProductNameOptimizer() {
 
   const panel: React.CSSProperties = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: 18, marginBottom: 14 };
   const chipStyle = (active: boolean): React.CSSProperties => ({
-    padding: '5px 11px', borderRadius: 999, fontSize: 12.5, fontWeight: 500,
+    padding: '5px 11px', borderRadius: 999, fontSize: 13, fontWeight: 500,
     color: active ? 'var(--accent-text)' : 'var(--text-muted)',
     border: `1px solid ${active ? 'var(--accent-border)' : 'var(--border)'}`,
     background: active ? 'var(--accent-bg)' : 'var(--bg-subtle)',
@@ -72,7 +72,7 @@ export default function ProductNameOptimizer() {
           </button>
           <button className="btn"><Icon name="refresh" size={13} />다시 생성</button>
           <div style={{ flex: 1 }} />
-          <span style={{ fontSize: 11.5, color: 'var(--text-subtle)' }}>쿠팡 권장 글자수: 20~40자</span>
+          <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>쿠팡 권장 글자수: 20~40자</span>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export default function ProductNameOptimizer() {
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
             <div style={{ fontSize: 13, fontWeight: 600 }}>생성 결과 (4건)</div>
             <div style={{ flex: 1 }} />
-            <div style={{ fontSize: 11.5, color: 'var(--text-subtle)' }}>점수순 정렬</div>
+            <div style={{ fontSize: 12, color: 'var(--text-subtle)' }}>점수순 정렬</div>
           </div>
           {results.map((r, i) => (
             <div key={i} style={{ padding: 12, borderRadius: 8, background: 'var(--bg-subtle)', border: '1px solid var(--border)', marginBottom: 8 }}>

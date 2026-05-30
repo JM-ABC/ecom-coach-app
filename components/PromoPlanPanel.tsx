@@ -195,14 +195,14 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
                 <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', marginBottom: 6 }}>
                   맘큐 자사몰 기획서 생성
                 </div>
-                <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 340 }}>
+                <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 340 }}>
                   네이버 검색 트렌드 + 이벤트 데이터를 기반으로<br />
                   맘큐 자사몰 전용 프로모션 기획서를 자동 생성합니다.
                 </div>
               </div>
               <button
                 className="btn primary"
-                style={{ marginTop: 8, padding: '10px 28px', fontSize: 13.5 }}
+                style={{ marginTop: 8, padding: '10px 28px', fontSize: 13 }}
                 onClick={generate}
               >
                 <Icon name="sparkles" size={14} />기획서 생성하기
@@ -216,7 +216,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
                 display: 'flex', alignItems: 'center', gap: 8,
                 padding: '10px 14px', borderRadius: 8,
                 background: 'var(--accent-bg)', border: '1px solid var(--accent-border)',
-                marginBottom: 16, fontSize: 12.5, color: 'var(--accent-text)',
+                marginBottom: 16, fontSize: 13, color: 'var(--accent-text)',
               }}>
                 <span style={{
                   width: 16, height: 16, border: '2px solid var(--accent)',
@@ -228,7 +228,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
               <div
                 className="promo-plan-content"
                 style={{
-                  fontSize: 13.5, lineHeight: 1.75,
+                  fontSize: 13, lineHeight: 1.75,
                   color: 'var(--text)',
                 }}
                 dangerouslySetInnerHTML={{ __html: renderMarkdown(planText) }}
@@ -240,7 +240,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
             <div
               className="promo-plan-content"
               style={{
-                fontSize: 13.5, lineHeight: 1.75,
+                fontSize: 13, lineHeight: 1.75,
                 color: 'var(--text)',
               }}
               dangerouslySetInnerHTML={{ __html: renderMarkdown(planText) }}
@@ -261,7 +261,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
               }}>
                 <Icon name="alert" size={22} />
               </div>
-              <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>
                 기획서 생성에 실패했습니다
               </div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)', maxWidth: 300 }}>

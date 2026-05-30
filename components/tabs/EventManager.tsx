@@ -47,7 +47,7 @@ function StatusBadge({ status, label }: { status: string; label: string }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 5,
-      padding: '3px 9px', borderRadius: 999, fontSize: 11.5, fontWeight: 500,
+      padding: '3px 9px', borderRadius: 999, fontSize: 12, fontWeight: 500,
       background: c.bg, color: c.color,
     }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: c.dot, flexShrink: 0 }} />
@@ -177,23 +177,23 @@ function TrendPanel() {
                   minWidth: 52, textAlign: 'center', flexShrink: 0,
                 }}>
                   <div style={{ fontSize: 14, fontWeight: 700, color: sig.color, lineHeight: 1 }}>{sig.icon}</div>
-                  <div style={{ fontSize: 9.5, fontWeight: 700, color: sig.color, marginTop: 2, letterSpacing: '0.02em' }}>{sig.label}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: sig.color, marginTop: 2, letterSpacing: '0.02em' }}>{sig.label}</div>
                 </div>
 
                 {/* 카테고리 정보 */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3, flexWrap: 'wrap' as const }}>
-                    <span style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)' }}>{t.title}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{t.title}</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color: sig.color }}>
                       {t.changeVsPrevWeek >= 0 ? '+' : ''}{t.changeVsPrevWeek}%
                     </span>
-                    <span style={{ fontSize: 10.5, color: 'var(--text-subtle)' }}>전주 대비</span>
+                    <span style={{ fontSize: 11, color: 'var(--text-subtle)' }}>전주 대비</span>
                   </div>
-                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
                     <Icon name="arrowRight" size={10} stroke={2.4} />
                     {sig.action}
                   </div>
-                  <div style={{ fontSize: 10.5, color: 'var(--text-subtle)' }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>
                     {t.keywords?.slice(0, 3).join(' · ')}
                   </div>
                 </div>
@@ -215,7 +215,7 @@ function TrendPanel() {
                   <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
                     {Math.round(t.latestRatio)}
                   </div>
-                  <div style={{ fontSize: 9.5, color: 'var(--text-subtle)', marginTop: 2 }}>/ 100</div>
+                  <div style={{ fontSize: 10, color: 'var(--text-subtle)', marginTop: 2 }}>/ 100</div>
                 </div>
               </div>
             );
@@ -237,7 +237,7 @@ function TrendPanel() {
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <Icon name="sparkles" size={13} />
-            <div style={{ fontSize: 13.5, fontWeight: 700, letterSpacing: '-0.01em' }}>자동 생성된 트렌드 이벤트</div>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '-0.01em' }}>자동 생성된 트렌드 이벤트</div>
             <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 4, background: 'oklch(0.93 0.06 280)', color: 'oklch(0.45 0.18 280)', fontWeight: 600 }}>
               {autoEvents.length}건
             </span>
@@ -255,7 +255,7 @@ function TrendPanel() {
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: catColor(ev.type), flexShrink: 0 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{ev.title}</div>
-                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 2 }}>{ev.start} ~ {ev.end}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{ev.start} ~ {ev.end}</div>
                 </div>
                 <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'oklch(0.93 0.06 280)', color: 'oklch(0.45 0.18 280)', flexShrink: 0 }}>
                   자동 생성
@@ -310,7 +310,7 @@ function WeatherPanel() {
             날씨 API 호출 실패
           </div>
           {error && (
-            <div style={{ fontSize: 11.5, color: 'var(--danger)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' as const }}>
+            <div style={{ fontSize: 12, color: 'var(--danger)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' as const }}>
               {error}
             </div>
           )}
@@ -324,7 +324,7 @@ function WeatherPanel() {
               <span style={{ width: 10, height: 10, borderRadius: '50%', background: catColor(ev.type), flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{ev.title}</div>
-                <div style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>{ev.start} ~ {ev.end}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{ev.start} ~ {ev.end}</div>
               </div>
               <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--cat-weather, oklch(0.93 0.04 220))', color: 'oklch(0.45 0.12 220)' }}>
                 자동 생성
@@ -377,7 +377,7 @@ function EventForm({ initial, onSave, onCancel }: EventFormProps) {
     boxSizing: 'border-box',
   };
   const labelStyle: React.CSSProperties = {
-    fontSize: 11.5, fontWeight: 600, color: 'var(--text-subtle)',
+    fontSize: 12, fontWeight: 600, color: 'var(--text-subtle)',
     textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 5, display: 'block',
   };
   const sectionStyle: React.CSSProperties = { marginBottom: 20 };
@@ -485,7 +485,7 @@ function EventForm({ initial, onSave, onCancel }: EventFormProps) {
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, padding: '8px 10px', background: 'var(--bg-subtle)', borderRadius: 7, border: '1px solid var(--border)' }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 13, fontWeight: 600 }}>{p.name}</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>{p.reason}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{p.reason}</div>
             </div>
             <span style={{ fontSize: 11, padding: '2px 6px', borderRadius: 4, background: 'var(--bg-sunken)', color: 'var(--text-muted)' }}>
               {p.urgency === 'high' ? '긴급' : p.urgency === 'mid' ? '중요' : '여유'}
@@ -618,9 +618,9 @@ function CustomEventList() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{ev.title}</span>
-                  <span className={`chip`} style={{ fontSize: 10.5 }}>{typeLabel(ev.type)}</span>
+                  <span className={`chip`} style={{ fontSize: 11 }}>{typeLabel(ev.type)}</span>
                 </div>
-                <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
                   {ev.start} ~ {ev.end} · 기회점수 {ev.trendScore}
                 </div>
               </div>
@@ -696,7 +696,7 @@ function NewsDetectionPanel() {
             key={t.id}
             onClick={() => setInsightTab(t.id)}
             style={{
-              padding: '5px 14px', borderRadius: 6, fontSize: 12.5, fontWeight: 500,
+              padding: '5px 14px', borderRadius: 6, fontSize: 13, fontWeight: 500,
               display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, whiteSpace: 'nowrap' as const,
               color: insightTab === t.id ? 'var(--text)' : 'var(--text-muted)',
               background: insightTab === t.id ? 'var(--surface)' : 'transparent',
@@ -726,19 +726,19 @@ function NewsDetectionPanel() {
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-                        <span style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text)' }}>{ev.title}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{ev.title}</span>
                         <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 999, fontWeight: 600, background: conf.bg, color: conf.color }}>
                           {conf.label}
                         </span>
-                        <span style={{ fontSize: 11.5, color: 'var(--text-muted)', padding: '1px 6px', background: 'var(--bg-subtle)', borderRadius: 4, border: '1px solid var(--border)' }}>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)', padding: '1px 6px', background: 'var(--bg-subtle)', borderRadius: 4, border: '1px solid var(--border)' }}>
                           {PLATFORM_LABELS[ev.platform] ?? ev.platform}
                         </span>
                       </div>
-                      <div style={{ fontSize: 12.5, color: 'var(--text-muted)', marginBottom: 6 }}>
+                      <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>
                         {ev.start} ~ {ev.end}
                       </div>
                       <a href={ev.sourceLink} target="_blank" rel="noopener noreferrer"
-                        style={{ fontSize: 11.5, color: 'var(--accent-text)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
+                        style={{ fontSize: 12, color: 'var(--accent-text)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
                       >
                         <Icon name="share" size={11} />
                         {ev.sourceTitle.slice(0, 60)}{ev.sourceTitle.length > 60 ? '…' : ''}
@@ -789,7 +789,7 @@ function NewsDetectionPanel() {
                         </span>
                         <span style={{ fontSize: 11, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{ins.pubDate}</span>
                       </div>
-                      <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text)', marginBottom: 5, lineHeight: 1.4 }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 5, lineHeight: 1.4 }}>
                         {ins.title}
                       </div>
                       {ins.summary && (
@@ -798,7 +798,7 @@ function NewsDetectionPanel() {
                         </div>
                       )}
                       <a href={ins.sourceLink} target="_blank" rel="noopener noreferrer"
-                        style={{ fontSize: 11.5, color: 'var(--accent-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                        style={{ fontSize: 12, color: 'var(--accent-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                       >
                         <Icon name="share" size={11} />기사 원문 보기
                       </a>

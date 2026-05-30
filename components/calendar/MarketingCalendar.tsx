@@ -70,7 +70,7 @@ function FilterBar({ category, setCategory, filteredLen, totalLen }: {
               key={c.id}
               onClick={() => setCategory(c.id)}
               style={{
-                padding: '3px 9px', borderRadius: 999, fontSize: 11.5, fontWeight: 500,
+                padding: '3px 9px', borderRadius: 999, fontSize: 12, fontWeight: 500,
                 color: category === c.id ? 'var(--accent-text)' : 'var(--text-muted)',
                 border: '1px solid ' + (category === c.id ? 'var(--accent-border)' : 'var(--border)'),
                 background: category === c.id ? 'var(--accent-bg)' : 'var(--bg-subtle)',
@@ -127,7 +127,7 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
         <Icon name="lightbulb" size={14} stroke={2.2} />
         <span style={{ fontSize: 13, fontWeight: 600 }}>이번 주 인사이트</span>
         {hasTrendData && (
-          <span style={{ marginLeft: 'auto', fontSize: 10.5, color: 'var(--success)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
+          <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--success)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
             <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--success)', display: 'inline-block' }} />
             실시간 연동
           </span>
@@ -137,7 +137,7 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
       {activeWeather.length > 0 && (
         <div style={{ marginBottom: 10, padding: '8px 10px', borderRadius: 8, background: 'oklch(0.96 0.025 220)', border: '1px solid oklch(0.88 0.05 220)' }}>
           {activeWeather.map(w => (
-            <div key={w.id} style={{ fontSize: 12.5, color: 'oklch(0.38 0.1 220)', lineHeight: 1.5 }}>
+            <div key={w.id} style={{ fontSize: 13, color: 'oklch(0.38 0.1 220)', lineHeight: 1.5 }}>
               <strong>{w.title}</strong> — {w.summary}
             </div>
           ))}
@@ -154,19 +154,19 @@ function DynamicInsightCard({ thisWeek, upcoming, trendByKey, weatherEvents }: {
               }}>
                 {t.changeVsPrevWeek > 0 ? '↑' : '↓'} {t.changeVsPrevWeek > 0 ? '+' : ''}{t.changeVsPrevWeek}%
               </span>
-              <span style={{ fontSize: 12.5, color: 'var(--text)', fontWeight: 500 }}>{t.title}</span>
-              <span style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>전주 대비 검색량</span>
+              <span style={{ fontSize: 13, color: 'var(--text)', fontWeight: 500 }}>{t.title}</span>
+              <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>전주 대비 검색량</span>
             </div>
           ))}
         </div>
       ) : (
-        <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 10 }}>
+        <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 10 }}>
           네이버 트렌드 데이터 로딩 중...
         </div>
       )}
 
       {topEvent && (
-        <div style={{ paddingTop: 10, borderTop: '1px solid var(--divider)', fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+        <div style={{ paddingTop: 10, borderTop: '1px solid var(--divider)', fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
           지금 집중할 것: <strong style={{ color: 'var(--text)' }}>{topEvent.title}</strong>
           {' '}(기회점수 {topEvent.trendScore})
         </div>
@@ -203,7 +203,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
             <Icon name="flag" size={14} />
             <span style={{ fontSize: 13, fontWeight: 600 }}>이번 주 핵심</span>
-            <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{thisWeekFiltered.length} events</span>
+            <span style={{ fontSize: 12, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{thisWeekFiltered.length} events</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {thisWeekFiltered.length > 0 ? (
@@ -220,7 +220,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
             <Icon name="calendar" size={14} />
             <span style={{ fontSize: 13, fontWeight: 600 }}>다음 2개월</span>
-            <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{upcomingNotActive.slice(0, 10).length} events</span>
+            <span style={{ fontSize: 12, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{upcomingNotActive.slice(0, 10).length} events</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {upcomingNotActive.slice(0, 10).map(e => (
@@ -320,7 +320,7 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
                 {day && (
                   <>
                     <div className="grid-view-day-num" style={{
-                      fontSize: 11.5, fontWeight: 500, fontVariantNumeric: 'tabular-nums',
+                      fontSize: 12, fontWeight: 500, fontVariantNumeric: 'tabular-nums',
                       padding: '1px 4px', borderRadius: 4, alignSelf: 'flex-start',
                       color: 'var(--text-muted)',
                       ...(isToday(day) ? { background: 'var(--accent)', color: '#fff' } : {}),
@@ -332,7 +332,7 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
                         key={ev.id}
                         className="grid-view-event-chip"
                         style={{
-                          padding: '2px 4px', borderRadius: 3, fontSize: 10.5, fontWeight: 500,
+                          padding: '2px 4px', borderRadius: 3, fontSize: 11, fontWeight: 500,
                           lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                           cursor: 'pointer', background: catColor(ev.type), color: '#fff', opacity: 0.92,
                         }}
@@ -354,7 +354,7 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
           })}
         </div>
       </div>
-      <div style={{ display: 'flex', gap: 10, marginTop: 12, fontSize: 11.5, color: 'var(--text-muted)' }}>
+      <div style={{ display: 'flex', gap: 10, marginTop: 12, fontSize: 12, color: 'var(--text-muted)' }}>
         {Object.entries(EVENT_TYPES).map(([k, v]) => (
           <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <span style={{ width: 10, height: 10, borderRadius: 2, background: catColor(k) }} />
@@ -612,7 +612,7 @@ export default function MarketingCalendar() {
                 display: 'inline-flex', alignItems: 'center', gap: 5,
                 padding: '2px 8px', borderRadius: 999,
                 background: 'var(--bg-subtle)', border: '1px solid var(--border)',
-                fontSize: 11.5, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+                fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
                 whiteSpace: 'nowrap' as const,
               }}>
                 <Icon name="clock" size={10} />{fmtDate(TODAY.toISOString())}

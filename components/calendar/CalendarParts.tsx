@@ -94,21 +94,21 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                   background: meta.color, color: 'white',
                   fontSize: 11, fontWeight: 700,
                 }}>{meta.label[0]}</span>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: meta.color }}>{meta.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: meta.color }}>{meta.label}</span>
                 <span style={{
                   fontSize: 10, color: meta.color, fontWeight: 600,
                   padding: '2px 7px', borderRadius: 4,
                   border: `1px solid ${meta.color}`, opacity: 0.75,
                 }}>운영 가이드</span>
                 {tip?.metric && (
-                  <span style={{ marginLeft: 'auto', fontSize: 10.5, color: meta.color, fontWeight: 600 }}>
+                  <span style={{ marginLeft: 'auto', fontSize: 11, color: meta.color, fontWeight: 600 }}>
                     {tip.metric}
                   </span>
                 )}
               </div>
               {tip ? (
                 <>
-                  <div style={{ fontSize: 11.5, color: 'var(--text)', lineHeight: 1.55 }}>{tip.tip}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.55 }}>{tip.tip}</div>
                   {tip.action && (
                     <div style={{ fontSize: 11, color: meta.color, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
                       <Icon name="arrowRight" size={10} stroke={2.4} />
@@ -117,7 +117,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                   )}
                 </>
               ) : (
-                <div style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
+                <div style={{ fontSize: 12, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
                   맘큐 전략 가이드 준비 중
                 </div>
               )}
@@ -130,7 +130,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                   border: '1px solid oklch(0.88 0.08 15)',
                 }}>
                   <div style={{
-                    fontSize: 10.5,
+                    fontSize: 11,
                     fontWeight: 700,
                     color: 'var(--accent-text)',
                     textTransform: 'uppercase' as const,
@@ -172,15 +172,15 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
               }}>{meta.label[0]}</span>
               <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>{meta.label}</span>
               {tip?.metric && !isOpen && (
-                <span style={{ fontSize: 10.5, color: 'var(--success)', fontWeight: 600 }}>
+                <span style={{ fontSize: 11, color: 'var(--success)', fontWeight: 600 }}>
                   {tip.metric}
-                  <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontWeight: 400 }}> 추정</span>
+                  <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontWeight: 400 }}> 추정</span>
                 </span>
               )}
               <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
                 {pStatus.status === 'overlap' && (
                   <span style={{
-                    fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+                    fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
                     background: 'oklch(0.96 0.04 15)', color: 'oklch(0.52 0.20 15)',
                     border: '1px solid oklch(0.88 0.08 15)', whiteSpace: 'nowrap' as const,
                   }}>
@@ -189,7 +189,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                 )}
                 {pStatus.status === 'opportunity' && (
                   <span style={{
-                    fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+                    fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
                     background: 'oklch(0.95 0.04 240)', color: 'oklch(0.45 0.20 240)',
                     border: '1px solid oklch(0.85 0.08 240)', whiteSpace: 'nowrap' as const,
                   }}>
@@ -198,7 +198,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                 )}
                 {pStatus.status === 'none' && (
                   <span style={{
-                    fontSize: 9.5, fontWeight: 500, padding: '2px 7px', borderRadius: 999,
+                    fontSize: 10, fontWeight: 500, padding: '2px 7px', borderRadius: 999,
                     background: 'var(--bg-subtle)', color: 'var(--text-subtle)',
                     border: '1px solid var(--border)', whiteSpace: 'nowrap' as const,
                   }}>
@@ -217,13 +217,13 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
             {isOpen && (
               <div style={{ padding: compact ? '0 11px 10px' : '0 13px 11px', display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {tip?.metric && (
-                  <div style={{ fontSize: 10.5, color: 'var(--success)', fontWeight: 600 }}>
-                    {tip.metric} <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontWeight: 400 }}>추정</span>
+                  <div style={{ fontSize: 11, color: 'var(--success)', fontWeight: 600 }}>
+                    {tip.metric} <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontWeight: 400 }}>추정</span>
                   </div>
                 )}
                 {tip ? (
                   <>
-                    <div style={{ fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{tip.tip}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>{tip.tip}</div>
                     {tip.action && (
                       <div style={{ fontSize: 11, color: meta.color, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Icon name="arrowRight" size={10} stroke={2.4} />
@@ -232,7 +232,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                     )}
                   </>
                 ) : (
-                  <div style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
+                  <div style={{ fontSize: 12, color: 'var(--text-subtle)', fontStyle: 'italic' }}>
                     플랫폼별 전략 가이드 준비 중
                   </div>
                 )}
@@ -240,7 +240,7 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                 {/* 플랫폼 행사 카드 섹션 */}
                 <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--divider)' }}>
                   <div style={{
-                    fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)',
+                    fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)',
                     textTransform: 'uppercase' as const, letterSpacing: '0.05em',
                     marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4,
                   }}>
@@ -267,10 +267,10 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                             borderLeft: `3px solid ${borderL}`,
                           }}>
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 2 }}>
-                              <span style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
+                              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
                                 {pe.title}
                               </span>
-                              <span style={{ fontSize: 9.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
+                              <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
                                 {fmtDate(pe.start)}{pe.end !== pe.start && ` – ${fmtDate(pe.end)}`}
                               </span>
                             </div>
@@ -369,7 +369,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
           {trendHint && Math.abs(trendHint.change) >= 5 && (
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 3,
-              padding: '3px 8px', borderRadius: 999, fontSize: 11.5, fontWeight: 600,
+              padding: '3px 8px', borderRadius: 999, fontSize: 12, fontWeight: 600,
               background: trendHint.change > 0 ? 'oklch(0.94 0.06 145)' : 'oklch(0.96 0.04 15)',
               color: trendHint.change > 0 ? 'var(--success)' : 'var(--danger)',
             }}>
@@ -387,7 +387,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
         </div>
         {overlappingEvents && overlappingEvents.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 12, flexWrap: 'wrap' as const }}>
-            <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', flexShrink: 0, whiteSpace: 'nowrap' as const }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', flexShrink: 0, whiteSpace: 'nowrap' as const }}>
               동시 진행
             </span>
             {overlappingEvents.map(e => (
@@ -396,7 +396,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
                 onClick={(ev) => { ev.stopPropagation(); onOpen(e); }}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 5,
-                  padding: '3px 9px', borderRadius: 999, fontSize: 11.5, fontWeight: 500,
+                  padding: '3px 9px', borderRadius: 999, fontSize: 12, fontWeight: 500,
                   background: 'var(--bg-subtle)', border: '1px solid var(--border)',
                   color: 'var(--text-muted)', cursor: 'pointer',
                 }}
@@ -407,7 +407,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             ))}
           </div>
         )}
-        <div style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.55, marginBottom: 14 }}>
+        <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.55, marginBottom: 14 }}>
           {event.summary}
         </div>
         <div className="event-hero-metrics" style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
@@ -417,9 +417,9 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             { label: 'D-Day', value: active ? '진행중' : dU >= 0 ? `D-${dU}` : `D+${Math.abs(dU)}`, color: 'var(--accent-text)', note: '' },
           ].map(m => (
             <div key={m.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
               <div className="event-hero-metric-value" style={{ fontSize: 18, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
-              {m.note && <div style={{ fontSize: 9.5, color: 'var(--text-subtle)' }}>{m.note}</div>}
+              {m.note && <div style={{ fontSize: 10, color: 'var(--text-subtle)' }}>{m.note}</div>}
             </div>
           ))}
         </div>
@@ -458,7 +458,7 @@ function PlatformEventsCollapsible({ events }: { events: MarketingEvent[] }) {
       <div style={{ paddingTop: 10, borderTop: '1px solid var(--divider)' }}>
         <div
           style={{
-            fontSize: 10.5, fontWeight: 600, color: 'var(--text-subtle)',
+            fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)',
             textTransform: 'uppercase' as const, letterSpacing: '0.05em',
             display: 'flex', alignItems: 'center', gap: 4,
             cursor: 'pointer', userSelect: 'none' as const,
@@ -490,7 +490,7 @@ function PlatformEventsCollapsible({ events }: { events: MarketingEvent[] }) {
                   </span>
                 </div>
                 <div style={{
-                  fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.45,
+                  fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.45,
                   display: '-webkit-box', WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
                 }}>
@@ -506,7 +506,7 @@ function PlatformEventsCollapsible({ events }: { events: MarketingEvent[] }) {
                     href={pe.sourceLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 5, fontSize: 10.5, color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 5, fontSize: 11, color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }}
                     onClick={e => e.stopPropagation()}
                   >
                     기사 원문 <Icon name="arrowRight" size={9} />
@@ -567,7 +567,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
             </span>
             {active && (
               <span style={{
-                marginLeft: 'auto', fontSize: 9.5, fontWeight: 700,
+                marginLeft: 'auto', fontSize: 10, fontWeight: 700,
                 color: 'var(--danger)', letterSpacing: '0.06em',
               }}>LIVE</span>
             )}
@@ -576,7 +576,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
             {event.title}
           </div>
           <div style={{
-            fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.55,
+            fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.55,
             marginBottom: event.mdBrief ? 8 : 12,
             display: '-webkit-box', WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
@@ -586,7 +586,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
           {event.mdBrief && (
             <div style={{
               display: 'flex', flexWrap: 'wrap' as const, gap: '4px 10px',
-              marginBottom: 12, fontSize: 11.5, color: 'var(--text-subtle)', lineHeight: 1.4,
+              marginBottom: 12, fontSize: 12, color: 'var(--text-subtle)', lineHeight: 1.4,
             }}>
               <span><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>품목</span> {event.mdBrief.items}</span>
               <span style={{ color: 'var(--border-strong)' }}>·</span>
@@ -627,7 +627,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
           }}>
             {active ? '●' : dU >= 0 ? dU : `+${Math.abs(dU)}`}
           </div>
-          <div style={{ fontSize: 9.5, color: 'var(--text-subtle)', marginTop: 3, letterSpacing: '0.04em' }}>
+          <div style={{ fontSize: 10, color: 'var(--text-subtle)', marginTop: 3, letterSpacing: '0.04em' }}>
             {active ? 'LIVE' : dU >= 0 ? 'DAYS' : 'OVER'}
           </div>
         </div>
@@ -643,13 +643,13 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' as const, marginBottom: 4 }}>
-            <span style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em' }}>
+            <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.01em' }}>
               {event.title}
             </span>
             {trendHint && Math.abs(trendHint.change) >= 5 && (
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 3,
-                padding: '2px 7px', borderRadius: 999, fontSize: 10.5, fontWeight: 600,
+                padding: '2px 7px', borderRadius: 999, fontSize: 11, fontWeight: 600,
                 background: trendHint.change > 0 ? 'oklch(0.94 0.06 145)' : 'oklch(0.96 0.04 15)',
                 color: trendHint.change > 0 ? 'var(--success)' : 'var(--danger)',
               }}>
@@ -657,10 +657,10 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
               </span>
             )}
           </div>
-          <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
+          <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
           <div style={{ display: 'flex', gap: 16, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--divider)' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>기회점수</div>
+              <div style={{ fontSize: 11, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>기회점수</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <span style={{ color: event.trendScore >= 80 ? 'var(--warning)' : 'var(--text-disabled)', display: 'flex' }}>
                   <Icon
@@ -683,8 +683,8 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
               { label: '예상 GMV', value: event.gmv, color: 'var(--success)' },
             ].map(m => (
               <div key={m.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
-                <div style={{ fontSize: 13.5, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>
+                <div style={{ fontSize: 11, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{m.label}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: m.color, fontVariantNumeric: 'tabular-nums' }}>
                   {m.value}
                 </div>
               </div>
@@ -695,7 +695,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
 
       {displayProducts.length > 0 && (
         <div style={{ padding: '0 16px 14px' }}>
-          <div style={{ fontSize: 11.5, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+          <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
             <Icon name="package" size={11} />
             추천 품목 ({displayProducts.length}/{event.products.length})
           </div>
@@ -712,7 +712,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
                 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{p.name}</div>
-                  <div style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>{p.reason}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{p.reason}</div>
                 </div>
                 <button className="btn sm ghost" onClick={(e) => e.stopPropagation()}>
                   <Icon name="arrowRight" size={12} />
@@ -780,16 +780,16 @@ export const MiniItem = React.memo(function MiniItem({ event, onOpen }: MiniItem
       onMouseLeave={() => setHover(false)}
       onClick={() => onOpen(event)}
     >
-      <div style={{ minWidth: 36, textAlign: 'center', fontSize: 10.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
+      <div style={{ minWidth: 36, textAlign: 'center', fontSize: 11, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
         <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 1, fontFamily: 'var(--font-mono)' }}>{date.getDate()}</div>
         <div>{date.getMonth() + 1}월</div>
       </div>
       <div style={{ width: 3, height: 32, borderRadius: 2, background: catColor(event.type) }} />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {event.title}
         </div>
-        <div style={{ fontSize: 10.5, color: 'var(--text-subtle)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginTop: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
           {badge && (
             <span style={{
               fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
