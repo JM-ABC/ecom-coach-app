@@ -87,7 +87,7 @@ GEMINI_API_KEY=                 # Gemini AI (AI 기획서) — process.env.GEMIN
 - CSS-in-JS: inline style + CSS Variables (`var(--text)`, `var(--surface)` 등)
 - 새 파일 생성보다 기존 파일 수정 우선
 - 타입 체크: `npx tsc --noEmit`으로 항상 확인 후 커밋
-- 브랜치: `master` → `origin/master` 직접 push
+- 브랜치: `main` → `origin/main` 직접 push
 
 ## 디자인 시스템 가드레일
 
