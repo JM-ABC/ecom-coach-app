@@ -414,9 +414,9 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'nowrap' as const, overflowX: 'auto', paddingBottom: 2 }}>
           <button className="btn primary" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
-            <Icon name="target" size={13} />액션 플랜 열기
+            <Icon name="target" size={13} />액션 플랜
           </button>
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={13} />추천 품목
@@ -734,7 +734,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
           {event.checklist.filter(c => c.done).length}/{event.checklist.length}
         </div>
         <div style={{ flex: 1 }} />
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' as const }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'nowrap' as const, overflowX: 'auto' }}>
           <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
             <Icon name="target" size={11} />액션 플랜
           </button>

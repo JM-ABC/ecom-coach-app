@@ -104,13 +104,13 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
   return (
     <>
       <div
-        style={{ position: 'fixed', inset: 0, background: 'rgba(17, 24, 39, 0.35)', zIndex: 50, animation: 'fadeIn 180ms var(--easing)' }}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(17, 24, 39, 0.35)', zIndex: 110, animation: 'fadeIn 180ms var(--easing)' }}
         onClick={onClose}
       />
       <div className="detail-panel" style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, width: 540, maxWidth: '100vw',
         background: 'var(--surface)', borderLeft: '1px solid var(--border)',
-        boxShadow: 'var(--shadow-lg)', zIndex: 51,
+        boxShadow: 'var(--shadow-lg)', zIndex: 111,
         display: 'flex', flexDirection: 'column', overflow: 'hidden',
         animation: 'slideIn 220ms var(--easing)',
       }}>

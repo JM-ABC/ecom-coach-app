@@ -85,14 +85,14 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       {showSettings && (
         <>
           <div
-            style={{ position: 'fixed', inset: 0, background: 'rgba(17,24,39,0.35)', zIndex: 60, animation: 'fadeIn 180ms var(--easing)' }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(17,24,39,0.35)', zIndex: 120, animation: 'fadeIn 180ms var(--easing)' }}
             onClick={() => setShowSettings(false)}
           />
           <div style={{
             position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
             width: 340, background: 'var(--surface)', borderRadius: 14,
             boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)',
-            zIndex: 61, padding: 24, animation: 'fadeIn 180ms var(--easing)',
+            zIndex: 121, padding: 24, animation: 'fadeIn 180ms var(--easing)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
               <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>설정</div>
