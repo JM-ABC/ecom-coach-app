@@ -1,8 +1,22 @@
 'use client';
 
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useState, useEffect } from 'react';
 import Icon from './Icon';
 import type { TabId } from '@/lib/types';
+
+function useTheme() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useEffect(() => {
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (saved) { setTheme(saved); document.documentElement.setAttribute('data-theme', saved); }
+  }, []);
+  const toggle = (t: 'light' | 'dark') => {
+    setTheme(t);
+    localStorage.setItem('theme', t);
+    document.documentElement.setAttribute('data-theme', t);
+  };
+  return { theme, toggle };
+}
 
 const s: Record<string, CSSProperties> = {
   sidebar: {
@@ -63,8 +77,53 @@ const tools = [
 ];
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+  const [showSettings, setShowSettings] = useState(false);
+  const { theme, toggle } = useTheme();
+
   return (
     <>
+      {showSettings && (
+        <>
+          <div
+            style={{ position: 'fixed', inset: 0, background: 'rgba(17,24,39,0.35)', zIndex: 60, animation: 'fadeIn 180ms var(--easing)' }}
+            onClick={() => setShowSettings(false)}
+          />
+          <div style={{
+            position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+            width: 340, background: 'var(--surface)', borderRadius: 14,
+            boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)',
+            zIndex: 61, padding: 24, animation: 'fadeIn 180ms var(--easing)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>설정</div>
+              <div style={{ flex: 1 }} />
+              <button className="btn icon sm ghost" onClick={() => setShowSettings(false)}>
+                <Icon name="x" size={14} />
+              </button>
+            </div>
+
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>테마</div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {(['light', 'dark'] as const).map(t => (
+                <button
+                  key={t}
+                  onClick={() => toggle(t)}
+                  style={{
+                    flex: 1, padding: '10px 0', borderRadius: 8, fontSize: 13, fontWeight: 600,
+                    border: `1.5px solid ${theme === t ? 'var(--accent)' : 'var(--border)'}`,
+                    background: theme === t ? 'var(--accent-bg)' : 'var(--bg-subtle)',
+                    color: theme === t ? 'var(--accent-text)' : 'var(--text-muted)',
+                    cursor: 'pointer', transition: 'all 150ms',
+                  }}
+                >
+                  {t === 'light' ? '☀️ 라이트' : '🌙 다크'}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
       <aside style={s.sidebar} className="sidebar-desktop">
         <div style={s.brand}>
           <div style={s.brandMark}>
@@ -176,7 +235,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
               <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>맘큐 MD 담당자</div>
               <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>맘큐 플랫폼</div>
             </div>
-            <button className="btn icon sm ghost"><Icon name="settings" size={13} /></button>
+            <button className="btn icon sm ghost" onClick={() => setShowSettings(true)}><Icon name="settings" size={13} /></button>
           </div>
         </div>
       </aside>
