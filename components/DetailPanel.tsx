@@ -16,15 +16,53 @@ const urgencyStyle = (u: string) => ({
 
 const urgencyLabel = (u: string) => ({ high: '긴급', mid: '중요', low: '여유' }[u] ?? u);
 
+const GIFT_MAP: Record<string, { name: string; reason: string }> = {
+  b_diaper:   { name: '기저귀 파우치 (방수 소형)', reason: '기저귀 교체 시 휴대 필수' },
+  b_wipe:     { name: '휴대용 물티슈 케이스', reason: '물티슈 보관 편의' },
+  b_toy:      { name: '스티커북 / 색연필 세트', reason: '완구 구매 어린이 추가 선물' },
+  b_fashion:  { name: '유아 양말 세트 (3켤레)', reason: '의류 구매 시 세트 완성' },
+  b_formula:  { name: '젖병 세정 솔 세트', reason: '분유 수유 필수 소모품' },
+  b_bedding:  { name: '미니 베개 / 경추 쿠션', reason: '침구 구매 시 기능 보완' },
+  b_safety:   { name: '모서리 보호대 세트 (8p)', reason: '안전용품 보완 구성' },
+  b_carry:    { name: '멀티 파우치 (방수)', reason: '외출용품 정리 보완' },
+  b_stroller: { name: '유모차 음료 홀더', reason: '유모차 편의 액세서리' },
+  b_carseat:  { name: '차량용 선쉐이드 (2p)', reason: '카시트 탑승 자외선 차단' },
+  b_bath:     { name: '아기 목욕 타월 / 욕조 온도계', reason: '목욕 세트 완성' },
+  b_hygiene:  { name: '휴대용 손세정 파우치', reason: '위생용품 외출 대응' },
+  b_furniture:{ name: '조립 방지 패드 세트', reason: '가구 바닥 보호 보완' },
+  b_feed:     { name: '수유 패드 소형 팩', reason: '수유 시 필수 소모품' },
+  b_wean:     { name: '실리콘 빕 (턱받이)', reason: '이유식기 세트 완성' },
+  b_suppl:    { name: '영양제 휴대 케이스', reason: '복약 편의성 향상' },
+  l_body:     { name: '핸드크림 샘플 세트', reason: '바디케어 브랜드 체험' },
+  l_hair:     { name: '헤어밴드 / 미니 트리트먼트', reason: '헤어케어 보완 구성' },
+  l_oral:     { name: '치실 / 가글 샘플', reason: '구강케어 루틴 완성' },
+  l_tissue:   { name: '미니 물티슈 세트 (10매×3)', reason: '화장지 보완 휴대용' },
+  l_sanitary: { name: '위생 파우치 (소형)', reason: '위생용품 휴대 편의' },
+  l_laundry:  { name: '세탁 망 세트 (소/중)', reason: '세탁 세트 완성' },
+  l_clean:    { name: '수세미 / 고무장갑 세트', reason: '청소 세트 보완' },
+  l_air:      { name: '미니 탈취제 (2p)', reason: '공기케어 보완 소모품' },
+  l_health:   { name: '약통 케이스 / 파우치', reason: '건강용품 휴대 보완' },
+  l_bath:     { name: '논슬립 욕실 스티커 세트', reason: '욕실 안전 보완' },
+  l_storage:  { name: '라벨 스티커 세트', reason: '수납 정리 완성' },
+  l_electric: { name: '멀티탭 안전 커버 세트', reason: '전기용품 안전 보완' },
+};
+
+function fmtGiftPrice(priceRange?: { min: number; max: number }) {
+  if (!priceRange) return '단가의 10% 수준';
+  const lo = Math.round(priceRange.min * 0.1 / 500) * 500;
+  const hi = Math.round(priceRange.max * 0.1 / 500) * 500;
+  return `₩${lo.toLocaleString()}~₩${hi.toLocaleString()}`;
+}
+
 interface DetailPanelProps {
   event: MarketingEvent;
   onClose: () => void;
-  initialTab?: 'plan' | 'products' | 'insights';
+  initialTab?: 'plan' | 'products' | 'gift' | 'insights';
   onOpenPromoPlan?: (e: MarketingEvent) => void;
 }
 
 export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpenPromoPlan }: DetailPanelProps) {
-  const [tab, setTab] = useState<'plan' | 'products' | 'insights'>(initialTab);
+  const [tab, setTab] = useState<'plan' | 'products' | 'gift' | 'insights'>(initialTab);
   const [showPromo, setShowPromo] = useState(false);
   const [checked, setChecked] = useState<Record<number, boolean>>(
     Object.fromEntries(event.checklist.map((c, i) => [i, c.done]))
@@ -41,6 +79,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
   const subtabs = [
     { id: 'plan' as const, label: '액션 플랜', icon: 'target' },
     { id: 'products' as const, label: `추천 품목 (${event.products.length})`, icon: 'package' },
+    { id: 'gift' as const, label: '사은품 추천', icon: 'crown' },
     { id: 'insights' as const, label: '실무 인사이트', icon: 'lightbulb' },
   ];
 
@@ -291,6 +330,50 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
               {event.products.length === 0 && (
                 <div style={{ padding: 24, textAlign: 'center', fontSize: 13, color: 'var(--text-subtle)' }}>
                   이 이벤트는 품목별 제안보다는 브랜드 이미지 차원에서 접근하는 것을 추천합니다.
+                </div>
+              )}
+            </div>
+          )}
+
+          {tab === 'gift' && (
+            <div style={{ marginBottom: 22 }}>
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16, lineHeight: 1.5 }}>
+                추천 품목 단가의 <strong style={{ color: 'var(--accent-text)' }}>10%</strong> 수준 사은품 제안입니다. 구매 전환율 향상과 객단가 방어에 활용하세요.
+              </div>
+              {event.products.filter(p => GIFT_MAP[p.category]).map((p, i) => {
+                const gift = GIFT_MAP[p.category];
+                return (
+                  <div key={i} style={{ padding: '12px 14px', borderRadius: 8, background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, color: 'var(--text-subtle)', marginBottom: 2 }}>본 제품</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{p.name}</div>
+                        {p.priceRange && (
+                          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
+                            ₩{p.priceRange.min.toLocaleString()}~₩{p.priceRange.max.toLocaleString()}
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ fontSize: 10, color: 'var(--text-subtle)', marginBottom: 2 }}>사은품 단가 기준</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-text)', fontVariantNumeric: 'tabular-nums' }}>
+                          {fmtGiftPrice(p.priceRange)}
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, background: 'var(--accent-bg)', border: '1px solid var(--accent-border)' }}>
+                      <Icon name="crown" size={12} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-text)' }}>{gift.name}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>{gift.reason}</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              {event.products.filter(p => !GIFT_MAP[p.category]).length > 0 && (
+                <div style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: 8 }}>
+                  * 사은품 매핑이 없는 품목 {event.products.filter(p => !GIFT_MAP[p.category]).length}개는 제외됨
                 </div>
               )}
             </div>

@@ -329,7 +329,7 @@ export interface TrendHint {
 // ---- EventHero ----
 interface EventHeroProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'gift' | 'insights') => void;
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendHint?: TrendHint;
   overlappingEvents?: MarketingEvent[];
@@ -430,6 +430,9 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={13} />추천 품목
           </button>
+          <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'gift'); }}>
+            <Icon name="crown" size={13} />사은품 추천
+          </button>
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'insights'); }}>
             <Icon name="lightbulb" size={13} />실무 인사이트
           </button>
@@ -527,7 +530,7 @@ function PlatformEventsCollapsible({ events }: { events: MarketingEvent[] }) {
 // ---- EventCard ----
 interface EventCardProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'gift' | 'insights') => void;
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   filter: string;
   trendHint?: TrendHint;
@@ -743,6 +746,9 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
           <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={11} />추천 품목
           </button>
+          <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'gift'); }}>
+            <Icon name="crown" size={11} />사은품
+          </button>
           <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'insights'); }}>
             <Icon name="lightbulb" size={11} />실무 인사이트
           </button>
@@ -764,7 +770,7 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
 // ---- MiniItem ----
 interface MiniItemProps {
   event: MarketingEvent;
-  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'gift' | 'insights') => void;
 }
 
 export const MiniItem = React.memo(function MiniItem({ event, onOpen }: MiniItemProps) {

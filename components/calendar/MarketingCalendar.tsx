@@ -181,7 +181,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   thisWeek: MarketingEvent[];
   upcoming: MarketingEvent[];
   filter: string;
-  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'insights') => void;
+  onOpen: (e: MarketingEvent, tab?: 'plan' | 'products' | 'gift' | 'insights') => void;
   onOpenPromoPlan?: (e: MarketingEvent) => void;
   trendByKey: Record<string, CategoryTrend>;
   weatherEvents: MarketingEvent[];
@@ -513,10 +513,10 @@ export default function MarketingCalendar() {
   const [view, setView] = useState<ViewMode>('focus');
   const [category, setCategory] = useState('all');
   const [selected, setSelected] = useState<MarketingEvent | null>(null);
-  const [selectedTab, setSelectedTab] = useState<'plan' | 'products' | 'insights'>('plan');
+  const [selectedTab, setSelectedTab] = useState<'plan' | 'products' | 'gift' | 'insights'>('plan');
   const [promoPlanEvent, setPromoPlanEvent] = useState<MarketingEvent | null>(null);
 
-  const openPanel = (e: MarketingEvent, tab: 'plan' | 'products' | 'insights' = 'plan') => {
+  const openPanel = (e: MarketingEvent, tab: 'plan' | 'products' | 'gift' | 'insights' = 'plan') => {
     setSelected(e);
     setSelectedTab(tab);
   };
