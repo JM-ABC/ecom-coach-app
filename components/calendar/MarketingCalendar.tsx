@@ -189,8 +189,9 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   newsPlatformEvents: MarketingEvent[];
 }) {
   const isNewsPlatform = (e: MarketingEvent) => e.source === 'news' && e.type === 'platform';
-  const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id && !isNewsPlatform(e));
   const thisWeekFiltered = thisWeek.filter(e => e.id !== hero?.id && !isNewsPlatform(e));
+  const thisWeekIds = new Set(thisWeekFiltered.map(e => e.id));
+  const upcomingNotActive = upcoming.filter(e => e.id !== hero?.id && !isNewsPlatform(e) && !thisWeekIds.has(e.id));
   const getOverlappingPlatform = (ev: MarketingEvent) =>
     newsPlatformEvents.filter(np => np.start <= ev.end && np.end >= ev.start);
 

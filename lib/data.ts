@@ -219,6 +219,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '휴대용 아기 방수매트', reason: '기저귀 교체+식사 겸용 수요', urgency: 'high', category: 'b_safety', priceRange: { min: 8000, max: 22000 }, prepDays: 7, momqTip: '기저귀 구매 고객 대상 크로스셀. 장바구니 추천 배너 삽입.' },
       { name: '아기띠·힙시트', reason: '짧은 나들이 필수템, 봄 신상 구매 집중', urgency: 'mid', category: 'b_carry', priceRange: { min: 35000, max: 120000 }, prepDays: 21, momqTip: '고가 상품이므로 스탠다드→프리미엄 업그레이드 훅으로 활용. 가입비 대비 이득 프레임.' },
       { name: '유아 외출용 보냉백', reason: '이유식·간식 보관 수요', urgency: 'mid', category: 'b_carry', priceRange: { min: 12000, max: 30000 }, prepDays: 7, momqTip: '이유식 카테고리 묶음 할인과 연계. 맘큐 커뮤니티 "나들이템 추천" 게시판 노출.' },
+      { name: '아기 자외선차단제 SPF30~50 (봄 외출용)', reason: '4월 봄 햇살 강화, 피크닉 외출 필수품', urgency: 'mid', category: 'l_body', priceRange: { min: 10000, max: 25000 }, prepDays: 7, momqTip: '"봄 나들이 필수템" 피크닉 매트 번들 구성. 무기자차·저자극 성분 강조.' },
     ],
     checklist: [
       { d: -21, task: '상세페이지 봄 버전 리뉴얼 (피크닉 연출컷)', done: true },
@@ -603,6 +604,29 @@ export const EVENTS: MarketingEvent[] = [
     pro: '어린이집·유치원 학부모 단체 구매는 맘큐 커뮤니티 "공동구매" 게시판 활용이 가장 효과적입니다. 20개 이상 묶음 할인 구조를 미리 준비하세요.',
   },
   {
+    id: 'e-uv-season-start', title: '초여름 자외선 본격화 — 썬크림 시즌', type: 'season',
+    start: '2026-05-20', end: '2026-06-20',
+    categories: ['l_body', 'b_safety', 'b_carry', 'b_wipe'],
+    platforms: ['coupang', 'naver', 'momq'],
+    summary: '5월 중순부터 UV 지수가 급등해 야외 활동 시 자외선 차단이 필수가 됩니다. 아기 피부 특성상 "무기자차·저자극" 수요가 집중되며, 물놀이 시즌 본격화 전 재고 확보 타이밍.',
+    trendScore: 76, search: '+68%', gmv: '+44%',
+    products: [
+      { name: '아기 자외선차단제 SPF50+ (무기자차·EWG)', reason: '5월 UV 지수 급등, 초여름 최고 검색 품목', urgency: 'high', category: 'l_body', priceRange: { min: 12000, max: 30000 }, prepDays: 10, momqTip: '"무기자차·EWG 그린등급" 키워드 상단 노출. 3개월 대용량 묶음으로 구성해 재구매 주기 단축.' },
+      { name: '성인용 자외선차단제 SPF50+ (가족 공용)', reason: '아기 썬크림과 함께 가족 세트 구매 수요', urgency: 'high', category: 'l_body', priceRange: { min: 10000, max: 25000 }, prepDays: 7, momqTip: '아기+성인 패밀리 세트 번들로 객단가 상승. 커뮤니티 "우리 가족 썬크림" 추천 콘텐츠.' },
+      { name: '유아 자외선 차단 래쉬가드·모자 세트', reason: '야외 활동 증가, 물리적 차단 병행 수요', urgency: 'mid', category: 'b_safety', priceRange: { min: 15000, max: 45000 }, prepDays: 14, momqTip: '래쉬가드+썬크림 번들 기획전. 물놀이 시즌 전 재고 선점 메시지.' },
+      { name: '아기 쿨링 물티슈 (냉감형)', reason: '초여름 외출 쿨링·피부 진정 수요', urgency: 'mid', category: 'b_wipe', priceRange: { min: 5000, max: 15000 }, prepDays: 5, momqTip: '썬크림 구매 고객 크로스셀. "외출 후 피부 진정" 키워드 연계.' },
+      { name: '유아 외출용 보냉백·쿨팩 세트', reason: '이유식 보관+썬크림 후 피부 쿨링 용도 병행', urgency: 'low', category: 'b_carry', priceRange: { min: 10000, max: 28000 }, prepDays: 7, momqTip: '외출 준비 올인원 번들 구성. 맘큐 단독 "여름 외출 키트".' },
+    ],
+    checklist: [
+      { d: -14, task: '"썬크림 시즌 특집" 기획전 페이지 준비', done: false },
+      { d: -10, task: '무기자차 자외선차단제 재고 선점 (물놀이 시즌 전)', done: false },
+      { d: -7, task: '"아기 자외선차단제 EWG 비교" 커뮤니티 콘텐츠 발행', done: false },
+      { d: 0, task: '자외선차단제 검색광고 입찰가 +40% 상향', done: false },
+      { d: 7, task: '패밀리 세트 번들 기획전 오픈', done: false },
+    ],
+    pro: '아기 자외선차단제는 "무기자차", "EWG 그린등급", "벤조페논 프리" 키워드가 구매 결정 1~3위입니다. 성분 비교표를 상세페이지에 넣고 커뮤니티 체험단을 선행 투입해 리뷰 50건 이상 확보 후 광고 집행하세요.',
+  },
+  {
     id: 'e-local-election-day', title: '지방선거 공휴일', type: 'holiday',
     start: '2026-06-03', end: '2026-06-03',
     categories: ['l_laundry', 'l_clean', 'b_diaper', 'b_wipe', 'l_tissue'],
@@ -632,6 +656,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '탈취·항균 스프레이 (유아 안심 성분)', reason: '여름 시작 전 실내 항균 수요', urgency: 'mid', category: 'l_air', priceRange: { min: 6000, max: 18000 }, prepDays: 7, momqTip: '에어컨 청소 세트와 번들 구성. "유아 안심 성분" 인증 강조.' },
       { name: '아기 쿨링 물티슈 (냉감형)', reason: '초여름 외출 쿨링 수요 시작', urgency: 'mid', category: 'b_wipe', priceRange: { min: 5000, max: 15000 }, prepDays: 5, momqTip: '기저귀·일반 물티슈 구매 고객 크로스셀. "여름 외출 필수템" 프레임.' },
       { name: '소형 써큘레이터 (유아 전용)', reason: '에어컨 직풍 우려 영유아 가정 수요', urgency: 'mid', category: 'l_electric', priceRange: { min: 20000, max: 55000 }, prepDays: 14, momqTip: '프리미엄 쇼핑지원금 활용 안내. "직풍 없는 순환" 키워드.' },
+      { name: '아기 자외선차단제 SPF50+ (초여름 본격화)', reason: '6월 UV 지수 급등, 외출 필수품으로 수요 시작', urgency: 'high', category: 'l_body', priceRange: { min: 12000, max: 28000 }, prepDays: 7, momqTip: '"무기자차·EWG 등급" 키워드. 에어컨 청소 세트와 "여름 외출 준비" 번들 구성.' },
     ],
     checklist: [
       { d: -10, task: '"본격 더위 전 냉방 준비" 기획전 오픈', done: false },
