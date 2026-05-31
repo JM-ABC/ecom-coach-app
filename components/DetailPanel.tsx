@@ -47,6 +47,24 @@ const GIFT_MAP: Record<string, { name: string; reason: string }> = {
   l_electric: { name: '멀티탭 안전 커버 세트', reason: '전기용품 안전 보완' },
 };
 
+const COMMON_MD_CHECKLIST = [
+  { d: -21, task: '전환율·매출 목표 KPI 설정 (이벤트 기간 목표 매출 확정)' },
+  { d: -14, task: '상세페이지·대표 썸네일 시즌 버전 업데이트' },
+  { d: -7,  task: '경쟁사 주요 상품 가격·기획전 현황 모니터링' },
+  { d: -7,  task: '리뷰 수·평점 사전 점검 (목표 미달 시 체험단 즉시 투입)' },
+  { d: -3,  task: '플랫폼별 가격 통일성 체크 (맘큐·쿠팡·네이버 격차 확인)' },
+  { d: 0,   task: '광고 ROAS 기준치 설정 및 일일 예산 최종 확정' },
+  { d: 3,   task: '품절 임박 상품 → 대체 상품 전환 또는 사전예약 오픈' },
+  { d: 7,   task: '부정 리뷰·Q&A 실시간 모니터링 및 대응' },
+  { d: 14,  task: '행사 성과 분석 (전환율·ROAS·신규/재구매 비율 리포트)' },
+];
+
+const MOMQ_CROSSELL = [
+  { name: '하기스 기저귀 (맞춤 사이즈)', reason: '맘큐 핵심 품목 — 이벤트 동반 구매 1위', urgency: 'high' as const, category: 'b_diaper' },
+  { name: '하기스 물티슈 대용량 묶음', reason: '기저귀 동반 구매 최상위 조합, 반복 구매', urgency: 'high' as const, category: 'b_wipe' },
+  { name: '분유·어린이 영양식 (월령별)', reason: '정기 보충 구매, 재구매 락인 핵심 품목', urgency: 'mid' as const, category: 'b_formula' },
+];
+
 function fmtGiftPrice(priceRange?: { min: number; max: number }) {
   if (!priceRange) return '단가의 10% 수준';
   const lo = Math.round(priceRange.min * 0.1 / 500) * 500;
@@ -64,6 +82,7 @@ interface DetailPanelProps {
 export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpenPromoPlan }: DetailPanelProps) {
   const [tab, setTab] = useState<'plan' | 'products' | 'gift' | 'insights'>(initialTab);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [commonChecked, setCommonChecked] = useState<Record<number, boolean>>({});
   const [checked, setChecked] = useState<Record<number, boolean>>(
     Object.fromEntries(event.checklist.map((c, i) => [i, c.done]))
   );
@@ -284,6 +303,51 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
                 </div>
               </div>
 
+              {/* 공통 MD 체크리스트 */}
+              <div style={{ marginBottom: 22 }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <Icon name="flag" size={11} />공통 MD 체크리스트
+                  </div>
+                  <div style={{ flex: 1 }} />
+                  <span style={{ fontSize: 10, color: 'var(--text-subtle)', background: 'var(--bg-sunken)', padding: '2px 6px', borderRadius: 4, border: '1px solid var(--border)' }}>Amazon MD 표준</span>
+                </div>
+                <div style={{ background: 'var(--bg-subtle)', borderRadius: 8, padding: '12px 12px 4px 36px', border: '1px solid var(--border)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', left: 21, top: 12, bottom: 12, width: 2, background: 'var(--border)' }} />
+                  {COMMON_MD_CHECKLIST.map((item, i) => {
+                    const isDone = commonChecked[i] ?? false;
+                    const isActiveItem = !isDone && item.d <= 0 && item.d >= -3;
+                    return (
+                      <div key={i} style={{ position: 'relative', paddingBottom: 10, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                        <div
+                          style={{
+                            position: 'absolute', left: -23, top: 3,
+                            width: 20, height: 20, borderRadius: '50%',
+                            background: isDone ? 'var(--success)' : isActiveItem ? 'var(--accent)' : 'var(--surface)',
+                            border: `2px solid ${isDone ? 'var(--success)' : isActiveItem ? 'var(--accent)' : 'var(--border)'}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            zIndex: 1, cursor: 'pointer', color: isDone || isActiveItem ? '#fff' : undefined,
+                          }}
+                          onClick={() => setCommonChecked(p => ({ ...p, [i]: !p[i] }))}
+                        >
+                          {isDone && <Icon name="check" size={10} stroke={3} />}
+                          {isActiveItem && !isDone && <Icon name="alert" size={10} stroke={2.5} />}
+                        </div>
+                        <div style={{ minWidth: 48, fontSize: 11, fontWeight: 600, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', paddingTop: 2 }}>
+                          {item.d === 0 ? 'D-DAY' : item.d > 0 ? `D+${item.d}` : `D${item.d}`}
+                        </div>
+                        <div style={{ flex: 1, fontSize: 12, paddingTop: 1, lineHeight: 1.5, color: isDone ? 'var(--text-subtle)' : 'var(--text)', textDecoration: isDone ? 'line-through' : 'none' }}>
+                          {item.task}
+                          {isActiveItem && !isDone && (
+                            <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 600, color: 'var(--danger)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>지금 해야 함</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Platforms & categories */}
               <div style={{ marginBottom: 22 }}>
                 <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 10 }}>
@@ -350,6 +414,32 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
                   이 이벤트는 품목별 제안보다는 브랜드 이미지 차원에서 접근하는 것을 추천합니다.
                 </div>
               )}
+
+              {/* 맘큐 핵심 상시 크로스셀 */}
+              <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 10 }}>
+                  <Icon name="refresh" size={11} />맘큐 핵심 상시 크로스셀
+                  <span style={{ fontSize: 10, color: 'var(--text-subtle)', fontWeight: 400, marginLeft: 4 }}>— 모든 이벤트 필수 동반 기획</span>
+                </div>
+                {MOMQ_CROSSELL.map((p, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '9px 12px', borderRadius: 8,
+                    background: 'var(--bg-subtle)', border: '1px solid var(--border)', marginBottom: 6,
+                  }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 6, background: 'var(--accent-bg)', border: '1px solid var(--accent-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name="refresh" size={14} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{p.name}</span>
+                        <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.04em', ...urgencyStyle(p.urgency) }}>{urgencyLabel(p.urgency)}</span>
+                      </div>
+                      <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{p.reason}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
