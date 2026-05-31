@@ -202,7 +202,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
             <Icon name="flag" size={14} />
-            <span style={{ fontSize: 13, fontWeight: 600 }}>이번 주 핵심</span>
+            <span style={{ fontSize: 13, fontWeight: 600 }}>선제 대응 필요</span>
             <span style={{ fontSize: 12, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{thisWeekFiltered.length} events</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -219,7 +219,7 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '0 2px' }}>
             <Icon name="calendar" size={14} />
-            <span style={{ fontSize: 13, fontWeight: 600 }}>다음 2개월</span>
+            <span style={{ fontSize: 13, fontWeight: 600 }}>기획 준비 필요</span>
             <span style={{ fontSize: 12, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{upcomingNotActive.slice(0, 10).length} events</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -574,7 +574,7 @@ export default function MarketingCalendar() {
       .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()),
     [filteredEvents]);
 
-  const hero = activeEvents.find(e => e.trendScore >= 80) || activeEvents[0] || upcoming[0];
+  const hero = upcoming.find(e => e.trendScore >= 80) || upcoming[0] || activeEvents.find(e => e.trendScore >= 80) || activeEvents[0];
 
   const heroOverlaps = useMemo(() => {
     if (!hero) return [];

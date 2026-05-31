@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Icon from './Icon';
 import PromoPlanPanel from './PromoPlanPanel';
 import { PlatformInsights } from './calendar/CalendarParts';
-import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive } from '@/lib/data';
+import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive, getPlatformInsight } from '@/lib/data';
 import { useEventTrend } from '@/hooks/useEventTrend';
 import type { MarketingEvent } from '@/lib/types';
 
@@ -100,6 +100,30 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
 
           {tab === 'plan' && (
             <>
+              {/* 맘큐 대응 전략 — platform 이벤트에서만 표시 */}
+              {event.type === 'platform' && (() => {
+                const momqInsight = getPlatformInsight(event, 'momq');
+                if (!momqInsight) return null;
+                return (
+                  <div style={{ marginBottom: 22, padding: '14px 16px', borderRadius: 10, background: 'oklch(0.97 0.028 20)', border: '1.5px solid oklch(0.88 0.06 20)' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: 'oklch(0.68 0.15 20)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <Icon name="sparkles" size={11} />맘큐 대응 전략
+                    </div>
+                    <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.6, marginBottom: momqInsight.action ? 10 : 0 }}>{momqInsight.tip}</div>
+                    {momqInsight.action && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 12, fontWeight: 600, color: 'oklch(0.68 0.15 20)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Icon name="arrowRight" size={10} stroke={2.5} />{momqInsight.action}
+                        </span>
+                        {momqInsight.metric && (
+                          <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 4 }}>· {momqInsight.metric}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
               {/* Metrics */}
               <div style={{ marginBottom: 22 }}>
                 <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 10 }}>
