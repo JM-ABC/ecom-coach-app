@@ -196,15 +196,6 @@ export function PlatformInsights({ event, compact = false }: PlatformInsightsPro
                     연동 기회 {pStatus.events.length}건
                   </span>
                 )}
-                {pStatus.status === 'none' && (
-                  <span style={{
-                    fontSize: 10, fontWeight: 500, padding: '2px 7px', borderRadius: 999,
-                    background: 'var(--bg-subtle)', color: 'var(--text-subtle)',
-                    border: '1px solid var(--border)', whiteSpace: 'nowrap' as const,
-                  }}>
-                    기간 내 행사 없음
-                  </span>
-                )}
                 <span style={{
                   fontSize: 11, color: 'var(--text-subtle)',
                   display: 'inline-flex', transition: 'transform 150ms',

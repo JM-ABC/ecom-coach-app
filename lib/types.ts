@@ -39,6 +39,7 @@ export interface MarketingEvent {
   counterStrategy?: string;
   sourceLink?: string;
   mdBrief?: { items: string; concept: string; insight: string };
+  platformTips?: Record<string, PlatformInsight>;
 }
 
 export interface Category {

@@ -400,7 +400,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
           {tab === 'insights' && (
             <div style={{ marginBottom: 22 }}>
               <div style={{
-                padding: 14, borderRadius: 10,
+                padding: 14, borderRadius: 10, marginBottom: 16,
                 background: 'linear-gradient(135deg, oklch(0.97 0.03 75) 0%, var(--surface) 100%)',
                 border: '1px solid var(--cat-season-border)',
               }}>
@@ -411,6 +411,14 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
                   {event.pro}
                 </div>
               </div>
+              {event.platforms.length > 0 && (
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 10 }}>
+                    <Icon name="share" size={11} />플랫폼별 인사이트
+                  </div>
+                  <PlatformInsights event={event} compact />
+                </div>
+              )}
             </div>
           )}
         </div>
