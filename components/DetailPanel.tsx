@@ -155,16 +155,17 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
         </div>
 
         {/* Sub tabs */}
-        <div style={{ display: 'flex', padding: '0 20px', borderBottom: '1px solid var(--border)', gap: 2, alignItems: 'center' }}>
+        <div className="detail-panel-tabs" style={{ display: 'flex', padding: '0 20px', borderBottom: '1px solid var(--border)', gap: 2, alignItems: 'center' }}>
           {subtabs.map(t => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               style={{
-                padding: '10px 12px', fontSize: 13, fontWeight: 500,
+                padding: '10px 10px', fontSize: 13, fontWeight: 500,
                 color: tab === t.id ? 'var(--text)' : 'var(--text-muted)',
                 borderBottom: tab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
-                marginBottom: -1, display: 'flex', alignItems: 'center', gap: 5,
+                marginBottom: -1, display: 'flex', alignItems: 'center', gap: 4,
+                whiteSpace: 'nowrap', flexShrink: 0,
               }}
             >
               <Icon name={t.icon} size={12} />{t.label}
@@ -172,7 +173,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
           ))}
           {onOpenPromoPlan && (
             <>
-              <div style={{ flex: 1 }} />
+              <div style={{ flex: 1, minWidth: 8 }} />
               <button
                 onClick={() => onOpenPromoPlan(event)}
                 style={{
