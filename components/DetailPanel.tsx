@@ -173,7 +173,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
           ))}
           {onOpenPromoPlan && (
             <>
-              <div style={{ flex: 1, minWidth: 8 }} />
+              <div style={{ width: 8, flexShrink: 0 }} />
               <button
                 onClick={() => onOpenPromoPlan(event)}
                 style={{
@@ -181,6 +181,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
                   display: 'flex', alignItems: 'center', gap: 4, borderRadius: 6,
                   background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)',
                   color: '#fff', border: 'none', cursor: 'pointer',
+                  whiteSpace: 'nowrap', flexShrink: 0,
                 }}
               >
                 <Icon name="sparkles" size={11} />AI 기획서
