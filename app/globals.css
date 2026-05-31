@@ -444,6 +444,29 @@ a { color: inherit; text-decoration: none; }
   .event-hero-metrics { gap: 12px !important; }
   .event-hero-metric-value { font-size: 15px !important; }
 
+  /* 모바일 버튼 2줄 균등 배치 */
+  .event-hero-actions {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+  .event-hero-actions .btn {
+    flex: 1 1 calc(33% - 6px);
+    min-width: 0;
+    justify-content: center;
+  }
+  .event-card-actions {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 5px !important;
+  }
+  .event-card-actions .btn {
+    flex: 1 1 calc(33% - 5px);
+    min-width: 0;
+    font-size: 11px;
+    padding: 4px 6px;
+    height: 26px;
+  }
+
   /* 월간 뷰: 가로 스크롤 + 셀 축소 */
   .grid-view-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
   .grid-view-wrap > * { min-width: 560px; }
