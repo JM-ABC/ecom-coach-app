@@ -415,7 +415,7 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
           ))}
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'nowrap' as const, overflowX: 'auto', paddingBottom: 2 }}>
-          <button className="btn primary" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
+          <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event); }}>
             <Icon name="target" size={13} />액션 플랜
           </button>
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
