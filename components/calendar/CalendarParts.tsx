@@ -428,7 +428,11 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
             <Icon name="lightbulb" size={13} />실무 인사이트
           </button>
           {onOpenPromoPlan && (
-            <button className="btn" onClick={(e) => { e.stopPropagation(); onOpenPromoPlan(event); }}>
+            <button
+              className="btn"
+              onClick={(e) => { e.stopPropagation(); onOpenPromoPlan(event); }}
+              style={{ background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)', color: '#fff', border: 'none' }}
+            >
               <Icon name="sparkles" size={13} />AI 기획서
             </button>
           )}

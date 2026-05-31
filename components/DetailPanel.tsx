@@ -426,10 +426,10 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
         {/* Footer */}
         <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8, alignItems: 'center', background: 'var(--bg-subtle)' }}>
           <button className="btn sm ghost" onClick={handleShare}>
-            <Icon name="share" size={12} />공유
+            <Icon name="copy" size={12} />복사
           </button>
           <button className="btn sm" onClick={handleDuplicate}>
-            <Icon name="copy" size={12} />복제
+            <Icon name="plus" size={12} />이벤트에 추가
           </button>
           {feedback && (
             <span style={{ fontSize: 11, color: 'var(--success)', fontWeight: 600 }}>{feedback}</span>

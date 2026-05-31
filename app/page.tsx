@@ -31,6 +31,28 @@ export default function Home() {
         {tab === 'detail-page' && <DetailPageDesign />}
         {tab === 'event-manager' && <EventManager />}
       </div>
+      {/* 모바일 경쟁사 링크 바 */}
+      <div className="mobile-platform-bar">
+        {[
+          { label: '쿠팡', short: '쿠', url: 'https://www.coupang.com', color: 'oklch(0.62 0.18 25)' },
+          { label: '네이버', short: 'N', url: 'https://shopping.naver.com', color: 'oklch(0.55 0.15 150)' },
+          { label: '11번가', short: '11', url: 'https://www.11st.co.kr', color: 'oklch(0.62 0.18 15)' },
+          { label: 'G마켓', short: 'G', url: 'https://www.gmarket.co.kr', color: 'oklch(0.55 0.14 155)' },
+          { label: '카카오', short: 'K', url: 'https://store.kakao.com', color: 'oklch(0.62 0.13 90)' },
+          { label: '컬리', short: '컬', url: 'https://www.kurly.com', color: 'oklch(0.44 0.22 310)' },
+          { label: '알리', short: 'A', url: 'https://ko.aliexpress.com', color: 'oklch(0.65 0.18 50)' },
+          { label: '무신사', short: '무', url: 'https://www.musinsa.com', color: 'oklch(0.22 0 0)' },
+          { label: 'GS샵', short: 'GS', url: 'https://www.gsshop.com', color: 'oklch(0.50 0.18 250)' },
+        ].map(p => (
+          <a key={p.label} href={p.url} target="_blank" rel="noopener noreferrer" title={p.label}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 8px', borderRadius: 16, textDecoration: 'none', flexShrink: 0, background: 'var(--surface)', border: '1px solid var(--border)' }}
+          >
+            <span style={{ width: 16, height: 16, borderRadius: 4, background: p.color, color: '#fff', fontSize: 9, fontWeight: 700, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{p.short}</span>
+            <span style={{ fontSize: 11, color: 'var(--text)', fontWeight: 500 }}>{p.label}</span>
+          </a>
+        ))}
+      </div>
+
       <nav className="mobile-nav">
         {mobileTabs.slice(0, 2).map(t => (
           <button

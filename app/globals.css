@@ -264,6 +264,7 @@ a { color: inherit; text-decoration: none; }
 /* ---- 반응형 레이아웃 ---- */
 .sidebar-desktop { display: flex; flex-direction: column; }
 .mobile-nav { display: none; }
+.mobile-platform-bar { display: none; }
 .main-content { padding-bottom: 0; }
 
 /* 포커스뷰 2컬럼 그리드 */
@@ -376,7 +377,25 @@ a { color: inherit; text-decoration: none; }
     transition: color 120ms;
   }
   .mobile-nav-item.active { color: var(--accent); }
-  .main-content { padding-bottom: 56px; }
+
+  .mobile-platform-bar {
+    display: flex;
+    position: fixed;
+    bottom: 56px; left: 0; right: 0;
+    height: 36px;
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
+    z-index: 99;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mobile-platform-bar::-webkit-scrollbar { display: none; }
+
+  .main-content { padding-bottom: 92px; }
 
   /* 포커스뷰: 1컬럼 스택 */
   .focus-grid {
