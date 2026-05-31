@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import Icon from './Icon';
-import PromoPlanPanel from './PromoPlanPanel';
 import { PlatformInsights } from './calendar/CalendarParts';
 import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive, getPlatformInsight } from '@/lib/data';
 import { useEventTrend } from '@/hooks/useEventTrend';
+import { useCustomEvents } from '@/hooks/useCustomEvents';
 import type { MarketingEvent } from '@/lib/types';
 
 const urgencyStyle = (u: string) => ({
@@ -63,10 +63,28 @@ interface DetailPanelProps {
 
 export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpenPromoPlan }: DetailPanelProps) {
   const [tab, setTab] = useState<'plan' | 'products' | 'gift' | 'insights'>(initialTab);
-  const [showPromo, setShowPromo] = useState(false);
+  const [feedback, setFeedback] = useState<string | null>(null);
   const [checked, setChecked] = useState<Record<number, boolean>>(
     Object.fromEntries(event.checklist.map((c, i) => [i, c.done]))
   );
+
+  const { add: addCustomEvent } = useCustomEvents();
+
+  const showFeedback = (msg: string) => {
+    setFeedback(msg);
+    setTimeout(() => setFeedback(null), 2000);
+  };
+
+  const handleShare = () => {
+    const dateStr = event.start === event.end ? event.start : `${event.start} ~ ${event.end}`;
+    const text = `📅 ${event.title}\n${dateStr}\n\n${event.summary}`;
+    navigator.clipboard.writeText(text).then(() => showFeedback('클립보드에 복사됨 ✓'));
+  };
+
+  const handleDuplicate = () => {
+    addCustomEvent({ ...event, id: `custom-dup-${event.id}-${Date.now()}`, source: 'custom' });
+    showFeedback('이벤트 관리 탭에 복제됨 ✓');
+  };
 
   const toggle = (i: number) => setChecked(p => ({ ...p, [i]: !p[i] }));
   const doneCount = Object.values(checked).filter(Boolean).length;
@@ -398,32 +416,22 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
         </div>
 
         {/* Footer */}
-        <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8, background: 'var(--bg-subtle)' }}>
-          <button className="btn sm ghost"><Icon name="share" size={12} />공유</button>
-          <button
-            className="btn sm"
-            onClick={() => setShowPromo(true)}
-            style={{
-              background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)',
-              color: '#fff', border: 'none',
-            }}
-          >
-            <Icon name="sparkles" size={12} />AI 기획서
+        <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8, alignItems: 'center', background: 'var(--bg-subtle)' }}>
+          <button className="btn sm ghost" onClick={handleShare}>
+            <Icon name="share" size={12} />공유
           </button>
+          <button className="btn sm" onClick={handleDuplicate}>
+            <Icon name="copy" size={12} />복제
+          </button>
+          {feedback && (
+            <span style={{ fontSize: 11, color: 'var(--success)', fontWeight: 600 }}>{feedback}</span>
+          )}
           <div style={{ flex: 1 }} />
-          <button className="btn sm"><Icon name="copy" size={12} />복제</button>
-          <button className="btn primary sm">
+          <button className="btn primary sm" onClick={handleDuplicate}>
             <Icon name="plus" size={12} />내 계획에 추가
           </button>
         </div>
       </div>
-
-      {showPromo && (
-        <PromoPlanPanel
-          event={event}
-          onClose={() => setShowPromo(false)}
-        />
-      )}
     </>
   );
 }
