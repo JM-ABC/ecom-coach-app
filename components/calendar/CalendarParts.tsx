@@ -430,6 +430,9 @@ export const EventHero = React.memo(function EventHero({ event, onOpen, onOpenPr
           <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={13} />추천 품목
           </button>
+          <button className="btn" onClick={(e) => { e.stopPropagation(); onOpen(event, 'insights'); }}>
+            <Icon name="lightbulb" size={13} />실무 인사이트
+          </button>
           {onOpenPromoPlan && (
             <button className="btn" onClick={(e) => { e.stopPropagation(); onOpenPromoPlan(event); }}>
               <Icon name="sparkles" size={13} />AI 기획서
@@ -739,6 +742,9 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
           </button>
           <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'products'); }}>
             <Icon name="package" size={11} />추천 품목
+          </button>
+          <button className="btn sm" onClick={(e) => { e.stopPropagation(); onOpen(event, 'insights'); }}>
+            <Icon name="lightbulb" size={11} />실무 인사이트
           </button>
           {onOpenPromoPlan && (
             <button
