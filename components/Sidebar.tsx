@@ -129,6 +129,46 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
         <div style={{ flex: 1 }} />
 
+        {/* 경쟁사 모니터링 */}
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8, marginBottom: 2 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, padding: '0 4px' }}>
+            경쟁사 모니터링
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, padding: '0 2px' }}>
+            {[
+              { label: '쿠팡', short: '쿠', url: 'https://www.coupang.com', color: 'oklch(0.62 0.18 25)' },
+              { label: '네이버', short: 'N', url: 'https://shopping.naver.com', color: 'oklch(0.55 0.15 150)' },
+              { label: '11번가', short: '11', url: 'https://www.11st.co.kr', color: 'oklch(0.62 0.18 15)' },
+              { label: 'G마켓', short: 'G', url: 'https://www.gmarket.co.kr', color: 'oklch(0.55 0.14 155)' },
+              { label: '카카오', short: 'K', url: 'https://store.kakao.com', color: 'oklch(0.62 0.13 90)' },
+              { label: '컬리', short: '컬', url: 'https://www.kurly.com', color: 'oklch(0.44 0.22 310)' },
+              { label: '알리', short: 'A', url: 'https://ko.aliexpress.com', color: 'oklch(0.65 0.18 50)' },
+              { label: '무신사', short: '무', url: 'https://www.musinsa.com', color: 'oklch(0.22 0 0)' },
+              { label: 'GS샵', short: 'GS', url: 'https://www.gsshop.com', color: 'oklch(0.50 0.18 250)' },
+            ].map(p => (
+              <a
+                key={p.label}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={p.label}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: 28, height: 28, borderRadius: 6,
+                  background: p.color, color: '#fff',
+                  fontSize: 10, fontWeight: 700, textDecoration: 'none',
+                  letterSpacing: '-0.02em', flexShrink: 0,
+                  opacity: 0.88,
+                }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                onMouseLeave={e => (e.currentTarget.style.opacity = '0.88')}
+              >
+                {p.short}
+              </a>
+            ))}
+          </div>
+        </div>
+
         <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 4px' }}>
             <div style={s.avatar}>맘</div>
