@@ -674,7 +674,7 @@ export default function MarketingCalendar() {
         <TimelineView events={filteredEvents} onOpen={openPanel} />
       )}
 
-      {selected && <DetailPanel event={selected} initialTab={selectedTab} onClose={() => setSelected(null)} />}
+      {selected && <DetailPanel event={selected} initialTab={selectedTab} onClose={() => setSelected(null)} onOpenPromoPlan={(e) => { setSelected(null); setPromoPlanEvent(e); }} />}
       {promoPlanEvent && <PromoPlanPanel event={promoPlanEvent} onClose={() => setPromoPlanEvent(null)} />}
     </div>
   );

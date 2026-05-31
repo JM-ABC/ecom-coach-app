@@ -20,9 +20,10 @@ interface DetailPanelProps {
   event: MarketingEvent;
   onClose: () => void;
   initialTab?: 'plan' | 'products' | 'insights';
+  onOpenPromoPlan?: (e: MarketingEvent) => void;
 }
 
-export default function DetailPanel({ event, onClose, initialTab = 'plan' }: DetailPanelProps) {
+export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpenPromoPlan }: DetailPanelProps) {
   const [tab, setTab] = useState<'plan' | 'products' | 'insights'>(initialTab);
   const [showPromo, setShowPromo] = useState(false);
   const [checked, setChecked] = useState<Record<number, boolean>>(
@@ -78,7 +79,7 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
         </div>
 
         {/* Sub tabs */}
-        <div style={{ display: 'flex', padding: '0 20px', borderBottom: '1px solid var(--border)', gap: 2 }}>
+        <div style={{ display: 'flex', padding: '0 20px', borderBottom: '1px solid var(--border)', gap: 2, alignItems: 'center' }}>
           {subtabs.map(t => (
             <button
               key={t.id}
@@ -93,6 +94,22 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan' }: Det
               <Icon name={t.icon} size={12} />{t.label}
             </button>
           ))}
+          {onOpenPromoPlan && (
+            <>
+              <div style={{ flex: 1 }} />
+              <button
+                onClick={() => onOpenPromoPlan(event)}
+                style={{
+                  padding: '6px 10px', fontSize: 12, fontWeight: 600, marginBottom: -1,
+                  display: 'flex', alignItems: 'center', gap: 4, borderRadius: 6,
+                  background: 'linear-gradient(135deg, var(--accent) 0%, oklch(0.55 0.25 280) 100%)',
+                  color: '#fff', border: 'none', cursor: 'pointer',
+                }}
+              >
+                <Icon name="sparkles" size={11} />AI 기획서
+              </button>
+            </>
+          )}
         </div>
 
         {/* Body */}
