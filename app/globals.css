@@ -444,6 +444,20 @@ a { color: inherit; text-decoration: none; }
   .event-hero-metrics { gap: 12px !important; }
   .event-hero-metric-value { font-size: 15px !important; }
 
+  /* EventManager 탭 2줄 배치 */
+  .event-manager-tabs {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    height: auto !important;
+  }
+  .event-manager-tabs button {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    justify-content: center;
+    padding: 7px 8px !important;
+    font-size: 12px !important;
+  }
+
   /* 모바일 버튼 2줄 균등 배치 */
   .event-hero-actions {
     flex-wrap: wrap !important;

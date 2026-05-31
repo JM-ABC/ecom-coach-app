@@ -845,7 +845,7 @@ export default function EventManager() {
       </div>
 
       {/* 탭 */}
-      <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 10, border: '1px solid var(--border)', maxWidth: '100%', overflowX: 'auto', marginBottom: 24 }}>
+      <div className="event-manager-tabs" style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-sunken)', borderRadius: 10, border: '1px solid var(--border)', maxWidth: '100%', overflowX: 'auto', marginBottom: 24 }}>
         {panels.map(p => (
           <button
             key={p.id}
