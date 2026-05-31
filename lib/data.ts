@@ -186,9 +186,31 @@ export const typeChip = (type: string): string => EVENT_TYPES[type]?.cls || '';
 
 export const EVENTS: MarketingEvent[] = [
   {
+    id: 'e-newborn-prep', title: '신생아·수유·이유기 준비 시즌', type: 'season',
+    start: '2026-01-15', end: '2026-03-15',
+    categories: ['b_feed', 'b_wean', 'b_diaper', 'b_wipe', 'b_bath'],
+    platforms: ['momq', 'coupang', 'naver'],
+    summary: '출산 후 신생아 필수품 구비부터 수유기·이유기 전환까지 준비 구매가 집중됩니다. 산후조리원 퇴소 후 첫 구매 시점(출산 후 2~4주)과 이유식 시작 시점(4~6개월)이 주요 피크.',
+    trendScore: 74, search: '+61%', gmv: '+48%',
+    products: [
+      { name: '모유 저장백·유축기 (전동·무선)', reason: '수유기 필수품, 산후조리원 퇴소 후 즉시 구매 수요', urgency: 'high', category: 'b_feed', priceRange: { min: 15000, max: 180000 }, prepDays: 14, momqTip: '"맘큐 단독 유축기+저장백 세트" 구성. 프리미엄 회원 쇼핑지원금 활용 안내. 후기 기반 상단 배치.' },
+      { name: '젖병·젖병소독기·분유포트 세트', reason: '혼합·분유 수유 필수품, 세트 구매 수요 강함', urgency: 'high', category: 'b_feed', priceRange: { min: 20000, max: 120000 }, prepDays: 14, momqTip: '"신생아 수유 필수템 세트" 번들 기획. 커뮤니티 "젖병 추천" 게시글 상품 태그.' },
+      { name: '이유식 용기·핸드블렌더·이유식 메이커', reason: '4~6개월 이유식 시작 시점 구매 집중', urgency: 'high', category: 'b_wean', priceRange: { min: 15000, max: 85000 }, prepDays: 10, momqTip: '"이유식 시작 준비" 기획전. 커뮤니티 이유식 레시피 콘텐츠와 상품 연동.' },
+      { name: '신생아 기저귀·물티슈 초기 비축 세트', reason: '신생아 초기 소비량 최대, 대용량 구매 수요', urgency: 'high', category: 'b_diaper', priceRange: { min: 30000, max: 75000 }, prepDays: 7, momqTip: '하기스 신생아 전용+물티슈 번들. 맘큐 회원 전용 추가 할인으로 락인.' },
+      { name: '신생아 스킨케어 세트 (로션·오일·바스)', reason: '신생아 피부 민감, 저자극 전용 제품 필수', urgency: 'mid', category: 'b_bath', priceRange: { min: 12000, max: 45000 }, prepDays: 7, momqTip: '"EWG 안전 등급·무향" 키워드. 맘큐 커뮤니티 "신생아 피부 관리" 콘텐츠 협업.' },
+    ],
+    checklist: [
+      { d: -21, task: '"신생아 필수템 준비 가이드" 기획전 페이지 오픈', done: false },
+      { d: -14, task: '수유·이유식 세트 번들 구성 및 재고 확보', done: false },
+      { d: -7, task: '커뮤니티 "신생아 준비물 총정리" 협업 콘텐츠 발행', done: false },
+      { d: 0, task: '신생아 품목 검색광고 입찰가 상향 집행', done: false },
+    ],
+    pro: '신생아 가정은 "맘 커뮤니티 추천"이 구매 전환율 1위 요인입니다. 맘큐 커뮤니티에 "신생아 필수템 총정리" 콘텐츠를 먼저 올리고 상품을 태그하면 광고 없이도 전환이 발생합니다. 수유기→이유기 전환 시점에 CRM 재구매 쿠폰을 발송하면 생애주기 락인 효과가 극대화됩니다.',
+  },
+  {
     id: 'e-new-semester', title: '신학기·유치원 입학 시즌', type: 'season',
     start: '2026-02-16', end: '2026-03-31',
-    categories: ['b_furniture', 'b_fashion', 'b_carry', 'b_toy'],
+    categories: ['b_furniture', 'b_fashion', 'b_carry', 'b_toy', 'b_stroller', 'b_carseat', 'b_wean'],
     platforms: ['momq', 'coupang', 'naver'],
     summary: '3월 새학기·유치원 입학 대비 구매 집중. 맘 커뮤니티에서 "입학 선물", "유아 책가방" 검색 폭증.',
     trendScore: 87, search: '+94%', gmv: '+72%',
@@ -197,6 +219,9 @@ export const EVENTS: MarketingEvent[] = [
       { name: '어린이 책상·의자 세트', reason: '새학기 공부 환경 세팅 수요, 가격대 높아 객단가 우수', urgency: 'high', category: 'b_furniture', priceRange: { min: 120000, max: 350000 }, prepDays: 28, momqTip: '스탠다드 이상 회원 무료 설치 서비스 제공. 고객단가 방어 핵심 상품.' },
       { name: '유아동 실내화·운동화', reason: '유치원·어린이집 필수품, 반복 구매', urgency: 'mid', category: 'b_fashion', priceRange: { min: 15000, max: 35000 }, prepDays: 14, momqTip: '3개월 교체 주기 기반 재구매 유도. 라이트 회원 업그레이드 훅으로 활용.' },
       { name: '아동 학습교구·퍼즐 세트', reason: '입학 선물 포지션, 선물세트 구성 용이', urgency: 'mid', category: 'b_toy', priceRange: { min: 20000, max: 55000 }, prepDays: 14, momqTip: '선물포장 무료 옵션 추가. 맘큐 단독 번들(교구+퍼즐) 구성으로 차별화.' },
+      { name: '유아 유모차·웨건 (어린이집 등원용)', reason: '입학 시즌 신규 구매 수요 피크, 객단가 최상위', urgency: 'mid', category: 'b_stroller', priceRange: { min: 150000, max: 600000 }, prepDays: 28, momqTip: '프리미엄 회원 쇼핑지원금 + 무료 배송 강조. "어린이집 첫 등원" 커뮤니티 콘텐츠 연동.' },
+      { name: '유아 카시트 (신학기 이동 증가 대비)', reason: '어린이집 차량 이동 시작으로 카시트 신규·교체 수요', urgency: 'mid', category: 'b_carseat', priceRange: { min: 80000, max: 350000 }, prepDays: 21, momqTip: 'KC 안전 인증·ISOFIX 장착 여부 강조. 고가 상품으로 프리미엄 쇼핑지원금 활용 안내.' },
+      { name: '이유식기·수저세트 (어린이집 준비물)', reason: '어린이집 준비물 리스트 1순위, 반복 구매', urgency: 'mid', category: 'b_wean', priceRange: { min: 8000, max: 35000 }, prepDays: 10, momqTip: '준비물 리스트 기획 콘텐츠에 상품 태그. 맘큐 커뮤니티 "어린이집 준비물 총정리" 협업.' },
     ],
     checklist: [
       { d: -21, task: '"새학기 입학 선물" 기획전 페이지 오픈', done: false },
@@ -253,7 +278,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-children-prep', title: '어린이날 선물 수요 시작', type: 'season',
     start: '2026-04-15', end: '2026-05-04',
-    categories: ['b_toy', 'b_furniture', 'b_fashion'],
+    categories: ['b_toy', 'b_furniture', 'b_fashion', 'b_wean', 'l_oral'],
     platforms: ['coupang', 'naver', '11st', 'momq'],
     summary: '어린이날 3주 전부터 "선물", "장난감" 검색 급증. 4월 4주차가 구매 피크.',
     trendScore: 88, search: '+67%', gmv: '+95%',
@@ -262,6 +287,8 @@ export const EVENTS: MarketingEvent[] = [
       { name: '캐릭터 완구 선물세트', reason: '포장 단위 구매, 객단가 높음', urgency: 'high', category: 'b_toy', priceRange: { min: 30000, max: 79000 }, prepDays: 14, momqTip: '맘큐 단독 선물포장 무료 옵션. 비회원→라이트 전환 시 즉시 할인 쿠폰 지급.' },
       { name: '유아 자전거·킥보드', reason: '5월 초 야외활동과 연결', urgency: 'mid', category: 'b_toy', priceRange: { min: 50000, max: 180000 }, prepDays: 21, momqTip: '고가 상품 — 프리미엄 멤버십 쇼핑지원금(매달 3,000원) 활용 안내로 가입 유도.' },
       { name: '캐릭터 유아동 의류세트', reason: '실용 선물 포지션, 리뷰 전환 좋음', urgency: 'mid', category: 'b_fashion', priceRange: { min: 20000, max: 45000 }, prepDays: 10, momqTip: '완구+의류 크로스셀 번들. 맘큐 커뮤니티 "선물 추천" 게시판 협업 콘텐츠.' },
+      { name: '어린이 이유식기·식판·수저세트 (선물용)', reason: '실용 선물 포지션, 새로운 식기 세트 선물 수요', urgency: 'low', category: 'b_wean', priceRange: { min: 12000, max: 45000 }, prepDays: 10, momqTip: '캐릭터 식판+수저 선물 세트 구성. "어린이날 실용 선물" 키워드 공략.' },
+      { name: '어린이 전동칫솔·구강케어 세트', reason: '건강 선물 포지션, 부모가 직접 구매하는 실용 선물', urgency: 'low', category: 'l_oral', priceRange: { min: 15000, max: 55000 }, prepDays: 10, momqTip: '완구와 함께 "건강+재미" 콤보 선물세트 구성. 맘큐 커뮤니티 치과 추천 콘텐츠 연동.' },
     ],
     checklist: [
       { d: -18, task: '"어린이날 선물 TOP 10" 기획전 페이지', done: true },
@@ -315,7 +342,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-spring-cleaning', title: '봄맞이 대청소 시즌', type: 'season',
     start: '2026-05-01', end: '2026-05-31',
-    categories: ['l_clean', 'l_air', 'l_laundry', 'l_storage'],
+    categories: ['l_clean', 'l_air', 'l_laundry', 'l_storage', 'l_bath', 'l_tissue', 'l_sanitary', 'b_diaper'],
     platforms: ['coupang', 'naver', 'momq'],
     summary: '환절기 대청소·정리 수요 급상승. "살림템" 검색량 피크 시즌.',
     trendScore: 78, search: '+58%', gmv: '+42%',
@@ -323,6 +350,10 @@ export const EVENTS: MarketingEvent[] = [
       { name: '다용도 청소세제·얼룩제거제', reason: '봄 대청소 필수템, 재구매 유도', urgency: 'high', category: 'l_clean' },
       { name: '침구청소기·진드기 제거제', reason: '환절기 알레르기 이슈로 수요 급증', urgency: 'high', category: 'l_air' },
       { name: '리필형 세탁세제 대용량', reason: '이불빨래 수요 동반', urgency: 'mid', category: 'l_laundry' },
+      { name: '욕실 청소용품 세트 (변기·타일·곰팡이 제거)', reason: '봄 대청소 욕실 정리 수요', urgency: 'mid', category: 'l_bath', priceRange: { min: 8000, max: 22000 }, prepDays: 5, momqTip: '청소세제 번들에 욕실 세트 추가 구성. "화장실 대청소" 커뮤니티 꿀팁 연동.' },
+      { name: '화장지·키친타월 대용량 세트', reason: '대청소 시즌 생필품 일괄 보충 구매', urgency: 'mid', category: 'l_tissue', priceRange: { min: 12000, max: 35000 }, prepDays: 3, momqTip: '생필품 번들 구성으로 객단가 상승. 맘큐 프리미엄 쇼핑지원금 소진 유도.' },
+      { name: '생리대·성인 위생용품 대용량', reason: '대청소 겸 생필품 일괄 구매 수요', urgency: 'low', category: 'l_sanitary', priceRange: { min: 10000, max: 30000 }, prepDays: 3, momqTip: '세탁세제·화장지와 생필품 번들 구성. 정기 재구매 고객 CRM 발송.' },
+      { name: '기저귀·물티슈 대용량 묶음 (봄 비축)', reason: '대청소 시즌 생필품 재고 보충 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 25000, max: 65000 }, prepDays: 5, momqTip: '하기스 기저귀+물티슈 번들. 맘큐 회원 전용 추가 할인으로 락인.' },
     ],
     checklist: [
       { d: -7, task: '"봄맞이 살림템" 기획전 페이지', done: false },
@@ -333,7 +364,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-rainy-season', title: '장마·제습 시즌', type: 'season',
     start: '2026-06-15', end: '2026-07-15',
-    categories: ['l_electric', 'l_air', 'l_body', 'b_wipe'],
+    categories: ['l_electric', 'l_air', 'l_body', 'b_wipe', 'b_hygiene', 'l_tissue'],
     platforms: ['coupang', 'naver', 'momq'],
     summary: '장마 시작으로 고온다습 환경이 본격화되는 시즌. 제습기·습기제거제·쿨링용품 수요가 연중 최고점에 달하며, 영유아 위생·피부 관련 수요도 함께 상승합니다.',
     trendScore: 84, search: '실시간 연동', gmv: '실시간 연동',
@@ -342,6 +373,8 @@ export const EVENTS: MarketingEvent[] = [
       { name: '소형 제습기·냉풍기', reason: '6월 장마 시작과 함께 검색량 급등, 선제 재고 확보 필요', urgency: 'high', category: 'l_electric' },
       { name: '아기 쿨링매트·냉감 속싸개', reason: '영아 체온 관리 필수품, 고온다습 환경에서 수요 급증', urgency: 'high', category: 'l_body' },
       { name: '유아 항균·저자극 물티슈', reason: '고온다습 환경에서 위생 니즈 증가, 반복 구매', urgency: 'mid', category: 'b_wipe' },
+      { name: '유아 항균 손세정제·위생 스프레이', reason: '장마철 세균 번식 우려, 외출 후 위생 필수품', urgency: 'mid', category: 'b_hygiene', priceRange: { min: 5000, max: 18000 }, prepDays: 5, momqTip: '"장마철 아기 위생 관리" 커뮤니티 콘텐츠 연동. 물티슈+손세정제 번들 구성.' },
+      { name: '화장지·키친타월 대용량 (장마 비축)', reason: '장마 기간 외출 감소로 생필품 일괄 보충 수요', urgency: 'low', category: 'l_tissue', priceRange: { min: 12000, max: 32000 }, prepDays: 3, momqTip: '기저귀·물티슈 구매 고객 생필품 번들 크로스셀.' },
     ],
     checklist: [
       { d: -14, task: '"장마 대비 필수템" 기획전 페이지 오픈', done: false },
@@ -528,7 +561,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-spring-transition', title: '봄 환절기 건강·보습', type: 'season',
     start: '2026-03-01', end: '2026-03-20',
-    categories: ['b_bath', 'b_suppl', 'l_health'],
+    categories: ['b_bath', 'b_suppl', 'l_health', 'l_hair'],
     platforms: ['momq', 'coupang', 'naver'],
     summary: '겨울→봄 환절기, 실내 건조로 유아 피부 트러블·면역 저하 이슈 급증. 보습·유산균 관련 맘큐 커뮤니티 질문이 연간 최고점.',
     trendScore: 70, search: '+44%', gmv: '+31%',
@@ -536,6 +569,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '유아 저자극 보습 크림·로션', reason: '환절기 유아 피부 건조 필수 대응', urgency: 'high', category: 'b_bath', priceRange: { min: 10000, max: 28000 }, prepDays: 10, momqTip: '맘큐 커뮤니티 "환절기 아기 피부" 게시글과 상품 페이지 연동. EWG 등급·무자극 인증 강조.' },
       { name: '유아 유산균·면역 영양제', reason: '환절기 면역력 저하 선제 구매', urgency: 'high', category: 'b_suppl', priceRange: { min: 15000, max: 45000 }, prepDays: 10, momqTip: '첫 구매 체험 팩→정기 구매 전환 구조. 커뮤니티 후기 선확보 후 CRM 발송.' },
       { name: '유아 가습기 (초음파·저소음)', reason: '실내 건조함 해소, 환절기 필수템', urgency: 'mid', category: 'l_health', priceRange: { min: 25000, max: 75000 }, prepDays: 14, momqTip: '고가 상품 → 프리미엄 쇼핑지원금 활용 안내로 멤버십 업셀.' },
+      { name: '어린이·성인 두피 케어 샴푸 (봄 환절기 탈모 예방)', reason: '봄철 탈모 검색 급증, 맘+아이 동반 구매 수요', urgency: 'low', category: 'l_hair', priceRange: { min: 8000, max: 25000 }, prepDays: 7, momqTip: '"환절기 머리 빠져요" 커뮤니티 질문 연계 상품 태그. 유아 전용 저자극 샴푸 함께 구성.' },
     ],
     checklist: [
       { d: -10, task: '"봄 환절기 아이 케어" 기획전 오픈', done: false },
@@ -707,7 +741,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-autumn-transition', title: '가을 환절기 케어', type: 'season',
     start: '2026-09-01', end: '2026-09-22',
-    categories: ['b_suppl', 'b_bath', 'l_health', 'b_bedding'],
+    categories: ['b_suppl', 'b_bath', 'l_health', 'b_bedding', 'l_hair'],
     platforms: ['momq', 'coupang', 'naver'],
     summary: '여름→가을 환절기, 유아 면역 저하 및 피부 건조 이슈 시작. 추석 선물 수요와 겹쳐 건강식품·보습 제품 구매 집중.',
     trendScore: 71, search: '+47%', gmv: '+35%',
@@ -715,6 +749,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '유아 면역 영양제·유산균', reason: '환절기 선제 구매, 맘 커뮤니티 1위 관심 품목', urgency: 'high', category: 'b_suppl', priceRange: { min: 15000, max: 48000 }, prepDays: 10, momqTip: '추석 전 건강 챙기기 프레임. 선물세트 구성 가능. 커뮤니티 후기 선행 확보 필수.' },
       { name: '유아 보습 크림·스킨케어 세트', reason: '가을 건조 시작, 환절기 필수 보습 수요', urgency: 'high', category: 'b_bath', priceRange: { min: 12000, max: 35000 }, prepDays: 7, momqTip: '봄 환절기 구매 고객 재구매 CRM. "EWG 등급" 인증 강조.' },
       { name: '유아동 가을 이불 (얇은 이불)', reason: '여름 이불→가을 이불 교체 수요', urgency: 'mid', category: 'b_bedding', priceRange: { min: 25000, max: 75000 }, prepDays: 14, momqTip: '세탁세제 + 침구 크로스셀 번들. 추석 전 배송 보장 강조.' },
+      { name: '가을 탈모·두피 케어 샴푸 (환절기 탈모 급증)', reason: '가을 환절기 탈모 검색량 연간 최고점', urgency: 'mid', category: 'l_hair', priceRange: { min: 8000, max: 28000 }, prepDays: 7, momqTip: '"환절기 머리 빠져요" 커뮤니티 질문 피크. 유아용 샴푸와 패밀리 세트 구성.' },
     ],
     checklist: [
       { d: -10, task: '"가을 환절기 아이 케어" 기획전 오픈', done: false },
@@ -786,7 +821,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-year-end-prep', title: '연말 정리·새해 준비', type: 'season',
     start: '2026-12-26', end: '2027-01-07',
-    categories: ['l_storage', 'b_furniture', 'b_bedding', 'b_toy'],
+    categories: ['l_storage', 'b_furniture', 'b_bedding', 'b_toy', 'l_bath', 'l_tissue', 'l_electric'],
     platforms: ['coupang', 'naver', 'momq'],
     summary: '연말 대청소·정리 + 새해 맞이 용품 수요. 육아 공간 재정비와 아이 새해 선물 잔여 수요. 맘큐는 "새해 육아 준비" 프레임으로 접근.',
     trendScore: 67, search: '+38%', gmv: '+25%',
@@ -794,6 +829,9 @@ export const EVENTS: MarketingEvent[] = [
       { name: '수납·정리 박스 세트 (유아 장난감 정리)', reason: '연말 대청소·정리 수요, 아이 물건 정리 필수', urgency: 'mid', category: 'l_storage', priceRange: { min: 15000, max: 45000 }, prepDays: 7, momqTip: '"아이 장난감 정리" 맘큐 커뮤니티 꿀팁 콘텐츠 연동. 수납 세트 묶음 할인.' },
       { name: '유아 침구 새해 에디션 (이불+베개)', reason: '새해 맞이 침구 교체 수요', urgency: 'mid', category: 'b_bedding', priceRange: { min: 30000, max: 80000 }, prepDays: 10, momqTip: '크리스마스 완구 구매 고객 침구 크로스셀. 새해 선물 프레임.' },
       { name: '새해 학습 교구·책 세트', reason: '새해 "이제 공부 시작" 학부모 심리 활용', urgency: 'low', category: 'b_toy', priceRange: { min: 20000, max: 60000 }, prepDays: 10, momqTip: '크리스마스 완구 잔여 재고 소진 + 새해 교구 전환. 2월 신학기 브리지 역할.' },
+      { name: '욕실 청소·정리 세트 (연말 대청소)', reason: '연말 대청소 욕실 정리 필수템, 새해 맞이 욕실 리셋', urgency: 'mid', category: 'l_bath', priceRange: { min: 8000, max: 25000 }, prepDays: 5, momqTip: '청소 세트 번들 구성. "우리 집 욕실 리셋" 커뮤니티 꿀팁 콘텐츠 연동.' },
+      { name: '화장지·키친타월 연말 대용량 세트', reason: '연말 생필품 일괄 보충 구매 수요', urgency: 'low', category: 'l_tissue', priceRange: { min: 12000, max: 35000 }, prepDays: 3, momqTip: '수납 정리 세트와 함께 "새해 살림 세팅" 번들 구성.' },
+      { name: '공기청정기·가습기 (겨울 실내 공기질 관리)', reason: '겨울 건조·미세먼지로 연말 전기용품 수요 집중', urgency: 'mid', category: 'l_electric', priceRange: { min: 50000, max: 200000 }, prepDays: 14, momqTip: '프리미엄 회원 쇼핑지원금 활용 안내. "아기방 공기질 관리" 커뮤니티 콘텐츠 연동.' },
     ],
     checklist: [
       { d: -7, task: '"연말 대청소·육아 공간 정리" 기획전 오픈', done: false },
