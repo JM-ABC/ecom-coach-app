@@ -591,7 +591,7 @@ export default function MarketingCalendar() {
     filteredEvents.filter(e => {
       const d = daysUntil(e.start);
       const endD = daysUntil(e.end);
-      return (d >= -3 && d <= 7) || (endD >= 0 && d <= 0);
+      return (d >= -3 && d <= 7 && endD >= 0) || (endD >= 0 && d <= 0);
     }), [filteredEvents]);
 
   const views = [

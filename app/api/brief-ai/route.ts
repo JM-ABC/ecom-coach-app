@@ -21,9 +21,22 @@ interface BriefAiRequest {
     end: string;
     confidence: string;
   }>;
+  seasonEvents?: Array<{
+    title: string;
+    dday: string;
+    start: string;
+    end: string;
+  }>;
 }
 
-function buildPrompt(req: BriefAiRequest): string {
+export interface ConceptItem {
+  title: string;
+  hook: string;
+  why: string;
+  products: string[];
+}
+
+function buildSummaryPrompt(req: BriefAiRequest): string {
   const trendsStr = req.trends.length
     ? req.trends
         .map(t => {
@@ -80,6 +93,65 @@ MD 행동 포인트
 규칙: 수치 없는 문장 금지. "수요가 있다"가 아닌 "↑N% → 액션" 형식. 섹션 제목은 줄바꿈으로만 구분(마크다운 기호 없이).`;
 }
 
+function buildConceptsPrompt(req: BriefAiRequest): string {
+  const trendsStr = req.trends.length
+    ? req.trends.map(t => {
+        const dir = t.changeVsPrevWeek > 0 ? `↑${t.changeVsPrevWeek}%` : t.changeVsPrevWeek < 0 ? `↓${Math.abs(t.changeVsPrevWeek)}%` : '보합';
+        return `· ${t.title} ${dir}`;
+      }).join('\n')
+    : '· 없음';
+
+  const weatherStr = req.weatherEvents.length
+    ? req.weatherEvents.map(e => `· ${e.title}: ${e.summary.slice(0, 60)}`).join('\n')
+    : '· 없음';
+
+  const seasonStr = (req.seasonEvents ?? []).length
+    ? req.seasonEvents!.map(e => `· ${e.title} (${e.dday}, ${e.start}~${e.end})`).join('\n')
+    : '· 없음';
+
+  const platformStr = req.platformEvents.length
+    ? req.platformEvents.map(e => `· ${e.title} (${e.platform}, ${e.start}~${e.end})`).join('\n')
+    : '· 없음';
+
+  return `당신은 한국 이커머스 MD 전략 컨설턴트입니다.
+아래 이번 주 실시간 데이터를 교차 분석하여, MD가 혼자서는 연결하기 어려운 역발상 기획전 컨셉 2~3개를 제안하세요.
+
+[분석 카테고리] ${req.categories.join(', ')}
+[검색 트렌드]
+${trendsStr}
+[날씨 신호]
+${weatherStr}
+[다가오는 시즌 이슈]
+${seasonStr}
+[플랫폼 행사]
+${platformStr}
+
+조건:
+- "시즌이니까 이 제품"이 아닌, 2개 이상 신호를 교차한 인사이트 기반 컨셉
+- 각 컨셉에 "왜 지금인지" 수치/타이밍 근거 명시
+- 맘큐(유아동 자사몰) 컨텍스트: 구독 없음, 배송 제안 금지, CRM/번들/기획전 위주
+
+아래 JSON 배열만 출력 (코드블록·설명 텍스트 없이, 순수 JSON만):
+[
+  {
+    "title": "기획전 이름 (5~15자)",
+    "hook": "소비자 언어로 된 한 줄 메시지",
+    "why": "지금 기획해야 하는 이유 — 교차 데이터 근거 1~2문장",
+    "products": ["추천 상품 또는 카테고리 1", "추천 상품 또는 카테고리 2", "추천 상품 또는 카테고리 3"]
+  }
+]`;
+}
+
+function parseConceptsJson(text: string): ConceptItem[] {
+  try {
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) return [];
+    return JSON.parse(match[0]) as ConceptItem[];
+  } catch {
+    return [];
+  }
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
 
@@ -98,11 +170,20 @@ export async function POST(request: Request) {
       model: 'gemini-2.5-flash',
       generationConfig: { maxOutputTokens: 900 },
     });
+    const conceptsModel = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
+      generationConfig: { maxOutputTokens: 700 },
+    });
 
-    const result = await model.generateContent(buildPrompt(body));
-    const summary = result.response.text();
+    const [summaryResult, conceptsResult] = await Promise.all([
+      model.generateContent(buildSummaryPrompt(body)),
+      conceptsModel.generateContent(buildConceptsPrompt(body)),
+    ]);
 
-    return NextResponse.json({ summary });
+    const summary = summaryResult.response.text();
+    const concepts = parseConceptsJson(conceptsResult.response.text());
+
+    return NextResponse.json({ summary, concepts });
   } catch (err) {
     console.error('[brief-ai] Error:', err);
     return NextResponse.json({ error: String(err) }, { status: 500 });

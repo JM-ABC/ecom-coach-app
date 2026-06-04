@@ -1,6 +1,39 @@
 'use client';
 
 import { useState, type CSSProperties } from 'react';
+import { EVENTS } from '@/lib/data';
+
+function toLocalDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function parseLocalDate(str: string): Date {
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function getDDay(startStr: string, endStr: string): { label: string; active: boolean } {
+  const today = new Date();
+  const todayMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  const startMs = parseLocalDate(startStr).getTime();
+  const endMs = parseLocalDate(endStr).getTime();
+  if (todayMs >= startMs && todayMs <= endMs) {
+    const elapsed = Math.round((todayMs - startMs) / (1000 * 60 * 60 * 24));
+    return { label: elapsed === 0 ? 'D-day' : `D+${elapsed}`, active: true };
+  }
+  const diff = Math.round((startMs - todayMs) / (1000 * 60 * 60 * 24));
+  return { label: `D-${diff}`, active: false };
+}
+
+function getUpcomingEvents() {
+  const todayStr = toLocalDateStr(new Date());
+  const limit = new Date();
+  limit.setDate(limit.getDate() + 30);
+  const limitStr = toLocalDateStr(limit);
+  return EVENTS
+    .filter(e => (e.type === 'season' || e.type === 'holiday') && e.start <= limitStr && e.end >= todayStr)
+    .sort((a, b) => a.start.localeCompare(b.start));
+}
 
 const CATEGORIES = [
   { id: 'b_diaper', label: '기저귀', group: '유아' },
@@ -62,6 +95,13 @@ interface TrendInsight {
   summary: string;
 }
 
+interface ConceptItem {
+  title: string;
+  hook: string;
+  why: string;
+  products: string[];
+}
+
 interface BriefResult {
   trends: TrendItem[] | null;
   trendsError: boolean;
@@ -73,6 +113,9 @@ interface BriefResult {
   aiSummary: string | null;
   aiLoading: boolean;
   aiError: boolean;
+  concepts: ConceptItem[] | null;
+  conceptsLoading: boolean;
+  conceptsError: boolean;
 }
 
 function SectionCard({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) {
@@ -173,6 +216,13 @@ export default function BriefPage() {
       const filteredEvents = allEvents.filter(e => platIds.includes(e.platform) && e.end >= todayStr);
       const insights: TrendInsight[] = newsRes.status === 'fulfilled' ? ((newsRes.value?.insights ?? []) as TrendInsight[]).slice(0, 2) : [];
 
+      const upcomingForAi = getUpcomingEvents().map(e => ({
+        title: e.title,
+        dday: getDDay(e.start, e.end).label,
+        start: e.start,
+        end: e.end,
+      }));
+
       setBrief({
         trends: trendsRes.status === 'fulfilled' ? filteredTrends : null,
         trendsError: trendsRes.status === 'rejected',
@@ -184,6 +234,9 @@ export default function BriefPage() {
         aiSummary: null,
         aiLoading: true,
         aiError: false,
+        concepts: null,
+        conceptsLoading: true,
+        conceptsError: false,
       });
 
       try {
@@ -196,16 +249,23 @@ export default function BriefPage() {
             trends: filteredTrends,
             weatherEvents: allWeather.map(e => ({ title: e.title, summary: e.summary.slice(0, 80) })),
             platformEvents: filteredEvents.map(e => ({ title: e.title, platform: e.platform, start: e.start, end: e.end, confidence: e.confidence })),
+            seasonEvents: upcomingForAi,
           }),
         });
         if (!aiRes.ok) throw new Error(`HTTP ${aiRes.status}`);
         const aiJson = await aiRes.json();
-        setBrief(prev => prev ? { ...prev, aiSummary: aiJson.summary ?? null, aiLoading: false } : prev);
+        setBrief(prev => prev ? {
+          ...prev,
+          aiSummary: aiJson.summary ?? null,
+          aiLoading: false,
+          concepts: aiJson.concepts ?? null,
+          conceptsLoading: false,
+        } : prev);
       } catch {
-        setBrief(prev => prev ? { ...prev, aiError: true, aiLoading: false } : prev);
+        setBrief(prev => prev ? { ...prev, aiError: true, aiLoading: false, conceptsError: true, conceptsLoading: false } : prev);
       }
     } catch {
-      setBrief({ trends: null, trendsError: true, weather: null, weatherError: true, events: null, insights: null, eventsError: true, aiSummary: null, aiLoading: false, aiError: true });
+      setBrief({ trends: null, trendsError: true, weather: null, weatherError: true, events: null, insights: null, eventsError: true, aiSummary: null, aiLoading: false, aiError: true, concepts: null, conceptsLoading: false, conceptsError: true });
     } finally {
       setLoading(false);
     }
@@ -259,7 +319,68 @@ export default function BriefPage() {
     setTimeout(() => setToast(null), 2500);
   };
 
-  const isComplete = brief !== null && !brief.aiLoading;
+  const copyReport = async () => {
+    if (!brief) return;
+    const today = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+    const catLabels = [...selectedCats].map(id => CATEGORIES.find(c => c.id === id)?.label ?? id).join(', ');
+    const divider = '━━━━━━━━━━━━━━━━━━━━━━━';
+
+    const trendLines = (brief.trends ?? []).map(t => {
+      const dir = t.changeVsPrevWeek > 0 ? `↑${t.changeVsPrevWeek}%` : t.changeVsPrevWeek < 0 ? `↓${Math.abs(t.changeVsPrevWeek)}%` : '보합';
+      return `  • ${t.title}: 전주 대비 ${dir} (검색지수 ${Math.round(t.latestRatio)})`;
+    }).join('\n') || '  • 데이터 없음';
+
+    const weatherLines = (brief.weather ?? []).map(e => `  • ${e.title}: ${e.summary}`).join('\n') || '  • 특이 날씨 없음';
+
+    const seen = new Set<string>();
+    const eventLines = (brief.events ?? [])
+      .filter(e => { if (seen.has(e.title)) return false; seen.add(e.title); return true; })
+      .map(e => {
+        const s = e.start.slice(5).replace('-', '/');
+        const en = e.end.slice(5).replace('-', '/');
+        const conf = e.confidence === 'high' ? '확정' : e.confidence === 'mid' ? '추정' : '참고';
+        return `  • ${e.title} (${s}~${en}, ${conf})`;
+      }).join('\n') || '  • 감지된 행사 없음';
+
+    const conceptLines = (brief.concepts ?? []).map((c, i) =>
+      `  ${i + 1}. ${c.title}\n     "${c.hook}"\n     WHY: ${c.why}\n     추천 상품: ${c.products.join(', ')}`
+    ).join('\n\n') || '  • 생성 실패';
+
+    const text = [
+      `맘큐 주간 수요 브리핑`,
+      `${divider}`,
+      `날짜: ${today}`,
+      `분석 카테고리: ${catLabels}`,
+      ``,
+      `1. 네이버 검색 트렌드`,
+      trendLines,
+      ``,
+      `2. 날씨 수요 신호`,
+      weatherLines,
+      ``,
+      `3. 플랫폼 행사 감지`,
+      eventLines,
+      ``,
+      `4. AI 수요 분석`,
+      brief.aiSummary ? brief.aiSummary.trim().split('\n').map(l => `  ${l}`).join('\n') : '  • 생성 실패',
+      ``,
+      `5. AI 기획전 컨셉 추천`,
+      conceptLines,
+      ``,
+      divider,
+      `* 검색지수: 네이버 DataLab 상대값 (100=최고). AI 분석은 참고용이며 공식 데이터로 검증 필요.`,
+    ].join('\n');
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setToast('보고서 형식으로 복사되었습니다 ✓');
+    } catch {
+      setToast('복사 실패 — 텍스트를 직접 선택해주세요');
+    }
+    setTimeout(() => setToast(null), 2500);
+  };
+
+  const isComplete = brief !== null && !brief.aiLoading && !brief.conceptsLoading;
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', paddingBottom: '80px' }}>
@@ -371,6 +492,44 @@ export default function BriefPage() {
           </button>
         </div>
 
+        {/* 다가오는 시즌 이슈 */}
+        {(() => {
+          const upcoming = getUpcomingEvents();
+          if (upcoming.length === 0) return null;
+          const TYPE_ICON: Record<string, string> = { season: '🌿', holiday: '📅' };
+          return (
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: '16px' }}>
+              <div style={{ padding: '11px 16px', borderBottom: '1px solid var(--divider)', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                <span style={{ fontSize: 15 }}>🗓</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>다가오는 시즌 이슈 <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--text-subtle)' }}>30일 이내</span></span>
+              </div>
+              <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {upcoming.map(e => {
+                  const { label, active } = getDDay(e.start, e.end);
+                  const s = e.start.slice(5).replace('-', '/');
+                  const en = e.end.slice(5).replace('-', '/');
+                  return (
+                    <div key={e.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                      <span style={{
+                        flexShrink: 0,
+                        fontSize: 11, fontWeight: 700,
+                        padding: '2px 7px', borderRadius: '999px',
+                        background: active ? 'var(--accent-bg)' : 'var(--bg-subtle)',
+                        color: active ? 'var(--accent-text)' : 'var(--text-subtle)',
+                        whiteSpace: 'nowrap', marginTop: '1px',
+                      }}>{label}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 500 }}>{TYPE_ICON[e.type] ?? ''} {e.title}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: '2px' }}>{s} ~ {en}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* 결과 섹션 */}
         {brief && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -390,9 +549,9 @@ export default function BriefPage() {
                       <div key={t.ourKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <span style={{ fontSize: 13, fontWeight: 500 }}>{t.title}</span>
-                          <span style={{ fontSize: 12, color: 'var(--text-subtle)', marginLeft: '6px' }}>비율 {t.latestRatio}</span>
+                          <span style={{ fontSize: 12, color: 'var(--text-subtle)', marginLeft: '6px' }}>검색지수 {Math.round(t.latestRatio)}</span>
                         </div>
-                        <span style={{ fontSize: 14, fontWeight: 700, color, whiteSpace: 'nowrap', flexShrink: 0 }}>{dir}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, color, whiteSpace: 'nowrap', flexShrink: 0 }}>전주 대비 {dir}</span>
                       </div>
                     );
                   })}
@@ -464,32 +623,94 @@ export default function BriefPage() {
                )}
             </SectionCard>
 
+            {/* 5. AI 기획전 컨셉 추천 */}
+            <SectionCard icon="💡" title="AI 기획전 컨셉 추천">
+              {brief.conceptsError ? <ErrorBlock /> :
+               brief.conceptsLoading ? <LoadingText text="컨셉 생성 중..." /> :
+               !brief.concepts || brief.concepts.length === 0 ? (
+                <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>컨셉 생성 실패 — 잠시 후 다시 시도해주세요</div>
+               ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {brief.concepts.map((c, i) => (
+                    <div key={i} style={{
+                      background: 'var(--bg-subtle)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '12px 14px',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', marginBottom: '6px' }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{c.title}</div>
+                        <a
+                          href="/"
+                          style={{
+                            flexShrink: 0,
+                            fontSize: 11, fontWeight: 600,
+                            color: 'var(--accent-text)',
+                            background: 'var(--accent-bg)',
+                            border: '1px solid var(--accent-border)',
+                            borderRadius: '999px',
+                            padding: '3px 9px',
+                            textDecoration: 'none',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >기획서 작성 →</a>
+                      </div>
+                      <div style={{ fontSize: 13, color: 'var(--accent-text)', fontStyle: 'italic', marginBottom: '6px' }}>"{c.hook}"</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '8px' }}>{c.why}</div>
+                      {c.products.length > 0 && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                          {c.products.map((p, j) => (
+                            <span key={j} style={{
+                              fontSize: 11, color: 'var(--text-subtle)',
+                              background: 'var(--surface)',
+                              border: '1px solid var(--border)',
+                              borderRadius: '999px',
+                              padding: '2px 8px',
+                            }}>{p}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+               )}
+            </SectionCard>
+
             {/* 복사 CTA */}
             {isComplete && (
-              <button
-                onClick={copyBrief}
-                style={{
-                  width: '100%',
-                  height: '50px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1.5px solid var(--border-strong)',
-                  background: 'var(--surface)',
-                  color: 'var(--text)',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  marginTop: '4px',
-                  transition: 'background 120ms, border-color 120ms',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--surface-hover)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--surface)'; }}
-              >
-                📋 카카오톡 형식으로 복사
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
+                <button
+                  onClick={copyReport}
+                  style={{
+                    width: '100%', height: '50px',
+                    borderRadius: 'var(--radius-md)', border: 'none',
+                    background: 'var(--accent)', color: '#fff',
+                    fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    transition: 'opacity 120ms',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
+                >
+                  📄 보고서 형식으로 복사
+                </button>
+                <button
+                  onClick={copyBrief}
+                  style={{
+                    width: '100%', height: '44px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1.5px solid var(--border-strong)',
+                    background: 'var(--surface)', color: 'var(--text)',
+                    fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    transition: 'background 120ms',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--surface-hover)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--surface)'; }}
+                >
+                  📋 카카오톡 형식으로 복사
+                </button>
+              </div>
             )}
           </div>
         )}
