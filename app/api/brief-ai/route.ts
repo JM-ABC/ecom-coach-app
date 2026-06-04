@@ -143,10 +143,16 @@ ${platformStr}
 }
 
 function parseConceptsJson(text: string): ConceptItem[] {
+  // 코드블록이 있으면 그 안을 먼저 시도
+  const codeBlock = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  const candidate = codeBlock ? codeBlock[1] : text;
+
+  const start = candidate.indexOf('[');
+  const end = candidate.lastIndexOf(']');
+  if (start === -1 || end === -1 || end <= start) return [];
+
   try {
-    const match = text.match(/\[[\s\S]*\]/);
-    if (!match) return [];
-    return JSON.parse(match[0]) as ConceptItem[];
+    return JSON.parse(candidate.slice(start, end + 1)) as ConceptItem[];
   } catch {
     return [];
   }
@@ -168,11 +174,11 @@ export async function POST(request: Request) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { maxOutputTokens: 900 },
+      generationConfig: { maxOutputTokens: 1500 },
     });
     const conceptsModel = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { maxOutputTokens: 700 },
+      generationConfig: { maxOutputTokens: 1000 },
     });
 
     const [summaryResult, conceptsResult] = await Promise.all([
