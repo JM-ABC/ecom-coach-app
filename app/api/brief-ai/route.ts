@@ -174,11 +174,14 @@ export async function POST(request: Request) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { maxOutputTokens: 1500 },
+      generationConfig: { maxOutputTokens: 2000 },
     });
     const conceptsModel = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { maxOutputTokens: 1000 },
+      generationConfig: {
+        maxOutputTokens: 1200,
+        responseMimeType: 'application/json',
+      },
     });
 
     const [summaryResult, conceptsResult] = await Promise.all([
