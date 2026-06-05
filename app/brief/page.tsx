@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type CSSProperties } from 'react';
-import { useRouter } from 'next/navigation';
 import { EVENTS } from '@/lib/data';
 
 function toLocalDateStr(d: Date): string {
@@ -173,8 +172,6 @@ export default function BriefPage() {
   const [loading, setLoading] = useState(false);
   const [brief, setBrief] = useState<BriefResult | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
-  const router = useRouter();
 
   const toggleCat = (id: string) => {
     setSelectedCats(prev => {
@@ -643,29 +640,6 @@ export default function BriefPage() {
                     }}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', marginBottom: '6px' }}>
                         <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{c.title}</div>
-                        <button
-                          onClick={() => {
-                            const text = `[기획전 컨셉] ${c.title}\n"${c.hook}"\n${c.why}\n추천 상품: ${c.products.join(', ')}`;
-                            navigator.clipboard.writeText(text).catch(() => {}).finally(() => {
-                              setCopiedIdx(i);
-                              setTimeout(() => {
-                                setCopiedIdx(null);
-                                router.push('/');
-                              }, 800);
-                            });
-                          }}
-                          style={{
-                            flexShrink: 0,
-                            fontSize: 11, fontWeight: 600,
-                            color: copiedIdx === i ? 'var(--text-muted)' : 'var(--accent-text)',
-                            background: copiedIdx === i ? 'var(--bg-subtle)' : 'var(--accent-bg)',
-                            border: `1px solid ${copiedIdx === i ? 'var(--border)' : 'var(--accent-border)'}`,
-                            borderRadius: '999px',
-                            padding: '3px 9px',
-                            whiteSpace: 'nowrap',
-                            cursor: 'pointer',
-                          }}
-                        >{copiedIdx === i ? '복사됨 ✓' : '기획서 작성 →'}</button>
                       </div>
                       <div style={{ fontSize: 13, color: 'var(--accent-text)', fontStyle: 'italic', marginBottom: '6px' }}>"{c.hook}"</div>
                       <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '8px' }}>{c.why}</div>
