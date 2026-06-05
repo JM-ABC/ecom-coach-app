@@ -136,11 +136,20 @@ export async function POST(request: Request) {
     });
 
     const result = await model.generateContent(buildPrompt(body));
-    const raw = result.response.text();
+    const rawText = result.response.text();
+    // Gemini sometimes wraps JSON in markdown code fences — strip them
+    const raw = rawText.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
 
     let parsed: { summary: string; concepts: ConceptItem[] };
     try {
       parsed = JSON.parse(raw);
+      // Guard: if summary is itself a JSON string (double-encoded), unwrap it
+      if (typeof parsed.summary === 'string' && parsed.summary.trimStart().startsWith('{')) {
+        try {
+          const inner = JSON.parse(parsed.summary);
+          if (inner.summary) parsed = inner;
+        } catch { /* not JSON, keep as-is */ }
+      }
     } catch {
       parsed = { summary: raw, concepts: [] };
     }
