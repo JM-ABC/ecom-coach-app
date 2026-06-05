@@ -143,14 +143,28 @@ const LINE_STYLE: CSSProperties = {
   wordBreak: 'break-word', overflowWrap: 'anywhere', display: 'block',
 };
 
+const SECTION_HEADERS = ['이번 주 핵심 신호', '카테고리 기회', 'MD 행동 포인트'];
+
+function splitSummary(text: string): string[] {
+  // 이중 줄바꿈이 있으면 그대로 사용
+  if (/\n{2,}/.test(text)) return text.trim().split(/\n{2,}/);
+  // 없으면 알려진 섹션 헤더 앞에서 강제 분리
+  let normalized = text.trim();
+  for (const h of SECTION_HEADERS) {
+    normalized = normalized.replace(new RegExp(`(?<!^)${h}`, 'g'), `\n\n${h}`);
+  }
+  return normalized.split(/\n{2,}/);
+}
+
 function AiSummaryBlock({ text }: { text: string }) {
-  const paragraphs = text.trim().split(/\n{2,}/);
+  const paragraphs = splitSummary(text);
   return (
     <div>
       {paragraphs.map((para, i) => {
         const lines = para.trim().split('\n');
         const firstLine = lines[0].replace(/^\*+|\*+$/g, '').trim();
-        const isHeader = firstLine.length <= 20 && !/^[▶•\d]/.test(firstLine) && lines.length > 1;
+        const isHeader = SECTION_HEADERS.some(h => firstLine.startsWith(h)) ||
+          (firstLine.length <= 20 && !/^[▶•\d]/.test(firstLine) && lines.length > 1);
         return (
           <div key={i} style={{ marginBottom: i < paragraphs.length - 1 ? '12px' : 0 }}>
             {isHeader && (
