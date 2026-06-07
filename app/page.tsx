@@ -12,7 +12,8 @@ import type { TabId } from '@/lib/types';
 
 const mobileTabs: { id: TabId; label: string; icon: string; disabled?: boolean }[] = [
   { id: 'calendar', label: '캘린더', icon: 'calendar' },
-  { id: 'season-promos', label: '이벤트', icon: 'cloud' },
+  { id: 'season-promos', label: '시즌', icon: 'cloud' },
+  { id: 'crm-promos', label: 'CRM', icon: 'users' },
   { id: 'product-name', label: '상품명', icon: 'search', disabled: true },
   { id: 'copy', label: '카피', icon: 'pen', disabled: true },
   { id: 'detail-page', label: '상세', icon: 'layout', disabled: true },
@@ -26,10 +27,15 @@ export default function Home() {
       <Sidebar activeTab={tab} onTabChange={setTab} />
       <div className="main-content" style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
         {tab === 'calendar' && <MarketingCalendar />}
+        {tab === 'season-promos' && <EventManager />}
+        {tab === 'crm-promos' && (
+          <div style={{ padding: 32, color: 'var(--text-muted)', fontSize: 'var(--fs-base)' }}>
+            CRM 기획전 — 준비 중
+          </div>
+        )}
         {tab === 'product-name' && <ProductNameOptimizer />}
         {tab === 'copy' && <CopyGenerator />}
         {tab === 'detail-page' && <DetailPageDesign />}
-        {tab === 'season-promos' && <EventManager />}
       </div>
       {/* 모바일 경쟁사 링크 바 */}
       <div className="mobile-platform-bar">
@@ -54,7 +60,7 @@ export default function Home() {
       </div>
 
       <nav className="mobile-nav">
-        {mobileTabs.slice(0, 2).map(t => (
+        {mobileTabs.slice(0, 3).map(t => (
           <button
             key={t.id}
             className={`mobile-nav-item${tab === t.id ? ' active' : ''}`}
@@ -68,7 +74,7 @@ export default function Home() {
           <Icon name="trending" size={18} />
           브리핑
         </a>
-        {mobileTabs.slice(2).map(t => (
+        {mobileTabs.slice(3).map(t => (
           <button
             key={t.id}
             className="mobile-nav-item"
