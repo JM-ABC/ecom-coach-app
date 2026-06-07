@@ -366,7 +366,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '욕실 청소용품 세트 (변기·타일·곰팡이 제거)', reason: '봄 대청소 욕실 정리 수요', urgency: 'mid', category: 'l_bath', priceRange: { min: 8000, max: 22000 }, prepDays: 5, momqTip: '청소세제 번들에 욕실 세트 추가 구성. "화장실 대청소" 커뮤니티 꿀팁 연동.' },
       { name: '화장지·키친타월 대용량 세트', reason: '대청소 시즌 생필품 일괄 보충 구매', urgency: 'mid', category: 'l_tissue', priceRange: { min: 12000, max: 35000 }, prepDays: 3, momqTip: '생필품 번들 구성으로 객단가 상승. 맘큐 프리미엄 쇼핑지원금 소진 유도.' },
       { name: '생리대·성인 위생용품 대용량', reason: '대청소 겸 생필품 일괄 구매 수요', urgency: 'low', category: 'l_sanitary', priceRange: { min: 10000, max: 30000 }, prepDays: 3, momqTip: '세탁세제·화장지와 생필품 번들 구성. 정기 재구매 고객 CRM 발송.' },
-      { name: '기저귀·물티슈 대용량 묶음 (봄 비축)', reason: '대청소 시즌 생필품 재고 보충 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 25000, max: 65000 }, prepDays: 5, momqTip: '하기스 기저귀+물티슈 번들. 맘큐 회원 전용 추가 할인으로 락인.' },
+      { name: '기저귀·물티슈 대용량 묶음 (봄 비축)', reason: '대청소 시즌 생필품 비축 구매 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 25000, max: 65000 }, prepDays: 5, momqTip: '하기스 기저귀+물티슈 번들. 맘큐 회원 전용 추가 할인으로 락인.' },
     ],
     checklist: [
       { d: -7, task: '"봄맞이 살림템" 기획전 페이지', done: false },
@@ -382,7 +382,7 @@ export const EVENTS: MarketingEvent[] = [
     summary: '장마 시작으로 고온다습 환경이 본격화되는 시즌. 제습기·습기제거제·쿨링용품 수요가 연중 최고점에 달하며, 영유아 위생·피부 관련 수요도 함께 상승합니다.',
     trendScore: 84, search: '실시간 연동', gmv: '실시간 연동',
     products: [
-      { name: '습기제거제·제습제 대용량', reason: '장마철 반복 구매 필수품, 소모품 특성상 번들 구성 효과적', urgency: 'high', category: 'l_air' },
+      { name: '습기제거제·제습제 대용량', reason: '장마철 반복 구매 필수품, 대용량 번들로 재구매 주기 연장 — 객단가 확보', urgency: 'high', category: 'l_air' },
       { name: '소형 제습기·냉풍기', reason: '6월 장마 시작과 함께 검색량 급등, 선제 재고 확보 필요', urgency: 'high', category: 'l_electric' },
       { name: '아기 쿨링매트·냉감 속싸개', reason: '영아 체온 관리 필수품, 고온다습 환경에서 수요 급증', urgency: 'high', category: 'l_body' },
       { name: '유아 항균·저자극 물티슈', reason: '고온다습 환경에서 위생 니즈 증가, 반복 구매', urgency: 'mid', category: 'b_wipe' },
@@ -398,7 +398,7 @@ export const EVENTS: MarketingEvent[] = [
       { d: 0, task: '장마 일기예보 연동 — 강수 예보 당일 제습 품목 CRM 즉시 발송', done: false },
       { d: 10, task: '장마 시즌 전환율·제습제 재구매율 중간 점검', done: false },
     ],
-    pro: '습기제거제·제습기는 네이버 DataLab 기준 6월 중순~7월이 연중 검색량 최고점입니다. 맘큐에선 "아기방 습도 관리" 커뮤니티 콘텐츠와 쿨링·위생 번들을 연계하면 자연 유입이 증가합니다. 제습제는 소모품이므로 대용량 번들 구성이 객단가 향상에 효과적입니다.',
+    pro: '습기제거제·제습기는 네이버 DataLab 기준 6월 중순~7월이 연중 검색량 최고점입니다. 맘큐에선 "아기방 습도 관리" 커뮤니티 콘텐츠와 쿨링·위생 번들을 연계하면 자연 유입이 증가합니다. 제습제는 대용량 번들 구성으로 객단가를 확보하세요.',
     platformTips: {
       momq:   { tip: '장마 기간은 "아기방 습도 관리" 커뮤니티 콘텐츠와 제습·쿨링 번들을 연동하면 자연 유입이 증가합니다. 기저귀·물티슈 대용량 번들을 프론트에 함께 배치해 고온다습 환경의 위생 민감도를 공략하세요.', action: '아기방 제습·위생 번들 기획전 오픈', metric: '커뮤니티 유입 +30%' },
       coupang: { tip: '로켓배송 제습기·제습제는 장마 시작 2주 전 재고 3배 선확보 필수. 카테고리 알고리즘이 장마 기간 쿨링·제습 트래픽을 집중 분배합니다. 재고 부족 시 "품절→순위 급락" 리스크가 큽니다.', action: '제습기·제습제 로켓 재고 3배 선확보', metric: '노출 +85%' },
@@ -676,7 +676,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 70, search: '+44%', gmv: '+31%',
     products: [
       { name: '유아 저자극 보습 크림·로션', reason: '환절기 유아 피부 건조 필수 대응', urgency: 'high', category: 'b_bath', priceRange: { min: 10000, max: 28000 }, prepDays: 10, momqTip: '맘큐 커뮤니티 "환절기 아기 피부" 게시글과 상품 페이지 연동. EWG 등급·무자극 인증 강조.' },
-      { name: '유아 유산균·면역 영양제', reason: '환절기 면역력 저하 선제 구매', urgency: 'high', category: 'b_suppl', priceRange: { min: 15000, max: 45000 }, prepDays: 10, momqTip: '첫 구매 체험 팩→정기 구매 전환 구조. 커뮤니티 후기 선확보 후 CRM 발송.' },
+      { name: '유아 유산균·면역 영양제', reason: '환절기 면역력 저하 선제 구매', urgency: 'high', category: 'b_suppl', priceRange: { min: 15000, max: 45000 }, prepDays: 10, momqTip: '초회 구매 체험 팩 → 재구매 CRM 자동화. 커뮤니티 후기 선확보 후 발송.' },
       { name: '유아 가습기 (초음파·저소음)', reason: '실내 건조함 해소, 환절기 필수템', urgency: 'mid', category: 'l_health', priceRange: { min: 25000, max: 75000 }, prepDays: 14, momqTip: '고가 상품 → 프리미엄 쇼핑지원금 활용 안내로 멤버십 업셀.' },
       { name: '어린이·성인 두피 케어 샴푸 (봄 환절기 탈모 예방)', reason: '봄철 탈모 검색 급증, 맘+아이 동반 구매 수요', urgency: 'low', category: 'l_hair', priceRange: { min: 8000, max: 25000 }, prepDays: 7, momqTip: '"환절기 머리 빠져요" 커뮤니티 질문 연계 상품 태그. 유아 전용 저자극 샴푸 함께 구성.' },
     ],
@@ -768,7 +768,7 @@ export const EVENTS: MarketingEvent[] = [
       { d: 7, task: '패밀리 세트 번들 기획전 오픈', done: false },
       { d: -10, task: '무기자차·EWG 등급 경쟁 제품 성분 비교표 상세페이지 삽입', done: false },
       { d: 0, task: '자외선차단제 SPF·PA 표기 오류 점검 (리콜·민원 리스크 사전 차단)', done: false },
-      { d: 14, task: '썬크림 재구매율 분석 → 정기구매 CRM 프로그램 설계', done: false },
+      { d: 14, task: '썬크림 재구매율 분석 → 재구매 CRM 설계', done: false },
     ],
     pro: '아기 자외선차단제는 "무기자차", "EWG 그린등급", "벤조페논 프리" 키워드가 구매 결정 1~3위입니다. 성분 비교표를 상세페이지에 넣고 커뮤니티 체험단을 선행 투입해 리뷰 50건 이상 확보 후 광고 집행하세요.',
     platformTips: {
