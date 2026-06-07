@@ -436,16 +436,101 @@ function NewsDetectionPanel() {
   );
 }
 
+// ── 경쟁사 모니터링 패널 ──────────────────────────────────────
+const COMPETITORS = [
+  {
+    group: '대형 플랫폼',
+    items: [
+      { label: '쿠팡',     short: '쿠', url: 'https://www.coupang.com',         color: 'oklch(0.62 0.18 25)',  desc: '로켓배송·로켓그로스 행사 및 딜 확인' },
+      { label: '네이버쇼핑', short: 'N', url: 'https://shopping.naver.com',      color: 'oklch(0.55 0.15 150)', desc: '브랜드스토어·기획전·검색광고 동향' },
+    ],
+  },
+  {
+    group: '오픈마켓',
+    items: [
+      { label: '11번가',  short: '11', url: 'https://www.11st.co.kr',           color: 'oklch(0.62 0.18 15)',  desc: '11절·슈퍼딜 등 플랫폼 행사 모니터링' },
+      { label: 'G마켓',   short: 'G',  url: 'https://www.gmarket.co.kr',        color: 'oklch(0.55 0.14 155)', desc: '슈퍼위크·빅세일 기획전 확인' },
+      { label: '카카오',  short: 'K',  url: 'https://store.kakao.com',          color: 'oklch(0.62 0.13 90)',  desc: '카카오 선물하기·톡딜 행사 동향' },
+    ],
+  },
+  {
+    group: '전문몰',
+    items: [
+      { label: '컬리',    short: '컬', url: 'https://www.kurly.com',            color: 'oklch(0.44 0.22 310)', desc: '생활/유아 카테고리 기획전·PB 동향' },
+      { label: '무신사',  short: '무', url: 'https://www.musinsa.com',          color: 'oklch(0.22 0 0)',      desc: '패션·라이프 트렌드 참고' },
+      { label: 'GS샵',   short: 'GS', url: 'https://www.gsshop.com',           color: 'oklch(0.50 0.18 250)', desc: 'TV홈쇼핑 연계 유아동 기획전 확인' },
+      { label: '알리',    short: 'A',  url: 'https://ko.aliexpress.com',        color: 'oklch(0.65 0.18 50)',  desc: '가격 경쟁력·해외직구 트렌드 참고' },
+    ],
+  },
+];
+
+function CompetitorPanel() {
+  return (
+    <div>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 'var(--fs-md)', fontWeight: 700, letterSpacing: '-0.01em', marginBottom: 4 }}>경쟁사 모니터링</div>
+        <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>
+          주요 플랫폼 기획전·행사를 빠르게 확인하세요.
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        {COMPETITORS.map(group => (
+          <div key={group.group}>
+            <div style={{ fontSize: 'var(--fs-xs)', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+              {group.group}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
+              {group.items.map(p => (
+                <a
+                  key={p.label}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    padding: '12px 14px', borderRadius: 'var(--radius-md)',
+                    background: 'var(--surface)', border: '1px solid var(--border)',
+                    textDecoration: 'none', transition: 'box-shadow 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
+                  onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+                >
+                  <span style={{
+                    width: 36, height: 36, borderRadius: 'var(--radius-sm)',
+                    background: p.color, color: '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 'var(--fs-sm)', fontWeight: 700, flexShrink: 0,
+                    letterSpacing: '-0.02em',
+                  }}>
+                    {p.short}
+                  </span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 'var(--fs-base)', fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{p.label}</div>
+                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-muted)', lineHeight: 1.4 }}>{p.desc}</div>
+                  </div>
+                  <Icon name="arrowRight" size={12} stroke={2} />
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── 메인 컴포넌트 ──────────────────────────────────────────────
-type PanelId = 'news' | 'trends' | 'weather';
+type PanelId = 'news' | 'trends' | 'weather' | 'competitor';
 
 export default function InsightsPanel() {
   const [panel, setPanel] = useState<PanelId>('news');
 
   const panels: { id: PanelId; label: string; icon: string }[] = [
-    { id: 'news',    label: '뉴스 감지',   icon: 'search' },
-    { id: 'trends',  label: '트렌드 연동', icon: 'trending' },
-    { id: 'weather', label: '날씨 자동화', icon: 'cloud' },
+    { id: 'news',       label: '뉴스 감지',    icon: 'search' },
+    { id: 'trends',     label: '트렌드 연동',  icon: 'trending' },
+    { id: 'weather',    label: '날씨 자동화',  icon: 'cloud' },
+    { id: 'competitor', label: '경쟁사 모니터링', icon: 'eye' },
   ];
 
   return (
@@ -481,9 +566,10 @@ export default function InsightsPanel() {
         ))}
       </div>
 
-      {panel === 'news'    && <NewsDetectionPanel />}
-      {panel === 'trends'  && <TrendPanel />}
-      {panel === 'weather' && <WeatherPanel />}
+      {panel === 'news'       && <NewsDetectionPanel />}
+      {panel === 'trends'     && <TrendPanel />}
+      {panel === 'weather'    && <WeatherPanel />}
+      {panel === 'competitor' && <CompetitorPanel />}
     </div>
   );
 }
