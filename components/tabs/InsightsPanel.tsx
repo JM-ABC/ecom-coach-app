@@ -442,25 +442,28 @@ const COMPETITORS = [
   {
     group: '대형 플랫폼',
     items: [
-      { label: '쿠팡',     short: '쿠', url: 'https://www.coupang.com',         color: 'oklch(0.62 0.18 25)',  desc: '로켓배송·로켓그로스 행사 및 딜 확인' },
+      { label: '쿠팡',     short: '쿠',  url: 'https://www.coupang.com',         color: 'oklch(0.62 0.18 25)',  desc: '로켓배송·로켓그로스 행사 및 딜 확인' },
       { label: '네이버쇼핑', short: 'N', url: 'https://shopping.naver.com',      color: 'oklch(0.55 0.15 150)', desc: '브랜드스토어·기획전·검색광고 동향' },
+      { label: 'SSG닷컴',  short: 'SSG', url: 'https://www.ssg.com',            color: 'oklch(0.52 0.20 20)',  desc: '이마트 온라인 유아·생활용품 기획전 확인' },
+      { label: '롯데온',   short: '롯데', url: 'https://www.lotteon.com',        color: 'oklch(0.50 0.22 15)',  desc: '롯데마트 온라인 연계 유아동 행사 모니터링' },
     ],
   },
   {
-    group: '오픈마켓',
+    group: '오픈마켓·커머스',
     items: [
-      { label: '11번가',  short: '11', url: 'https://www.11st.co.kr',           color: 'oklch(0.62 0.18 15)',  desc: '11절·슈퍼딜 등 플랫폼 행사 모니터링' },
-      { label: 'G마켓',   short: 'G',  url: 'https://www.gmarket.co.kr',        color: 'oklch(0.55 0.14 155)', desc: '슈퍼위크·빅세일 기획전 확인' },
-      { label: '카카오',  short: 'K',  url: 'https://store.kakao.com',          color: 'oklch(0.62 0.13 90)',  desc: '카카오 선물하기·톡딜 행사 동향' },
+      { label: '11번가',  short: '11', url: 'https://www.11st.co.kr',            color: 'oklch(0.62 0.18 15)',  desc: '11절·슈퍼딜 등 플랫폼 행사 모니터링' },
+      { label: 'G마켓',   short: 'G',  url: 'https://www.gmarket.co.kr',         color: 'oklch(0.55 0.14 155)', desc: '슈퍼위크·빅세일 기획전 확인' },
+      { label: '카카오',  short: 'K',  url: 'https://gift.kakao.com',            color: 'oklch(0.62 0.13 90)',  desc: '카카오 선물하기·톡딜 행사 동향' },
     ],
   },
   {
     group: '전문몰',
     items: [
-      { label: '컬리',    short: '컬', url: 'https://www.kurly.com',            color: 'oklch(0.44 0.22 310)', desc: '생활/유아 카테고리 기획전·PB 동향' },
-      { label: '무신사',  short: '무', url: 'https://www.musinsa.com',          color: 'oklch(0.22 0 0)',      desc: '패션·라이프 트렌드 참고' },
-      { label: 'GS샵',   short: 'GS', url: 'https://www.gsshop.com',           color: 'oklch(0.50 0.18 250)', desc: 'TV홈쇼핑 연계 유아동 기획전 확인' },
-      { label: '알리',    short: 'A',  url: 'https://ko.aliexpress.com',        color: 'oklch(0.65 0.18 50)',  desc: '가격 경쟁력·해외직구 트렌드 참고' },
+      { label: '컬리',      short: '컬',  url: 'https://www.kurly.com',          color: 'oklch(0.44 0.22 310)', desc: '생활/유아 카테고리 기획전·PB 동향' },
+      { label: '올리브영',  short: '올리', url: 'https://www.oliveyoung.co.kr',  color: 'oklch(0.48 0.18 145)', desc: '생리대·바디케어 트렌드·기획전 참고' },
+      { label: '무신사',    short: '무',  url: 'https://www.musinsa.com',        color: 'oklch(0.22 0 0)',      desc: '패션·라이프 트렌드 참고' },
+      { label: 'GS샵',     short: 'GS',  url: 'https://www.gsshop.com',         color: 'oklch(0.50 0.18 250)', desc: 'TV홈쇼핑 연계 유아동 기획전 확인' },
+      { label: '알리',      short: 'A',   url: 'https://ko.aliexpress.com',      color: 'oklch(0.65 0.18 50)',  desc: '가격 경쟁력·해외직구 트렌드 참고' },
     ],
   },
 ];
