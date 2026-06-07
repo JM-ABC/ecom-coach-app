@@ -162,31 +162,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           ))}
         </div>
 
-        <div style={{ marginTop: 8 }}>
-          <div style={s.groupLabel as CSSProperties}>인사이트</div>
-          <a
-            href="/brief"
-            style={{ ...s.navItem, textDecoration: 'none', display: 'flex' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'var(--surface-hover)'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = ''; }}
-          >
-            <Icon name="trending" size={15} />
-            <span>주간 수요 브리핑</span>
-            <span style={{ flex: 1 }} />
-            <span className="chip" style={{ fontSize: 10, padding: '0 5px', height: 16, color: 'var(--success)', background: 'var(--success-bg)', borderColor: 'transparent' }}>New</span>
-          </a>
-          {tools.map(t => (
-            <div
-              key={t.id}
-              style={{ ...s.navItem, opacity: 0.45, cursor: 'default', pointerEvents: 'none' }}
-            >
-              <Icon name={t.icon} size={15} />
-              <span>{t.label}</span>
-              <span style={{ flex: 1 }} />
-              <span className="chip" style={{ fontSize: 10, padding: '0 5px', height: 16 }}>Soon</span>
-            </div>
-          ))}
-        </div>
 
         <div style={{ flex: 1 }} />
 
