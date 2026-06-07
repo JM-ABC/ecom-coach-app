@@ -55,9 +55,9 @@ function TrendPanel() {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 'var(--fs-md)', fontWeight: 700, letterSpacing: '-0.01em' }}>카테고리 수요 신호</div>
+          <div style={{ fontSize: 'var(--fs-md)', fontWeight: 700, letterSpacing: '-0.01em' }}>카테고리별 네이버 검색량 변화</div>
           <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)', marginTop: 2 }}>
-            네이버 데이터랩 기반 전주 대비 수요 변화 · MD 액션 가이드
+            판매량이 아닌 검색어 트렌드 기준 · 네이버 DataLab · 전주 대비 변화율
           </div>
         </div>
         <div style={{ flex: 1 }} />
@@ -132,11 +132,12 @@ function TrendPanel() {
                     <div key={i} style={{ flex: 1, borderRadius: 2, background: i === arr.length - 1 ? sig.color : 'var(--bg-subtle)', height: `${Math.max(10, (d.ratio / 100) * 100)}%`, opacity: i === arr.length - 1 ? 1 : 0.5 }} title={`${d.period}: ${d.ratio}`} />
                   ))}
                 </div>
-                <div style={{ textAlign: 'right', minWidth: 38, flexShrink: 0 }}>
+                <div style={{ textAlign: 'right', minWidth: 44, flexShrink: 0 }}>
+                  <div style={{ fontSize: 'var(--fs-2xs)', color: 'var(--text-subtle)', marginBottom: 2, whiteSpace: 'nowrap' }}>검색량 지수</div>
                   <div style={{ fontSize: 'var(--fs-lg)', fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
                     {Math.round(t.latestRatio)}
                   </div>
-                  <div style={{ fontSize: 'var(--fs-2xs)', color: 'var(--text-subtle)', marginTop: 2 }}>/ 100</div>
+                  <div style={{ fontSize: 'var(--fs-2xs)', color: 'var(--text-disabled)', marginTop: 2 }}>최고치 = 100</div>
                 </div>
               </div>
             );
