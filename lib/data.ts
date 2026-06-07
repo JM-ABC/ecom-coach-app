@@ -786,7 +786,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 52, search: '+18%', gmv: '+12%',
     products: [
       { name: '생활필수품 대용량 세트 (세탁세제·화장지)', reason: '공휴일 집콕 재보충 구매 수요', urgency: 'mid', category: 'l_laundry', priceRange: { min: 15000, max: 45000 }, prepDays: 5, momqTip: '"선거일 연휴 집콕 정리" 프레임. 대용량 번들 + 맘큐 쇼핑지원금 활용 안내.' },
-      { name: '기저귀·물티슈 정기 보충', reason: '공휴일 집에서 아기 돌봄 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 20000, max: 55000 }, prepDays: 3, momqTip: '선거 당일 재고 보충 알림 푸시. 맘큐 프리미엄 회원 혜택 강조.' },
+      { name: '기저귀·물티슈 대용량 재구매', reason: '공휴일 집에서 아기 돌봄 수요', urgency: 'mid', category: 'b_diaper', priceRange: { min: 20000, max: 55000 }, prepDays: 3, momqTip: '선거 당일 재구매 알림 푸시. 맘큐 프리미엄 회원 혜택 강조.' },
     ],
     checklist: [
       { d: -5, task: '"선거일 연휴 집콕 세일" 기획전 오픈', done: false },
@@ -1045,7 +1045,7 @@ export const LIFECYCLE_RECOS: LifecycleReco[] = [
   {
     id: 'r-toddler-hygiene',
     title: '유아 위생 루틴 기획전',
-    concept: '걷기 시작한 아이의 일상 위생 — 물티슈·세정제 정기 보충',
+    concept: '걷기 시작한 아이의 일상 위생 — 물티슈·세정제 반복 구매 루틴',
     trigger: 'toddler',
     categories: ['b_wipe', 'b_hygiene', 'b_bath'],
     platforms: ['momq', 'coupang'],
@@ -1065,7 +1065,7 @@ export const LIFECYCLE_RECOS: LifecycleReco[] = [
   },
   {
     id: 'r-always-on-diaper-bundle',
-    title: '기저귀·물티슈 정기 보충 기획전',
+    title: '기저귀·물티슈 대용량 재구매 기획전',
     concept: '소모품은 떨어지기 전에 — 대용량 번들로 절약',
     trigger: 'always-on',
     categories: ['b_diaper', 'b_wipe'],
@@ -1206,7 +1206,7 @@ export const LIFECYCLE_RECOS: LifecycleReco[] = [
   // ── family-home (가족 생활용품) ───────────────────────────
   {
     id: 'r-family-laundry',
-    title: '가족 세탁·청소 정기 보충 기획전',
+    title: '가족 세탁·청소 생필품 대용량 기획전',
     concept: '아기 옷부터 집 전체까지 — 가족 세탁·청소용품 한 번에',
     trigger: 'family-home',
     categories: ['l_laundry', 'l_clean', 'l_tissue'],
