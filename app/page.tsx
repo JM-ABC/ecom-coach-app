@@ -9,6 +9,7 @@ import DetailPageDesign from '@/components/tabs/DetailPageDesign';
 import SeasonPromos from '@/components/tabs/SeasonPromos';
 import CRMPromos from '@/components/tabs/CRMPromos';
 import InsightsPanel from '@/components/tabs/InsightsPanel';
+import TrendReportPanel from '@/components/tabs/TrendReportPanel';
 import Icon from '@/components/Icon';
 import type { TabId } from '@/lib/types';
 
@@ -32,6 +33,7 @@ export default function Home() {
         {tab === 'season-promos' && <SeasonPromos />}
         {tab === 'crm-promos' && <CRMPromos />}
         {tab === 'insights' && <InsightsPanel />}
+        {tab === 'trend-report' && <TrendReportPanel />}
         {tab === 'product-name' && <ProductNameOptimizer />}
         {tab === 'copy' && <CopyGenerator />}
         {tab === 'detail-page' && <DetailPageDesign />}

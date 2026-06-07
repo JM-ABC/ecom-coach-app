@@ -68,6 +68,7 @@ const tabs = [
   { id: 'season-promos' as TabId, label: '시즌 기획전', icon: 'cloud' },
   { id: 'crm-promos' as TabId, label: 'CRM 기획전', icon: 'users' },
   { id: 'insights' as TabId, label: '인사이트', icon: 'trending' },
+  { id: 'trend-report' as TabId, label: '트렌드 리포트', icon: 'layout' },
   { id: 'product-name' as TabId, label: '상품명 최적화', icon: 'search', disabled: true },
   { id: 'copy' as TabId, label: '카피 생성', icon: 'pen', disabled: true },
   { id: 'detail-page' as TabId, label: '상세페이지', icon: 'layout', disabled: true },

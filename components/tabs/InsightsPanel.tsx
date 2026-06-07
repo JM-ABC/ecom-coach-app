@@ -9,7 +9,6 @@ import { useWeatherEvents } from '@/hooks/useWeatherEvents';
 import { useNewsEvents } from '@/hooks/useNewsEvents';
 import type { DetectedNewsEvent } from '@/hooks/useNewsEvents';
 import { catColor } from '@/lib/data';
-import TrendReportPanel from './TrendReportPanel';
 
 // ── 상태 배지 ─────────────────────────────────────────────────
 function StatusBadge({ status, label }: { status: string; label: string }) {
@@ -522,7 +521,7 @@ function CompetitorPanel() {
 }
 
 // ── 메인 컴포넌트 ──────────────────────────────────────────────
-type PanelId = 'news' | 'trends' | 'report' | 'weather' | 'competitor';
+type PanelId = 'news' | 'trends' | 'weather' | 'competitor';
 
 export default function InsightsPanel() {
   const [panel, setPanel] = useState<PanelId>('news');
@@ -530,7 +529,6 @@ export default function InsightsPanel() {
   const panels: { id: PanelId; label: string; icon: string }[] = [
     { id: 'news',       label: '뉴스 감지',       icon: 'search' },
     { id: 'trends',     label: '트렌드 연동',     icon: 'trending' },
-    { id: 'report',     label: '트렌드 리포트',   icon: 'layout' },
     { id: 'weather',    label: '날씨 자동화',     icon: 'cloud' },
     { id: 'competitor', label: '경쟁사 모니터링', icon: 'eye' },
   ];
@@ -570,7 +568,6 @@ export default function InsightsPanel() {
 
       {panel === 'news'       && <NewsDetectionPanel />}
       {panel === 'trends'     && <TrendPanel />}
-      {panel === 'report'     && <TrendReportPanel />}
       {panel === 'weather'    && <WeatherPanel />}
       {panel === 'competitor' && <CompetitorPanel />}
     </div>

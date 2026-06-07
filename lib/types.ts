@@ -5,6 +5,7 @@ export type TabId =
   | 'season-promos'
   | 'crm-promos'
   | 'insights'
+  | 'trend-report'
   | 'product-name'
   | 'copy'
   | 'detail-page';
