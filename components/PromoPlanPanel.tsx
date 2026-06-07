@@ -301,17 +301,22 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
       {/* Spin animation */}
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        .promo-plan-content h2 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        .promo-plan-content h3 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; color: var(--text); }
-        .promo-plan-content h4 { font-size: 12.5px; font-weight: 600; margin: 12px 0 4px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-        .promo-plan-content p { margin: 4px 0 8px; }
-        .promo-plan-content blockquote { margin: 8px 0; padding: 8px 14px; border-left: 3px solid var(--accent); background: var(--accent-bg); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-muted); }
-        .promo-plan-content code { background: var(--bg-subtle); padding: 1px 5px; border-radius: 4px; font-size: 12px; font-family: var(--font-mono); }
-        .promo-plan-content ul, .promo-plan-content ol { padding-left: 20px; margin: 6px 0; }
-        .promo-plan-content li { margin-bottom: 4px; }
-        .promo-plan-content table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
-        .promo-plan-content th, .promo-plan-content td { padding: 6px 10px; border: 1px solid var(--border); text-align: left; }
-        .promo-plan-content th { background: var(--bg-subtle); font-weight: 600; }
+        .promo-plan-content { font-size: var(--fs-base); line-height: 1.75; color: var(--text); }
+        .promo-plan-content h2 { font-size: var(--fs-lg); font-weight: 700; margin: 24px 0 10px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .promo-plan-content h3 { font-size: var(--fs-md); font-weight: 600; margin: 18px 0 6px; color: var(--text); }
+        .promo-plan-content h4 { font-size: var(--fs-xs); font-weight: 700; margin: 14px 0 4px; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; }
+        .promo-plan-content p { margin: 2px 0 8px; line-height: 1.7; }
+        .promo-plan-content ul { list-style: none; padding-left: 0; margin: 6px 0 10px; }
+        .promo-plan-content ol { padding-left: 18px; margin: 6px 0 10px; }
+        .promo-plan-content ul li { position: relative; padding: 3px 0 3px 16px; margin-bottom: 3px; line-height: 1.65; }
+        .promo-plan-content ul li::before { content: ''; position: absolute; left: 3px; top: 50%; transform: translateY(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+        .promo-plan-content ol li { margin-bottom: 4px; line-height: 1.65; }
+        .promo-plan-content blockquote { margin: 10px 0 12px; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--accent-bg); border-radius: 0 6px 6px 0; font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.65; }
+        .promo-plan-content code { background: var(--bg-subtle); padding: 1px 5px; border-radius: 4px; font-size: var(--fs-xs); font-family: var(--font-mono); }
+        .promo-plan-content table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: var(--fs-sm); }
+        .promo-plan-content th, .promo-plan-content td { padding: 7px 10px; border: 1px solid var(--border); text-align: left; line-height: 1.5; }
+        .promo-plan-content th { background: var(--bg-subtle); font-weight: 600; font-size: var(--fs-xs); letter-spacing: 0.03em; }
+        .promo-plan-content strong { font-weight: 600; color: var(--text); }
       `}</style>
     </>
   );
@@ -340,9 +345,10 @@ function renderMarkdown(md: string): string {
 
   for (const raw of lines) {
     const line = raw.trimEnd();
+    const t = line.trimStart(); // 들여쓰기 무관하게 패턴 매칭
 
-    // Heading (h1–h4); strip any stray leading markers in heading text
-    const hm = line.match(/^(#{1,4})\s+(.+)$/);
+    // Heading (h1–h4)
+    const hm = t.match(/^(#{1,4})\s+(.+)$/);
     if (hm) {
       closeList(); closeTable();
       const text = hm[2].replace(/^#{1,4}\s+/, '');
@@ -351,13 +357,13 @@ function renderMarkdown(md: string): string {
     }
 
     // Table separator row — skip
-    if (/^\|[\s\-:|]+\|/.test(line)) continue;
+    if (/^\|[\s\-:|]+\|/.test(t)) continue;
 
     // Table row
-    if (line.startsWith('|') && line.endsWith('|')) {
+    if (t.startsWith('|') && t.endsWith('|')) {
       closeList();
       if (!inTable) { out.push('<table><tbody>'); inTable = true; tableFirstRow = true; }
-      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      const cells = t.split('|').slice(1, -1).map(c => c.trim());
       if (tableFirstRow) {
         out.push('<tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr>');
         tableFirstRow = false;
@@ -367,8 +373,8 @@ function renderMarkdown(md: string): string {
       continue;
     }
 
-    // Unordered list
-    const ulm = line.match(/^[-*]\s+(.+)$/);
+    // Unordered list (들여쓰기 포함)
+    const ulm = t.match(/^[-*]\s+(.+)$/);
     if (ulm) {
       closeTable();
       if (inOl) { out.push('</ol>'); inOl = false; }
@@ -377,8 +383,8 @@ function renderMarkdown(md: string): string {
       continue;
     }
 
-    // Ordered list
-    const olm = line.match(/^\d+\.\s+(.+)$/);
+    // Ordered list (들여쓰기 포함)
+    const olm = t.match(/^\d+\.\s+(.+)$/);
     if (olm) {
       closeTable();
       if (inUl) { out.push('</ul>'); inUl = false; }
@@ -388,7 +394,7 @@ function renderMarkdown(md: string): string {
     }
 
     // Blockquote
-    const bqm = line.match(/^>\s*(.*)$/);
+    const bqm = t.match(/^>\s*(.*)$/);
     if (bqm) {
       closeList(); closeTable();
       out.push(`<blockquote>${inline(bqm[1])}</blockquote>`);
@@ -396,11 +402,11 @@ function renderMarkdown(md: string): string {
     }
 
     // Blank line
-    if (!line.trim()) { closeList(); closeTable(); continue; }
+    if (!t) { closeList(); closeTable(); continue; }
 
     // Paragraph
     closeList(); closeTable();
-    out.push(`<p>${inline(line)}</p>`);
+    out.push(`<p>${inline(t)}</p>`);
   }
 
   closeList();
