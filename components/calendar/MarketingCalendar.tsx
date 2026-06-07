@@ -386,10 +386,10 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
           })}
         </div>
       </div>
-      <div style={{ display: 'flex', gap: 10, marginTop: 12, fontSize: 12, color: 'var(--text-muted)' }}>
+      <div style={{ display: 'flex', gap: 10, marginTop: 12, fontSize: 12, color: 'var(--text-muted)', flexWrap: 'nowrap', overflowX: 'auto', WebkitOverflowScrolling: 'touch' as any, scrollbarWidth: 'none' as any }}>
         {Object.entries(EVENT_TYPES).map(([k, v]) => (
-          <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 10, height: 10, borderRadius: 2, background: catColor(k) }} />
+          <span key={k} style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
+            <span style={{ width: 10, height: 10, borderRadius: 2, background: catColor(k), flexShrink: 0 }} />
             {v.label}
           </span>
         ))}
