@@ -489,7 +489,7 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '크리넥스 쿨링물티슈', reason: '여름 외출 필수템, 열감 해소. 연중 검색량 최고점.', urgency: 'high', category: 'l_tissue', priceRange: { min: 3000, max: 10000 }, prepDays: 7, momqTip: '바디물티슈와 "여름 쿨링 세트" 번들. 폭염특보 발령일 앱 푸시 자동 연동. 사은품: 소형 쿨링물티슈 1팩(히어로 단가의 10% 수준).' },
       { name: '크리넥스 바디물티슈', reason: '땀·야외활동 후 청결. 어른+아이 모두 사용. 여름 최상위 수요.', urgency: 'high', category: 'l_body', priceRange: { min: 4000, max: 12000 }, prepDays: 7, momqTip: '쿨링물티슈와 번들 구성. "더위를 닦아내는 여름 루틴" 카피. 바스켓 사이즈 확대 효과.' },
-      { name: '좋은느낌 Stay Cool (썸머에디션)', reason: '여름 전용 라인업 — "바람이 통하는 생리대" 포지셔닝. 시즌 교체 수요 명확, 쿨링 키워드로 자연스럽게 묶임.', urgency: 'high', category: 'l_sanitary', priceRange: { min: 8000, max: 18000 }, prepDays: 7, momqTip: '쿨링물티슈+Stay Cool 생리대 "여름 쿨링 케어" 번들. l_sanitary 재구매율 높음 — CRM 재구매 쿠폰 발송.' },
+      { name: '좋은느낌 썸머 · 화이트 스테이쿨', reason: '여름 전용 2개 라인 — 좋은느낌 썸머(통기성), 화이트 스테이쿨(쿨링). 시즌 교체 수요 명확, 쿨링 키워드로 자연스럽게 묶임.', urgency: 'high', category: 'l_sanitary', priceRange: { min: 8000, max: 18000 }, prepDays: 7, momqTip: '쿨링물티슈+여름 생리대 2종 "여름 쿨링 케어" 번들. 취향별 선택 가능(통기성 vs 쿨링). l_sanitary 재구매율 높음 — CRM 재구매 쿠폰 발송.' },
       { name: '좋은느낌 라이너', reason: '여름 활동량 증가 시 가볍게 사용. 수영 전후, 야외활동 데일리 케어. 단가 낮아 번들 구성 시 객단가 확대 효과.', urgency: 'mid', category: 'l_sanitary', priceRange: { min: 3000, max: 8000 }, prepDays: 5, momqTip: 'Stay Cool 생리대+라이너 "여름 데일리 케어 세트" 번들. 사은품 기준(히어로 단가 10%): 라이너 소형 1팩으로 체험 유도 후 재구매 연결.' },
       { name: '크리넥스 소독티슈', reason: '여름 식중독·세균 우려 증가. 쿨링 라인업 크로스셀 최적.', urgency: 'mid', category: 'l_tissue', priceRange: { min: 3000, max: 9000 }, prepDays: 5, momqTip: '"여름 위생 필수 세트" 함께 구매 추천 카드.' },
     ],
