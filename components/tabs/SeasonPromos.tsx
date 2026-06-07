@@ -26,15 +26,6 @@ function emptyDraft() {
   };
 }
 
-// ── 타입 필터 옵션 ──────────────────────────────────────────
-const TYPE_FILTERS = [
-  { id: 'all', label: '전체' },
-  { id: 'season', label: '시즌' },
-  { id: 'holiday', label: '공휴일' },
-  { id: 'platform', label: '플랫폼' },
-  { id: 'promo', label: '프로모션' },
-  { id: 'trend', label: '사회이슈' },
-] as const;
 
 // ── 타입 배지 ───────────────────────────────────────────────
 function TypeBadge({ type }: { type: string }) {
@@ -352,7 +343,6 @@ function DirectRegisterSection() {
 
 // ── 메인 컴포넌트 ──────────────────────────────────────────
 export default function SeasonPromos() {
-  const [typeFilter, setTypeFilter] = useState<string>('all');
   const [catFilter, setCatFilter] = useState<string>('all');
   const [selectedEvent, setSelectedEvent] = useState<MarketingEvent | null>(null);
   const [promoPlanEvent, setPromoPlanEvent] = useState<MarketingEvent | null>(null);
@@ -375,11 +365,10 @@ export default function SeasonPromos() {
 
   const filtered = useMemo(() => {
     return [...EVENTS]
-      .filter(ev => daysUntil(ev.end) >= 0 && daysUntil(ev.start) <= 62) // 아직 안 끝났고 D+62 이내
-      .filter(ev => typeFilter === 'all' || ev.type === typeFilter)
+      .filter(ev => daysUntil(ev.end) >= 0 && daysUntil(ev.start) <= 62)
       .filter(ev => catFilter === 'all' || ev.categories.includes(catFilter))
       .sort((a, b) => a.start.localeCompare(b.start));
-  }, [typeFilter, catFilter]);
+  }, [catFilter]);
 
   return (
     <div className="tab-page">
@@ -435,28 +424,6 @@ export default function SeasonPromos() {
       <section>
         {/* 필터 바 */}
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' as const, marginBottom: 16 }}>
-          {/* 타입 필터 */}
-          <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
-            {TYPE_FILTERS.map(f => (
-              <button
-                key={f.id}
-                onClick={() => setTypeFilter(f.id)}
-                style={{
-                  padding: '4px 12px', borderRadius: 'var(--radius-sm)',
-                  fontSize: 'var(--fs-sm)', fontWeight: 500, cursor: 'pointer',
-                  whiteSpace: 'nowrap' as const,
-                  color: typeFilter === f.id ? 'var(--text)' : 'var(--text-muted)',
-                  background: typeFilter === f.id ? 'var(--surface)' : 'transparent',
-                  boxShadow: typeFilter === f.id ? 'var(--shadow-sm)' : 'none',
-                  border: typeFilter === f.id ? '1px solid var(--border)' : '1px solid transparent',
-                }}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-
-          {/* 카테고리 드롭다운 */}
           <select
             value={catFilter}
             onChange={e => setCatFilter(e.target.value)}
@@ -471,8 +438,7 @@ export default function SeasonPromos() {
               <option key={c.id} value={c.id}>{c.label}</option>
             ))}
           </select>
-
-          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-subtle)', marginLeft: 4 }}>
+          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-subtle)' }}>
             {filtered.length}건
           </span>
         </div>
