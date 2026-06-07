@@ -359,7 +359,7 @@ a { color: inherit; text-decoration: none; }
     height: 56px;
     background: var(--surface);
     border-top: 1px solid var(--border);
-    z-index: 100;
+    z-index: 9999;
     align-items: stretch;
   }
   .mobile-nav-item {
@@ -397,7 +397,7 @@ a { color: inherit; text-decoration: none; }
   }
   .mobile-platform-bar::-webkit-scrollbar { display: none; }
 
-  .main-content { padding-bottom: 92px; }
+  .main-content { padding-bottom: 56px; }
 
   /* 포커스뷰: 1컬럼 스택 */
   .focus-grid {
