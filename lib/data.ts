@@ -1,4 +1,4 @@
-import type { Category, CategoryGroup, MarketingEvent, PlatformMeta, PlatformInsight, EventType } from './types';
+import type { Category, CategoryGroup, MarketingEvent, PlatformMeta, PlatformInsight, EventType, LifecycleReco } from './types';
 
 export const CATEGORIES: Category[] = [
   { id: 'all', label: '전체' },
@@ -63,6 +63,9 @@ export const PLATFORM_META: Record<string, PlatformMeta> = {
   wemakeprice: { label: '위메프', color: 'oklch(0.60 0.16 310)', bg: 'oklch(0.97 0.025 310)' },
   momq:     { label: '맘큐',   color: 'oklch(0.68 0.15 20)',  bg: 'oklch(0.97 0.028 20)', note: '하기스 중심 유아동 자사몰' },
 };
+
+// Types that always display on the calendar regardless of MD selection
+export const AUTO_DISPLAY_TYPES: EventType[] = ['weather', 'season', 'holiday'];
 
 const PLATFORM_TIPS: Record<string, Partial<Record<EventType, PlatformInsight>>> = {
   coupang: {
@@ -969,5 +972,116 @@ export const EVENTS: MarketingEvent[] = [
       { d: 5, task: '2월 신학기 준비 기획전 사전 예고 배너', done: false },
     ],
     pro: '연말~신년 기간은 고객이 "새해 다짐"으로 구매하는 심리가 강합니다. "우리 아이 새해 맞이 육아 공간 리셋"이라는 프레임이 맘큐 타깃에 잘 먹힙니다. 2월 신학기 준비 기획전으로의 자연스러운 전환도 미리 준비하세요.',
+  },
+];
+
+export const LIFECYCLE_RECOS: LifecycleReco[] = [
+  {
+    id: 'r-hospital-bag',
+    title: '출산가방 필수템 기획전',
+    concept: '입원 전날 챙겨야 하는 것들 — 산모·신생아 용품 원스톱',
+    trigger: 'pre-birth',
+    categories: ['b_diaper', 'b_wipe', 'l_sanitary', 'b_bath'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '하기스 신생아 기저귀 초기 세트', reason: '출산 후 즉시 필요, 입원 중 병원 제공분 소진 후 첫 구매', urgency: 'high', category: 'b_diaper', priceRange: { min: 25000, max: 55000 }, prepDays: 7 },
+      { name: '디펜드 맘스 안심팬티 (산모전용)', reason: '출산 직후 산후조리 필수품. 출산 준비 리스트에서 자주 누락', urgency: 'high', category: 'l_sanitary', priceRange: { min: 7000, max: 15000 }, prepDays: 5 },
+      { name: '하기스 아기 물티슈 대용량', reason: '신생아 첫 주 소비량 최대, 병원 퇴소 후 즉시 필요', urgency: 'high', category: 'b_wipe', priceRange: { min: 15000, max: 30000 }, prepDays: 3 },
+      { name: '신생아 스킨케어 세트 (로션·오일)', reason: '출산 전 준비 필수, 병원 추천 저자극 제품', urgency: 'mid', category: 'b_bath', priceRange: { min: 12000, max: 35000 }, prepDays: 7 },
+    ],
+    checklist: [
+      { d: -30, task: '"출산 준비 가방 필수템" 기획전 페이지 오픈', done: false },
+      { d: -14, task: '임신 32주↑ 회원 CRM 타겟 발송 — "출산 준비물 리스트에 빠진 것 하나"', done: false },
+      { d: -7, task: '번들 세트 구성 확정 (기저귀+물티슈+산모팬티)', done: false },
+    ],
+    pro: '임신 후기 회원(32주↑)에게 "출산 준비물 리스트" 프레임으로 CRM 발송하면 전환율이 높습니다. 산모 팬티는 리스트에서 자주 빠지는 제품이라 "이거 빠트렸죠?" 메시지가 효과적입니다.',
+    platformTips: {
+      momq: { tip: '맘큐 자사몰 단독: 임신 32주↑ 회원 세그먼트 CRM 발송. 기저귀+물티슈+산모팬티 번들 구성으로 객단가 확대.', action: '임신 후기 CRM + 출산 준비 번들', metric: '전환 +35%' },
+    },
+  },
+  {
+    id: 'r-newborn-first-week',
+    title: '신생아 첫 주 긴급 구매 기획전',
+    concept: '퇴원 후 72시간 안에 필요한 것들 — 지금 당장',
+    trigger: 'newborn',
+    categories: ['b_diaper', 'b_wipe', 'b_feed', 'b_bath'],
+    platforms: ['momq', 'coupang'],
+    products: [
+      { name: '하기스 신생아 기저귀 대용량', reason: '신생아 하루 10~12회 교체, 소비량 최대 시기', urgency: 'high', category: 'b_diaper', priceRange: { min: 30000, max: 65000 }, prepDays: 1 },
+      { name: '하기스 아기 물티슈 대용량 번들', reason: '기저귀 교체마다 사용, 재고 소진 빠름', urgency: 'high', category: 'b_wipe', priceRange: { min: 20000, max: 40000 }, prepDays: 1 },
+      { name: '신생아 스킨케어 세트', reason: '출생 직후 피부 건조 관리 필수, 저자극 제품 필요', urgency: 'mid', category: 'b_bath', priceRange: { min: 12000, max: 35000 }, prepDays: 1 },
+    ],
+    checklist: [
+      { d: 0, task: '신생아 출산 회원 CRM 발송 — "축하합니다! 지금 필요한 것들"', done: false },
+      { d: 3, task: '첫 구매 고객 재구매 쿠폰 발송 (구매 3일 후)', done: false },
+    ],
+    pro: '퇴원 후 72시간이 첫 구매 골든타임입니다. 출산 축하 메시지와 함께 "지금 필요한 것" 프레임으로 CRM 발송하면 전환율이 가장 높습니다. 빠른 배송(맘쑝배송)을 전면에 내세우세요.',
+    platformTips: {
+      momq: { tip: '출산 후 72시간 CRM 발송. 신생아 기저귀+물티슈 번들 긴급 배송 강조.', action: '출산 직후 CRM + 긴급배송 번들', metric: '초기 락인 +40%' },
+      coupang: { tip: '로켓배송으로 당일/익일 도착 강조. 신생아 카테고리 광고 집중.', action: '로켓 신생아 광고 집중', metric: '전환 +25%' },
+    },
+  },
+  {
+    id: 'r-weaning-start',
+    title: '이유식 시작 준비 기획전',
+    concept: '생후 4-6개월, 이유식 시작 전 준비물 원스톱',
+    trigger: 'infant',
+    categories: ['b_wean', 'b_feed', 'b_wipe'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '이유식 용기·핸드블렌더 세트', reason: '이유식 시작 첫 구매, 세트 구성 선호', urgency: 'high', category: 'b_wean', priceRange: { min: 25000, max: 85000 }, prepDays: 10 },
+      { name: '이유식 식판·수저세트', reason: '6개월 이후 자기 식기 사용 시작', urgency: 'mid', category: 'b_wean', priceRange: { min: 8000, max: 25000 }, prepDays: 7 },
+      { name: '아기 턱받이·방수 매트', reason: '이유식 중 오염 방지 필수품, 반복 구매', urgency: 'mid', category: 'b_wipe', priceRange: { min: 5000, max: 18000 }, prepDays: 5 },
+    ],
+    checklist: [
+      { d: -14, task: '"이유식 시작 준비" 기획전 페이지 오픈', done: false },
+      { d: -7, task: '4-6개월 영아 보호자 CRM 발송 — "이제 이유식 시작할 시기예요"', done: false },
+    ],
+    pro: '이유식 시작 시기(4-6개월) 회원에게 "이유식 시작 준비" 프레임으로 CRM 발송. 커뮤니티 이유식 레시피 콘텐츠와 상품을 연동하면 자연 유입이 발생합니다.',
+    platformTips: {
+      momq: { tip: '4-6개월 영아 보호자 CRM 타겟. 이유식 용기+식판 번들 구성.', action: '이유식 시작 CRM + 번들', metric: '카테고리 신규 유입 +30%' },
+    },
+  },
+  {
+    id: 'r-toddler-hygiene',
+    title: '유아 위생 루틴 기획전',
+    concept: '걷기 시작한 아이의 일상 위생 — 물티슈·세정제 정기 보충',
+    trigger: 'toddler',
+    categories: ['b_wipe', 'b_hygiene', 'b_bath'],
+    platforms: ['momq', 'coupang'],
+    products: [
+      { name: '하기스 아기 물티슈 대용량 번들', reason: '유아 외출·식사·위생 모든 상황에 사용, 소비량 지속', urgency: 'high', category: 'b_wipe', priceRange: { min: 20000, max: 40000 }, prepDays: 3 },
+      { name: '유아 항균 손세정제', reason: '외출 후 손 위생 필수, 어린이집 입소 후 소비 급증', urgency: 'mid', category: 'b_hygiene', priceRange: { min: 4000, max: 12000 }, prepDays: 3 },
+      { name: '유아 거품 바디워시·샴푸', reason: '매일 사용, 재구매 주기 4-6주', urgency: 'mid', category: 'b_bath', priceRange: { min: 8000, max: 22000 }, prepDays: 7 },
+    ],
+    checklist: [
+      { d: -7, task: '유아(1-3세) 보호자 CRM 발송 — "물티슈 다 떨어지기 전에"', done: false },
+      { d: 0, task: '대용량 번들 할인 기획전 오픈', done: false },
+    ],
+    pro: '1-3세 유아 보호자는 물티슈·세정제 재구매 주기가 짧습니다. "재고 소진 전 보충" 프레임 CRM이 효과적. 대용량 번들로 객단가와 재구매 주기를 동시에 최적화하세요.',
+    platformTips: {
+      momq: { tip: '유아 1-3세 보호자 CRM. 물티슈 대용량 번들 + 손세정제 크로스셀.', action: '재구매 CRM + 대용량 번들', metric: '재구매율 +20%' },
+    },
+  },
+  {
+    id: 'r-always-on-diaper-bundle',
+    title: '기저귀·물티슈 정기 보충 기획전',
+    concept: '소모품은 떨어지기 전에 — 대용량 번들로 절약',
+    trigger: 'always-on',
+    categories: ['b_diaper', 'b_wipe'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '하기스 기저귀 월간 대용량 세트', reason: '기저귀는 상시 소모품, 대용량 구매로 절약', urgency: 'high', category: 'b_diaper', priceRange: { min: 40000, max: 80000 }, prepDays: 3 },
+      { name: '하기스 아기 물티슈 번들 (6팩 이상)', reason: '기저귀 구매 고객의 크로스셀 최적 제품', urgency: 'high', category: 'b_wipe', priceRange: { min: 20000, max: 45000 }, prepDays: 3 },
+    ],
+    checklist: [
+      { d: 0, task: '기저귀 구매 고객 재구매 쿠폰 CRM 발송 (구매 21일 후)', done: false },
+      { d: 7, task: '대용량 번들 기획전 상시 노출 유지', done: false },
+    ],
+    pro: '기저귀·물티슈는 맘큐 최대 소모품 카테고리입니다. 구매 21일 후 재구매 CRM이 가장 효과적. 번들 구성으로 객단가를 높이고 재구매 주기를 단축하세요.',
+    platformTips: {
+      momq: { tip: '기저귀 구매 21일 후 재구매 CRM. 기저귀+물티슈 번들 상시 기획전.', action: '재구매 CRM + 상시 번들', metric: '재구매 주기 단축 +15%' },
+      coupang: { tip: '로켓배송 기저귀 대용량 재고 상시 확보. 카테고리 광고 상시 집행.', action: '로켓 기저귀 상시 광고', metric: '로켓 점유율 +20%' },
+    },
   },
 ];
