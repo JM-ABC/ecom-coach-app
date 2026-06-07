@@ -658,7 +658,11 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
               </span>
             )}
           </div>
-          <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>{event.summary}</div>
+          <div style={{
+            fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5,
+            display: '-webkit-box', WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
+          }}>{event.summary}</div>
           <div style={{ display: 'flex', gap: 16, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--divider)' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <div style={{ fontSize: 11, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>기회점수</div>
@@ -695,30 +699,25 @@ export const EventCard = React.memo(function EventCard({ event, onOpen, onOpenPr
       </div>
 
       {displayProducts.length > 0 && (
-        <div style={{ padding: '0 16px 14px' }}>
-          <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ padding: '0 16px 12px' }}>
+          <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
             <Icon name="package" size={11} />
             추천 품목 ({displayProducts.length}/{event.products.length})
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: '4px 6px' }}>
             {displayProducts.map((p, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                padding: '8px 10px', borderRadius: 8,
+              <span key={i} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                padding: '3px 9px', borderRadius: 999,
+                fontSize: 12, color: 'var(--text)',
                 background: 'var(--bg-subtle)', border: '1px solid var(--border)',
               }}>
-                <div style={{
-                  width: 6, height: 6, borderRadius: '50%',
+                <span style={{
+                  width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
                   background: p.urgency === 'high' ? 'var(--danger)' : p.urgency === 'mid' ? 'var(--warning)' : 'var(--text-subtle)',
                 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{p.name}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{p.reason}</div>
-                </div>
-                <button className="btn sm ghost" onClick={(e) => e.stopPropagation()}>
-                  <Icon name="arrowRight" size={12} />
-                </button>
-              </div>
+                {p.name}
+              </span>
             ))}
           </div>
         </div>
