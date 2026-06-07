@@ -304,11 +304,11 @@ export default function TrendReportPanel() {
   const isComplete = brief !== null && !brief.aiLoading && !brief.conceptsLoading;
 
   return (
-    <div>
+    <div style={{ padding: '20px 28px 60px' }}>
       {/* 헤더 */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 'var(--fs-md)', fontWeight: 700, letterSpacing: '-0.01em', marginBottom: 4 }}>트렌드 리포트</div>
-        <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>
+        <div style={{ fontSize: 'var(--fs-xl)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>트렌드 리포트</div>
+        <div style={{ fontSize: 'var(--fs-base)', color: 'var(--text-muted)' }}>
           카테고리·플랫폼을 선택하고 주간 수요 브리핑을 생성하세요.
         </div>
       </div>
