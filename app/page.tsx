@@ -6,7 +6,6 @@ import MarketingCalendar from '@/components/calendar/MarketingCalendar';
 import ProductNameOptimizer from '@/components/tabs/ProductNameOptimizer';
 import CopyGenerator from '@/components/tabs/CopyGenerator';
 import DetailPageDesign from '@/components/tabs/DetailPageDesign';
-import EventManager from '@/components/tabs/EventManager';
 import SeasonPromos from '@/components/tabs/SeasonPromos';
 import CRMPromos from '@/components/tabs/CRMPromos';
 import Icon from '@/components/Icon';
