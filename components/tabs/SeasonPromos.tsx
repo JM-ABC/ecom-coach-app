@@ -415,7 +415,7 @@ export default function SeasonPromos() {
                   />
                 </div>
                 {rest.length > 0 && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8, marginTop: 10 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8, marginTop: 10 }}>
                     {rest.map(ev => (
                       <FocusEventCard
                         key={ev.id}
