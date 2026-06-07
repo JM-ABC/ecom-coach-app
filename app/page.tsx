@@ -8,6 +8,7 @@ import CopyGenerator from '@/components/tabs/CopyGenerator';
 import DetailPageDesign from '@/components/tabs/DetailPageDesign';
 import SeasonPromos from '@/components/tabs/SeasonPromos';
 import CRMPromos from '@/components/tabs/CRMPromos';
+import InsightsPanel from '@/components/tabs/InsightsPanel';
 import Icon from '@/components/Icon';
 import type { TabId } from '@/lib/types';
 
@@ -30,6 +31,7 @@ export default function Home() {
         {tab === 'calendar' && <MarketingCalendar />}
         {tab === 'season-promos' && <SeasonPromos />}
         {tab === 'crm-promos' && <CRMPromos />}
+        {tab === 'insights' && <InsightsPanel />}
         {tab === 'product-name' && <ProductNameOptimizer />}
         {tab === 'copy' && <CopyGenerator />}
         {tab === 'detail-page' && <DetailPageDesign />}

@@ -4,6 +4,7 @@ export type TabId =
   | 'calendar'
   | 'season-promos'
   | 'crm-promos'
+  | 'insights'
   | 'product-name'
   | 'copy'
   | 'detail-page';
