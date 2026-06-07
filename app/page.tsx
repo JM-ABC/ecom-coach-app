@@ -12,7 +12,7 @@ import type { TabId } from '@/lib/types';
 
 const mobileTabs: { id: TabId; label: string; icon: string; disabled?: boolean }[] = [
   { id: 'calendar', label: '캘린더', icon: 'calendar' },
-  { id: 'event-manager', label: '이벤트', icon: 'cloud' },
+  { id: 'season-promos', label: '이벤트', icon: 'cloud' },
   { id: 'product-name', label: '상품명', icon: 'search', disabled: true },
   { id: 'copy', label: '카피', icon: 'pen', disabled: true },
   { id: 'detail-page', label: '상세', icon: 'layout', disabled: true },
@@ -29,7 +29,7 @@ export default function Home() {
         {tab === 'product-name' && <ProductNameOptimizer />}
         {tab === 'copy' && <CopyGenerator />}
         {tab === 'detail-page' && <DetailPageDesign />}
-        {tab === 'event-manager' && <EventManager />}
+        {tab === 'season-promos' && <EventManager />}
       </div>
       {/* 모바일 경쟁사 링크 바 */}
       <div className="mobile-platform-bar">
