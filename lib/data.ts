@@ -191,7 +191,7 @@ export const EVENTS: MarketingEvent[] = [
   {
     id: 'e-newborn-prep', title: '신생아·수유·이유기 준비 시즌', type: 'season',
     start: '2026-01-15', end: '2026-03-15',
-    categories: ['b_feed', 'b_wean', 'b_diaper', 'b_wipe', 'b_bath'],
+    categories: ['b_feed', 'b_wean', 'b_diaper', 'b_wipe', 'b_bath', 'l_sanitary'],
     platforms: ['momq', 'coupang', 'naver'],
     summary: '출산 후 신생아 필수품 구비부터 수유기·이유기 전환까지 준비 구매가 집중됩니다. 산후조리원 퇴소 후 첫 구매 시점(출산 후 2~4주)과 이유식 시작 시점(4~6개월)이 주요 피크.',
     trendScore: 74, search: '+61%', gmv: '+48%',
@@ -201,6 +201,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '이유식 용기·핸드블렌더·이유식 메이커', reason: '4~6개월 이유식 시작 시점 구매 집중', urgency: 'high', category: 'b_wean', priceRange: { min: 15000, max: 85000 }, prepDays: 10, momqTip: '"이유식 시작 준비" 기획전. 커뮤니티 이유식 레시피 콘텐츠와 상품 연동.' },
       { name: '신생아 기저귀·물티슈 초기 비축 세트', reason: '신생아 초기 소비량 최대, 대용량 구매 수요', urgency: 'high', category: 'b_diaper', priceRange: { min: 30000, max: 75000 }, prepDays: 7, momqTip: '하기스 신생아 전용+물티슈 번들. 맘큐 회원 전용 추가 할인으로 락인.' },
       { name: '신생아 스킨케어 세트 (로션·오일·바스)', reason: '신생아 피부 민감, 저자극 전용 제품 필수', urgency: 'mid', category: 'b_bath', priceRange: { min: 12000, max: 45000 }, prepDays: 7, momqTip: '"EWG 안전 등급·무향" 키워드. 맘큐 커뮤니티 "신생아 피부 관리" 콘텐츠 협업.' },
+      { name: '디펜드 맘스 안심팬티 (산모전용)', reason: '출산 직후 산후조리 기간 필수품. 한 달 5,000명 이상 구매하는 검증된 수요. 출산 준비 리스트에서 자주 누락되는 제품.', urgency: 'high', category: 'l_sanitary', priceRange: { min: 7000, max: 15000 }, prepDays: 7, momqTip: '임신 32주 이상 회원 CRM 타겟 발송 — "출산 준비물 리스트에 빠진 것 하나". 기저귀·물티슈 출산 준비 번들에 추가 구성. 사은품 기준(히어로 단가 10%): 물티슈 소형 1팩.' },
     ],
     checklist: [
       { d: -21, task: '"신생아 필수템 준비 가이드" 기획전 페이지 오픈', done: false },
@@ -488,7 +489,8 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '크리넥스 쿨링물티슈', reason: '여름 외출 필수템, 열감 해소. 연중 검색량 최고점.', urgency: 'high', category: 'l_tissue', priceRange: { min: 3000, max: 10000 }, prepDays: 7, momqTip: '바디물티슈와 "여름 쿨링 세트" 번들. 폭염특보 발령일 앱 푸시 자동 연동. 사은품: 소형 쿨링물티슈 1팩(히어로 단가의 10% 수준).' },
       { name: '크리넥스 바디물티슈', reason: '땀·야외활동 후 청결. 어른+아이 모두 사용. 여름 최상위 수요.', urgency: 'high', category: 'l_body', priceRange: { min: 4000, max: 12000 }, prepDays: 7, momqTip: '쿨링물티슈와 번들 구성. "더위를 닦아내는 여름 루틴" 카피. 바스켓 사이즈 확대 효과.' },
-      { name: '좋은느낌·화이트 쿨링 생리대', reason: '여름 전용 라인업, 시즌 교체 수요 명확. 쿨링 키워드로 자연스럽게 묶임.', urgency: 'high', category: 'l_sanitary', priceRange: { min: 8000, max: 18000 }, prepDays: 7, momqTip: '쿨링물티슈+쿨링 생리대 "여름 쿨링 케어" 번들. l_sanitary 재구매율 높음 — CRM 재구매 쿠폰 발송.' },
+      { name: '좋은느낌 Stay Cool (썸머에디션)', reason: '여름 전용 라인업 — "바람이 통하는 생리대" 포지셔닝. 시즌 교체 수요 명확, 쿨링 키워드로 자연스럽게 묶임.', urgency: 'high', category: 'l_sanitary', priceRange: { min: 8000, max: 18000 }, prepDays: 7, momqTip: '쿨링물티슈+Stay Cool 생리대 "여름 쿨링 케어" 번들. l_sanitary 재구매율 높음 — CRM 재구매 쿠폰 발송.' },
+      { name: '좋은느낌 라이너', reason: '여름 활동량 증가 시 가볍게 사용. 수영 전후, 야외활동 데일리 케어. 단가 낮아 번들 구성 시 객단가 확대 효과.', urgency: 'mid', category: 'l_sanitary', priceRange: { min: 3000, max: 8000 }, prepDays: 5, momqTip: 'Stay Cool 생리대+라이너 "여름 데일리 케어 세트" 번들. 사은품 기준(히어로 단가 10%): 라이너 소형 1팩으로 체험 유도 후 재구매 연결.' },
       { name: '크리넥스 소독티슈', reason: '여름 식중독·세균 우려 증가. 쿨링 라인업 크로스셀 최적.', urgency: 'mid', category: 'l_tissue', priceRange: { min: 3000, max: 9000 }, prepDays: 5, momqTip: '"여름 위생 필수 세트" 함께 구매 추천 카드.' },
     ],
     checklist: [
