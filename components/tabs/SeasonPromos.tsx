@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { useCalendarSelections } from '@/hooks/useCalendarSelections';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
-import { EVENTS, CATEGORIES, EVENT_TYPES, AUTO_DISPLAY_TYPES, catColor, typeLabel, fmtDate } from '@/lib/data';
+import { EVENTS, CATEGORIES, EVENT_TYPES, AUTO_DISPLAY_TYPES, catColor, typeLabel, fmtDate, daysUntil, isActive } from '@/lib/data';
 import type { MarketingEvent, EventType } from '@/lib/types';
 import DetailPanel from '@/components/DetailPanel';
 import PromoPlanPanel from '@/components/PromoPlanPanel';
@@ -361,6 +361,17 @@ export default function SeasonPromos() {
     ...CATEGORIES.filter(c => c.id !== 'all'),
   ], []);
 
+  // 이번 주 주요 기획전: 활성 중이거나 14일 이내 시작, trendScore 높은 순
+  const spotlight = useMemo(() => {
+    return EVENTS
+      .filter(e => {
+        const d = daysUntil(e.start);
+        return isActive(e) || (d >= 0 && d <= 14);
+      })
+      .sort((a, b) => b.trendScore - a.trendScore)
+      .slice(0, 4);
+  }, []);
+
   const filtered = useMemo(() => {
     return [...EVENTS]
       .filter(ev => typeFilter === 'all' || ev.type === typeFilter)
@@ -379,6 +390,54 @@ export default function SeasonPromos() {
           연간 마케팅 이벤트를 탐색하고 캘린더에 추가하세요.
         </div>
       </div>
+
+      {/* ── 이번 주 주요 기획전 ── */}
+      {spotlight.length > 0 && (
+        <section style={{ marginBottom: 32 }}>
+          <div style={{ fontSize: 'var(--fs-xs)', fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 10 }}>
+            지금 주목할 기획전
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
+            {spotlight.map(ev => {
+              const d = daysUntil(ev.start);
+              const active = isActive(ev);
+              const label = active ? '진행 중' : `D-${d}`;
+              return (
+                <div
+                  key={ev.id}
+                  onClick={() => setSelectedEvent(ev)}
+                  style={{
+                    padding: '12px 14px', borderRadius: 'var(--radius-md)',
+                    background: 'var(--surface)', border: `1px solid color-mix(in oklch, ${catColor(ev.type)} 30%, var(--border))`,
+                    borderLeft: `3px solid ${catColor(ev.type)}`,
+                    cursor: 'pointer', transition: 'box-shadow 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
+                  onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                    <TypeBadge type={ev.type} />
+                    <span style={{
+                      fontSize: 'var(--fs-2xs)', fontWeight: 600, padding: '1px 6px',
+                      borderRadius: 999, background: active ? 'var(--accent-bg)' : 'var(--bg-subtle)',
+                      color: active ? 'var(--accent-text)' : 'var(--text-subtle)',
+                      border: `1px solid ${active ? 'var(--accent-border)' : 'var(--border)'}`,
+                    }}>
+                      {label}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 'var(--fs-base)', fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
+                    {ev.title}
+                  </div>
+                  <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>
+                    트렌드 {ev.trendScore}점 · {ev.search}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ── Section 1: EVENTS 브라우징 ── */}
       <section>

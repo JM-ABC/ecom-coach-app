@@ -541,7 +541,7 @@ function SourceStatusBar({ weatherStatus, customCount }: { weatherStatus: string
 
 // ---- Main MarketingCalendar ----
 export default function MarketingCalendar() {
-  const [view, setView] = useState<ViewMode>('focus');
+  const [view, setView] = useState<ViewMode>('grid');
   const [category, setCategory] = useState('all');
   const [selected, setSelected] = useState<MarketingEvent | null>(null);
   const [selectedTab, setSelectedTab] = useState<'plan' | 'products' | 'gift' | 'insights'>('plan');
@@ -625,27 +625,8 @@ export default function MarketingCalendar() {
       .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()),
     [planningEvents]);
 
-  const hero = upcoming.find(e => e.trendScore >= 80) || upcoming[0] || activeEvents.find(e => e.trendScore >= 80) || activeEvents[0];
-
-  const heroOverlaps = useMemo(() => {
-    if (!hero) return [];
-    return allEvents.filter(e =>
-      e.type === 'platform' &&
-      e.id !== hero.id &&
-      e.start <= hero.end &&
-      e.end >= hero.start
-    );
-  }, [hero, allEvents]);
-
-  const thisWeek = useMemo(() =>
-    planningEvents.filter(e => {
-      const d = daysUntil(e.start);
-      const endD = daysUntil(e.end);
-      return (d >= -3 && d <= 7 && endD >= 0) || (endD >= 0 && d <= 0);
-    }), [planningEvents]);
 
   const views = [
-    { id: 'focus' as ViewMode, label: '포커스', icon: 'sparkles' },
     { id: 'grid' as ViewMode, label: '월간', icon: 'grid' },
     { id: 'timeline' as ViewMode, label: '타임라인', icon: 'list' },
   ];
@@ -709,14 +690,6 @@ export default function MarketingCalendar() {
       <SourceStatusBar weatherStatus={weatherState.status} customCount={customEvents.length} />
       <FilterBar category={category} setCategory={setCategory} filteredLen={filteredEvents.length} totalLen={allEvents.length} />
 
-      {view === 'focus' && (
-        <FocusView
-          hero={hero} thisWeek={thisWeek} upcoming={upcoming}
-          filter={category} onOpen={openPanel} onOpenPromoPlan={setPromoPlanEvent}
-          trendByKey={trendByKey} weatherEvents={weatherState.events}
-          heroOverlaps={heroOverlaps} newsPlatformEvents={newsPlatformEvents}
-        />
-      )}
       {view === 'grid' && (
         <GridView year={currentYear} monthIdx={monthIdx} monthOffset={monthOffset} setMonthOffset={setMonthOffset} events={filteredEvents} onOpen={openPanel} />
       )}
