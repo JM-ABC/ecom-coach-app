@@ -1084,4 +1084,172 @@ export const LIFECYCLE_RECOS: LifecycleReco[] = [
       coupang: { tip: '로켓배송 기저귀 대용량 재고 상시 확보. 카테고리 광고 상시 집행.', action: '로켓 기저귀 상시 광고', metric: '로켓 점유율 +20%' },
     },
   },
+
+  // ── preschool (미취학 3-7세) ───────────────────────────────
+  {
+    id: 'r-preschool-daycare',
+    title: '어린이집·유치원 입소 준비 기획전',
+    concept: '단체 생활 첫 날 — 위생·안전·아이 용품 원스톱',
+    trigger: 'preschool',
+    categories: ['b_wipe', 'b_hygiene', 'b_fashion', 'b_safety'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '하기스 아기 물티슈 소형 휴대용 (10팩)', reason: '어린이집 가방에 필수, 소형 팩 수요 급증', urgency: 'high', category: 'b_wipe', priceRange: { min: 8000, max: 18000 }, prepDays: 5 },
+      { name: '유아 손소독제·개인 위생 키트', reason: '단체 생활 시작 후 감염 예방 필수품, 부모 구매 의향 높음', urgency: 'high', category: 'b_hygiene', priceRange: { min: 6000, max: 15000 }, prepDays: 3 },
+      { name: '유아 안전 가위·문구 세트', reason: '유치원 미술 활동 필수품, 입소 전 일괄 구매', urgency: 'mid', category: 'b_safety', priceRange: { min: 5000, max: 20000 }, prepDays: 7 },
+      { name: '유아동 실내화·원복', reason: '어린이집 지정 용품, 입소 전 필수 준비', urgency: 'mid', category: 'b_fashion', priceRange: { min: 10000, max: 35000 }, prepDays: 14 },
+    ],
+    checklist: [
+      { d: -21, task: '3세 전환 회원 대상 "입소 준비" 기획전 페이지 오픈', done: false },
+      { d: -14, task: '어린이집 입소 시기(2-3월/9월) 맞춰 CRM 발송', done: false },
+      { d: -7,  task: '위생 키트 번들 구성 확정 (물티슈+손소독제+마스크)', done: false },
+    ],
+    pro: '어린이집 입소 시기는 3월과 9월에 집중됩니다. 2월·8월에 CRM을 발송하면 준비 구매 수요를 선점할 수 있습니다. "우리 아이 첫 단체생활" 감성 메시지가 전환율을 높입니다.',
+    platformTips: {
+      momq: { tip: '입소 시기(2-3월, 8-9월) 전 4주 CRM 집중. 위생+안전 번들 단독 기획전.', action: '입소 시즌 CRM + 위생 번들', metric: '시즌 매출 +35%' },
+    },
+  },
+  {
+    id: 'r-preschool-growth',
+    title: '유아 성장 발달 지원 기획전',
+    concept: '3-7세 두뇌·신체 발달 — 장난감·교구·영양 한 번에',
+    trigger: 'preschool',
+    categories: ['b_toy', 'b_fashion', 'l_health'],
+    platforms: ['momq', 'naver', 'coupang'],
+    products: [
+      { name: '연령별 블록·교구 세트 (3-5세)', reason: '소근육·인지 발달 교구, 생일/명절 선물 수요 높음', urgency: 'high', category: 'b_toy', priceRange: { min: 15000, max: 60000 }, prepDays: 7 },
+      { name: '유아 영양제 (종합비타민·유산균)', reason: '면역 관리 목적 구매, 어린이집 입소 후 수요 급증', urgency: 'mid', category: 'l_health', priceRange: { min: 12000, max: 35000 }, prepDays: 5 },
+      { name: '유아동 사계절 내복·속옷 세트', reason: '성장 빠른 시기, 분기별 재구매 패턴', urgency: 'mid', category: 'b_fashion', priceRange: { min: 10000, max: 30000 }, prepDays: 7 },
+    ],
+    checklist: [
+      { d: -14, task: '3-7세 자녀 보호자 세그먼트 CRM 발송', done: false },
+      { d: 0,   task: '연령별 발달 교구 기획전 오픈', done: false },
+    ],
+    pro: '유아 교구는 생일·명절 선물 수요가 높습니다. 연령 필터(3세/4세/5세)를 제공하면 "딱 맞는 선물" 탐색 경험으로 전환율이 오릅니다. 영양제는 교구 번들 크로스셀이 효과적입니다.',
+    platformTips: {
+      momq: { tip: '연령별 교구+영양제 크로스셀 번들. 생일 시즌 CRM 연계.', action: '연령 타겟 교구 번들', metric: '객단가 +28%' },
+    },
+  },
+
+  // ── school-ready (초등 입학 준비 6-7세) ──────────────────
+  {
+    id: 'r-school-entry',
+    title: '초등 입학 준비 기획전',
+    concept: '초등 첫 날 — 건강·위생·생활용품 입학 키트',
+    trigger: 'school-ready',
+    categories: ['l_health', 'b_hygiene', 'b_fashion', 'l_tissue'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '어린이 종합비타민·오메가3 세트', reason: '초등 입학 후 면역·집중력 관리, 학부모 관심도 최고조', urgency: 'high', category: 'l_health', priceRange: { min: 18000, max: 45000 }, prepDays: 7 },
+      { name: '개인 위생 파우치 (손소독제·마스크·물티슈)', reason: '학교 생활 필수 위생 세트, 입학 전 일괄 구매 수요', urgency: 'high', category: 'b_hygiene', priceRange: { min: 8000, max: 20000 }, prepDays: 5 },
+      { name: '아동 내복·양말 5켤레 세트', reason: '단체 생활 시작 후 소모품 교체 주기 빨라짐', urgency: 'mid', category: 'b_fashion', priceRange: { min: 12000, max: 28000 }, prepDays: 10 },
+      { name: '개인 티슈·물티슈 소형 팩 (학교용)', reason: '책상 비치·개인 사용, 담임 요청 품목', urgency: 'mid', category: 'l_tissue', priceRange: { min: 5000, max: 12000 }, prepDays: 3 },
+    ],
+    checklist: [
+      { d: -30, task: '6-7세 자녀 보호자 CRM 발송 — "입학 준비 체크리스트"', done: false },
+      { d: -14, task: '입학 준비 기획전 페이지 오픈 (1월 말)', done: false },
+      { d: -7,  task: '입학 키트 번들 최종 구성 확정', done: false },
+    ],
+    pro: '초등 입학은 1-2월이 골든 준비 타임입니다. 맘큐 6-7세 자녀 보호자 세그먼트에 "입학 준비 체크리스트" 콘텐츠 CRM을 발송하면 자연스러운 상품 탐색으로 연결됩니다.',
+    platformTips: {
+      momq: { tip: '6-7세 보호자 CRM 1-2월 집중. 입학 키트 번들 단독 기획전으로 객단가 확보.', action: '입학 준비 CRM + 키트 번들', metric: '신규 카테고리 전환 +32%' },
+    },
+  },
+
+  // ── new-mom (산모·엄마 케어) ──────────────────────────────
+  {
+    id: 'r-new-mom-recovery',
+    title: '산후 회복 엄마 케어 기획전',
+    concept: '출산 후 엄마 몸의 회복 — 영양·피부·헤어 집중 케어',
+    trigger: 'new-mom',
+    categories: ['l_health', 'l_body', 'l_hair'],
+    platforms: ['momq', 'naver'],
+    products: [
+      { name: '산모 전용 종합영양제 (철분·엽산·오메가3)', reason: '출산 후 영양 보충 필수, 산후조리기 구매 의향 최고조', urgency: 'high', category: 'l_health', priceRange: { min: 20000, max: 55000 }, prepDays: 3 },
+      { name: '산후 복부·바디 집중 케어 크림', reason: '튼살·피부 탄력 회복 목적 구매, 출산 직후 수요 높음', urgency: 'high', category: 'l_body', priceRange: { min: 15000, max: 40000 }, prepDays: 3 },
+      { name: '산후 탈모 전용 샴푸·두피 세럼', reason: '출산 후 3-6개월 탈모 피크, 해당 시기 검색량 급증', urgency: 'mid', category: 'l_hair', priceRange: { min: 12000, max: 35000 }, prepDays: 5 },
+      { name: '릴렉스 바디워시·입욕제 세트', reason: '산후 피로 회복, 스스로를 챙기는 "미 타임" 니즈', urgency: 'mid', category: 'l_body', priceRange: { min: 10000, max: 28000 }, prepDays: 5 },
+    ],
+    checklist: [
+      { d: 0,  task: '출산 회원 CRM 발송 — "엄마도 충분히 쉬어야 해요"', done: false },
+      { d: 14, task: '산후 3주 차 영양제+바디케어 번들 CRM 발송', done: false },
+      { d: 90, task: '산후 3개월 탈모 관련 헤어케어 CRM 발송', done: false },
+    ],
+    pro: '맘큐 고객의 핵심 니즈 중 하나는 "육아 중 나 자신을 챙기기"입니다. 산모 케어 기획전은 아기 용품 구매 여정과 분리해 "엄마를 위한 선물" 프레임으로 접근할 때 전환율이 높습니다. 사은품으로 미니 바디케어 샘플을 제공하면 효과적입니다.',
+    platformTips: {
+      momq: { tip: '출산 후 시기별 CRM 3단계: D+0 영양제, D+14 바디케어, D+90 탈모 헤어.', action: '산후 타임라인 CRM 자동화', metric: '재구매율 +25%' },
+    },
+  },
+  {
+    id: 'r-mom-daily-self-care',
+    title: '육아 중 엄마 데일리 케어 기획전',
+    concept: '바쁜 육아 중에도 나를 챙기는 5분 루틴',
+    trigger: 'new-mom',
+    categories: ['l_hair', 'l_body', 'l_health'],
+    platforms: ['momq', 'naver', 'kakao'],
+    products: [
+      { name: '순한 데일리 샴푸·컨디셔너 세트', reason: '아기와 함께 쓸 수 있는 저자극 제품 선호, 맘큐 주요 검색어', urgency: 'high', category: 'l_hair', priceRange: { min: 15000, max: 38000 }, prepDays: 5 },
+      { name: '올인원 모이스처라이저 (시간 절약형)', reason: '육아 중 스킨케어 시간 부족, 올인원 제품 수요 높음', urgency: 'mid', category: 'l_body', priceRange: { min: 12000, max: 30000 }, prepDays: 5 },
+      { name: '엄마 유산균·비타민C 세트', reason: '면역 관리 + 피로 회복, 아이 영양제 구매 시 함께 탐색', urgency: 'mid', category: 'l_health', priceRange: { min: 10000, max: 28000 }, prepDays: 5 },
+    ],
+    checklist: [
+      { d: -7, task: '"엄마를 위한 기획전" 랜딩 페이지 오픈', done: false },
+      { d: 0,  task: '0-3세 자녀 보호자 CRM 발송 — "오늘 잠깐 나를 챙겨요"', done: false },
+    ],
+    pro: '아기 용품 구매 직후 "엄마 케어" 크로스셀 팝업이나 CRM이 효과적입니다. "아이만큼 엄마도 중요해요" 메시지로 죄책감 없는 소비를 유도하세요.',
+    platformTips: {
+      momq: { tip: '아기 용품 구매 고객 대상 엄마 케어 크로스셀 CRM. 카카오 선물하기 남편 타겟 연계.', action: '구매 후 크로스셀 CRM', metric: '객단가 +22%' },
+      kakao: { tip: '카카오 선물하기 "아내/엄마에게" 카테고리 타겟. 배우자 선물 수요 포착.', action: '선물하기 남편 타겟', metric: '신규 구매자 +18%' },
+    },
+  },
+
+  // ── family-home (가족 생활용품) ───────────────────────────
+  {
+    id: 'r-family-laundry',
+    title: '가족 세탁·청소 정기 보충 기획전',
+    concept: '아기 옷부터 집 전체까지 — 가족 세탁·청소용품 한 번에',
+    trigger: 'family-home',
+    categories: ['l_laundry', 'l_clean', 'l_tissue'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '아기 전용 세탁세제 대용량 (저자극·무향)', reason: '영유아 가정 필수품, 일반 세제 대비 고가·고마진', urgency: 'high', category: 'l_laundry', priceRange: { min: 12000, max: 32000 }, prepDays: 5 },
+      { name: '가족 섬유유연제 (아기 피부 안전 성분)', reason: '세탁세제와 함께 번들 구매, 재구매 주기 4-6주', urgency: 'high', category: 'l_laundry', priceRange: { min: 8000, max: 22000 }, prepDays: 5 },
+      { name: '주방·욕실 세정 스프레이 세트', reason: '아기 있는 가정의 무독성 세정제 수요, 검색량 꾸준히 상승', urgency: 'mid', category: 'l_clean', priceRange: { min: 10000, max: 25000 }, prepDays: 5 },
+      { name: '화장지·키친타월 대용량 번들', reason: '가족 단위 소비량, 대용량 구매 선호', urgency: 'mid', category: 'l_tissue', priceRange: { min: 15000, max: 40000 }, prepDays: 3 },
+    ],
+    checklist: [
+      { d: -7, task: '가족 세탁·청소 기획전 페이지 오픈', done: false },
+      { d: 0,  task: '세탁세제 구매 고객 재구매 CRM 발송 (구매 35일 후)', done: false },
+      { d: 7,  task: '세제+유연제+세정제 번들 세트 특가 집행', done: false },
+    ],
+    pro: '아기 있는 가정은 세탁세제를 "일반 제품 → 아기 전용"으로 전환합니다. 이 전환 타이밍(출산 후 1-2개월)에 맞춰 CRM을 발송하면 브랜드 락인 효과가 큽니다. 세제+유연제 번들로 객단가를 확보하세요.',
+    platformTips: {
+      momq: { tip: '출산 후 1-2개월 세탁세제 전환 CRM. 세제+유연제+세정제 패밀리 번들.', action: '전환 타이밍 CRM + 패밀리 번들', metric: '카테고리 신규 유입 +30%' },
+      coupang: { tip: '로켓배송 대용량 세탁용품 재고 확보. 구매주기 타겟 광고 집행.', action: '재구매 주기 광고 타겟', metric: '재구매율 +20%' },
+    },
+  },
+  {
+    id: 'r-family-air-hygiene',
+    title: '가족 공기질·위생 케어 기획전',
+    concept: '장마·여름·환절기 — 가족 건강을 지키는 공기·제습·위생',
+    trigger: 'family-home',
+    categories: ['l_air', 'l_electric', 'l_clean', 'l_tissue'],
+    platforms: ['momq', 'coupang', 'naver'],
+    products: [
+      { name: '제습기 필터·에어컨 필터 교체 세트', reason: '여름·장마철 수요 급증, 영유아 가정의 공기질 민감도 높음', urgency: 'high', category: 'l_air', priceRange: { min: 15000, max: 45000 }, prepDays: 7 },
+      { name: '습기제거제 대용량 세트 (옷장·신발장)', reason: '장마철 필수, 아기 옷·이불 곰팡이 예방 니즈', urgency: 'high', category: 'l_air', priceRange: { min: 8000, max: 20000 }, prepDays: 3 },
+      { name: '무독성 곰팡이·욕실 세정제', reason: '장마 후 욕실·주방 관리, 아기 안전 성분 선호', urgency: 'mid', category: 'l_clean', priceRange: { min: 6000, max: 18000 }, prepDays: 3 },
+      { name: '공기청정기 필터 (범용·기간 맞춤)', reason: '환절기·봄철 교체 수요, 정기 구매 전환 가능', urgency: 'mid', category: 'l_electric', priceRange: { min: 12000, max: 35000 }, prepDays: 7 },
+    ],
+    checklist: [
+      { d: -14, task: '장마 시즌(6월 초) 공기질 기획전 페이지 오픈', done: false },
+      { d: -7,  task: '영유아 자녀 보호자 CRM — "아이 방 공기질 점검하셨나요?"', done: false },
+      { d: 0,   task: '제습·공기질 번들 특가 집행', done: false },
+    ],
+    pro: '영유아 부모는 공기질·습도에 매우 민감합니다. "아이 방 공기질"을 키워드로 한 콘텐츠 마케팅이 유입을 끌어옵니다. 장마 전(6월 초)과 환절기(3월, 9-10월)가 최적 타이밍입니다.',
+    platformTips: {
+      momq: { tip: '시즌 전 2주 공기질 CRM. 제습+필터+세정제 공기질 패키지 단독 기획전.', action: '시즌 선점 CRM + 공기질 패키지', metric: '시즌 매출 +40%' },
+      naver: { tip: '"아기 방 제습" 키워드 광고 집중. 파워링크 + 쇼핑 검색광고 병행.', action: '시즌 키워드 검색광고', metric: '검색 클릭 +35%' },
+    },
+  },
 ];

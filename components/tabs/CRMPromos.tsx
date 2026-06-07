@@ -6,26 +6,32 @@ import { LIFECYCLE_RECOS, CATEGORIES } from '@/lib/data';
 import type { LifecycleReco, LifecycleTrigger } from '@/lib/types';
 
 const TRIGGER_LABELS: Record<LifecycleTrigger, string> = {
-  'pre-birth': '출산 준비 (임신 후기)',
-  'newborn':   '신생아 (0-3개월)',
-  'infant':    '영아 (3-12개월)',
-  'toddler':   '유아 (1-3세)',
-  'preschool': '미취학 (3-7세)',
-  'always-on': '상시 추천',
+  'pre-birth':    '출산 준비 (임신 후기)',
+  'newborn':      '신생아 (0-3개월)',
+  'infant':       '영아 (3-12개월)',
+  'toddler':      '유아 (1-3세)',
+  'preschool':    '미취학 (3-7세)',
+  'school-ready': '초등 입학 준비 (6-7세)',
+  'new-mom':      '산모·엄마 케어',
+  'family-home':  '가족 생활용품',
+  'always-on':    '상시 추천',
 };
 
 const TRIGGER_ORDER: LifecycleTrigger[] = [
-  'pre-birth', 'newborn', 'infant', 'toddler', 'preschool', 'always-on',
+  'pre-birth', 'newborn', 'infant', 'toddler', 'preschool', 'school-ready',
+  'new-mom', 'family-home', 'always-on',
 ];
 
-// Left-border accent colors per trigger — use CSS variable fallbacks
 const TRIGGER_BORDER: Record<LifecycleTrigger, string> = {
-  'pre-birth': 'oklch(0.62 0.18 25)',   // warm coral — matches var(--accent) typical
-  'newborn':   'oklch(0.55 0.15 145)',  // soft green
-  'infant':    'oklch(0.60 0.15 75)',   // amber
-  'toddler':   'oklch(0.55 0.15 220)',  // blue
-  'preschool': 'oklch(0.58 0.16 290)',  // purple
-  'always-on': 'oklch(0.50 0.00 0)',    // neutral gray
+  'pre-birth':    'oklch(0.62 0.18 25)',   // coral
+  'newborn':      'oklch(0.55 0.15 145)',  // green
+  'infant':       'oklch(0.60 0.15 75)',   // amber
+  'toddler':      'oklch(0.55 0.15 220)',  // blue
+  'preschool':    'oklch(0.58 0.16 290)',  // purple
+  'school-ready': 'oklch(0.52 0.14 240)',  // indigo
+  'new-mom':      'oklch(0.58 0.16 340)',  // rose
+  'family-home':  'oklch(0.52 0.12 200)',  // teal
+  'always-on':    'oklch(0.50 0.00 0)',    // gray
 };
 
 // ── 트리거 배지 ────────────────────────────────────────────────

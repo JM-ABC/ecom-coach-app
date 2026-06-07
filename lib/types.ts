@@ -76,12 +76,15 @@ export interface PlatformInsight {
 }
 
 export type LifecycleTrigger =
-  | 'pre-birth'   // 출산 준비 (임신 후기)
-  | 'newborn'     // 신생아 0-3개월
-  | 'infant'      // 영아 3-12개월
-  | 'toddler'     // 유아 1-3세
-  | 'preschool'   // 미취학 3-7세
-  | 'always-on';  // 상시
+  | 'pre-birth'    // 출산 준비 (임신 후기)
+  | 'newborn'      // 신생아 0-3개월
+  | 'infant'       // 영아 3-12개월
+  | 'toddler'      // 유아 1-3세
+  | 'preschool'    // 미취학 3-7세
+  | 'school-ready' // 초등 입학 준비 6-7세
+  | 'new-mom'      // 산모·엄마 케어
+  | 'family-home'  // 가족 생활용품
+  | 'always-on';   // 상시
 
 export interface LifecycleReco {
   id: string;
