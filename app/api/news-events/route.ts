@@ -197,9 +197,21 @@ export async function GET() {
       }
     }
 
+    // 종료된 이벤트 제거 + 날짜 추정(low)은 90일 이내 발행 기사만 유지
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 90);
+    const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+    const filtered = detected.filter(e => {
+      if (e.end < todayStr) return false;
+      if (e.confidence === 'low' && e.pubDate < cutoffStr) return false;
+      return true;
+    });
+
     // 최신 날짜 순 정렬 (start 날짜 내림차순, 동일 날짜면 신뢰도 우선)
     const confOrder = { high: 0, mid: 1, low: 2 };
-    detected.sort((a, b) => {
+    filtered.sort((a, b) => {
       const dateDiff = b.start.localeCompare(a.start);
       if (dateDiff !== 0) return dateDiff;
       return confOrder[a.confidence] - confOrder[b.confidence];
@@ -244,7 +256,7 @@ export async function GET() {
     // 최신 기사 순 정렬
     insights.sort((a, b) => b.pubDate.localeCompare(a.pubDate));
 
-    return NextResponse.json({ events: detected, insights, status: 'ok', updatedAt: new Date().toISOString() });
+    return NextResponse.json({ events: filtered, insights, status: 'ok', updatedAt: new Date().toISOString() });
   } catch (err) {
     console.error('[news-events] Error:', err);
     return NextResponse.json({ events: [], status: 'error', message: String(err) });
