@@ -5,6 +5,8 @@ import { useCalendarSelections } from '@/hooks/useCalendarSelections';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
 import { EVENTS, CATEGORIES, EVENT_TYPES, AUTO_DISPLAY_TYPES, catColor, typeLabel, fmtDate } from '@/lib/data';
 import type { MarketingEvent, EventType } from '@/lib/types';
+import DetailPanel from '@/components/DetailPanel';
+import PromoPlanPanel from '@/components/PromoPlanPanel';
 
 // ── 유틸 ────────────────────────────────────────────────────
 function genId() {
@@ -50,7 +52,7 @@ function TypeBadge({ type }: { type: string }) {
 }
 
 // ── 이벤트 카드 ─────────────────────────────────────────────
-function EventCard({ event }: { event: MarketingEvent }) {
+function EventCard({ event, onOpen }: { event: MarketingEvent; onOpen: (e: MarketingEvent) => void }) {
   const { toggle, isSelected } = useCalendarSelections();
   const isAuto = (AUTO_DISPLAY_TYPES as readonly string[]).includes(event.type);
   const selected = isSelected(event.id);
@@ -58,11 +60,17 @@ function EventCard({ event }: { event: MarketingEvent }) {
   const cats = CATEGORIES.filter(c => event.categories.includes(c.id)).slice(0, 3);
 
   return (
-    <div style={{
-      padding: '12px 14px', borderRadius: 'var(--radius-md)',
-      background: 'var(--surface)', border: '1px solid var(--border)',
-      display: 'flex', alignItems: 'flex-start', gap: 12,
-    }}>
+    <div
+      onClick={() => onOpen(event)}
+      style={{
+        padding: '12px 14px', borderRadius: 'var(--radius-md)',
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        display: 'flex', alignItems: 'flex-start', gap: 12,
+        cursor: 'pointer', transition: 'box-shadow 0.15s',
+      }}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
+      onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+    >
       {/* 색상 도트 */}
       <span style={{
         width: 10, height: 10, borderRadius: '50%',
@@ -106,7 +114,7 @@ function EventCard({ event }: { event: MarketingEvent }) {
       </div>
 
       {/* 추가 버튼 영역 */}
-      <div style={{ flexShrink: 0 }}>
+      <div style={{ flexShrink: 0 }} onClick={e => e.stopPropagation()}>
         {isAuto ? (
           <span style={{
             fontSize: 'var(--fs-xs)', padding: '4px 10px',
@@ -345,6 +353,8 @@ function DirectRegisterSection() {
 export default function SeasonPromos() {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [catFilter, setCatFilter] = useState<string>('all');
+  const [selectedEvent, setSelectedEvent] = useState<MarketingEvent | null>(null);
+  const [promoPlanEvent, setPromoPlanEvent] = useState<MarketingEvent | null>(null);
 
   const catOptions = useMemo(() => [
     { id: 'all', label: '전체 카테고리' },
@@ -420,7 +430,7 @@ export default function SeasonPromos() {
         {filtered.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {filtered.map(ev => (
-              <EventCard key={ev.id} event={ev} />
+              <EventCard key={ev.id} event={ev} onOpen={setSelectedEvent} />
             ))}
           </div>
         ) : (
@@ -437,6 +447,21 @@ export default function SeasonPromos() {
 
       {/* ── Section 2: 직접 등록 ── */}
       <DirectRegisterSection />
+
+      {/* ── 상세 패널 ── */}
+      {selectedEvent && (
+        <DetailPanel
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          onOpenPromoPlan={(e) => { setSelectedEvent(null); setPromoPlanEvent(e); }}
+        />
+      )}
+      {promoPlanEvent && (
+        <PromoPlanPanel
+          event={promoPlanEvent}
+          onClose={() => setPromoPlanEvent(null)}
+        />
+      )}
     </div>
   );
 }
