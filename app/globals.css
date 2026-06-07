@@ -366,7 +366,7 @@ a { color: inherit; text-decoration: none; }
     z-index: 9999;
     align-items: stretch;
   }
-  .season-spotlight-hero { max-height: 62vh; overflow: hidden; border-radius: var(--radius-lg); }
+
   .mobile-nav-item {
     flex: 1;
     display: flex;

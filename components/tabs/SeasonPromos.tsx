@@ -407,13 +407,11 @@ export default function SeasonPromos() {
             const openEvent = (e: MarketingEvent) => setSelectedEvent(e);
             return (
               <>
-                <div className="season-spotlight-hero">
-                  <EventHero
-                    event={hero}
-                    onOpen={openEvent}
-                    onOpenPromoPlan={setPromoPlanEvent}
-                  />
-                </div>
+                <EventHero
+                  event={hero}
+                  onOpen={openEvent}
+                  onOpenPromoPlan={setPromoPlanEvent}
+                />
                 {rest.length > 0 && (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8, marginTop: 10 }}>
                     {rest.map(ev => (
