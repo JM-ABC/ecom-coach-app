@@ -7,6 +7,7 @@ import { EVENTS, CATEGORIES, EVENT_TYPES, AUTO_DISPLAY_TYPES, catColor, typeLabe
 import type { MarketingEvent, EventType } from '@/lib/types';
 import DetailPanel from '@/components/DetailPanel';
 import PromoPlanPanel from '@/components/PromoPlanPanel';
+import { EventHero, EventCard as FocusEventCard } from '@/components/calendar/CalendarParts';
 
 // ── 유틸 ────────────────────────────────────────────────────
 function genId() {
@@ -52,7 +53,7 @@ function TypeBadge({ type }: { type: string }) {
 }
 
 // ── 이벤트 카드 ─────────────────────────────────────────────
-function EventCard({ event, onOpen }: { event: MarketingEvent; onOpen: (e: MarketingEvent) => void }) {
+function SeasonEventCard({ event, onOpen }: { event: MarketingEvent; onOpen: (e: MarketingEvent) => void }) {
   const { toggle, isSelected } = useCalendarSelections();
   const isAuto = (AUTO_DISPLAY_TYPES as readonly string[]).includes(event.type);
   const selected = isSelected(event.id);
@@ -403,100 +404,25 @@ export default function SeasonPromos() {
           {(() => {
             const [hero, ...rest] = spotlight;
             if (!hero) return null;
-            const d = daysUntil(hero.start);
-            const active = isActive(hero);
-            const dLabel = active ? '진행 중' : `D-${d}`;
-            const cats = CATEGORIES.filter(c => hero.categories.includes(c.id)).slice(0, 4);
+            const openEvent = (e: MarketingEvent) => setSelectedEvent(e);
             return (
               <>
-                <div
-                  onClick={() => setSelectedEvent(hero)}
-                  style={{
-                    padding: '20px 22px', borderRadius: 'var(--radius-lg)',
-                    background: `color-mix(in oklch, ${catColor(hero.type)} 6%, var(--surface))`,
-                    border: `1px solid color-mix(in oklch, ${catColor(hero.type)} 25%, var(--border))`,
-                    borderLeft: `4px solid ${catColor(hero.type)}`,
-                    cursor: 'pointer', marginBottom: 10, transition: 'box-shadow 0.15s',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-md)')}
-                  onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const }}>
-                      <TypeBadge type={hero.type} />
-                      <span style={{ fontSize: 'var(--fs-md)', fontWeight: 700, color: 'var(--text)' }}>{hero.title}</span>
-                    </div>
-                    <span style={{
-                      fontSize: 'var(--fs-xs)', fontWeight: 600, padding: '2px 8px', borderRadius: 999,
-                      background: active ? 'var(--accent-bg)' : 'var(--bg-subtle)',
-                      color: active ? 'var(--accent-text)' : 'var(--text-subtle)',
-                      border: `1px solid ${active ? 'var(--accent-border)' : 'var(--border)'}`,
-                      whiteSpace: 'nowrap' as const, flexShrink: 0,
-                    }}>{dLabel}</span>
-                  </div>
-                  <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)', marginBottom: 10, lineHeight: 1.55 }}>
-                    {hero.summary}
-                  </div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' as const, marginBottom: 10 }}>
-                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-subtle)' }}>
-                      {fmtDate(hero.start)} ~ {fmtDate(hero.end)}
-                    </span>
-                    <span style={{ color: 'var(--border)' }}>·</span>
-                    <span style={{ fontSize: 'var(--fs-xs)', fontWeight: 600, color: catColor(hero.type) }}>
-                      트렌드 {hero.trendScore}점
-                    </span>
-                    <span style={{ color: 'var(--border)' }}>·</span>
-                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-muted)' }}>검색 {hero.search}</span>
-                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-muted)' }}>GMV {hero.gmv}</span>
-                  </div>
-                  {/* 트렌드 바 */}
-                  <div style={{ height: 4, borderRadius: 2, background: 'var(--border)', marginBottom: 10, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${hero.trendScore}%`, background: catColor(hero.type), borderRadius: 2 }} />
-                  </div>
-                  {cats.length > 0 && (
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' as const }}>
-                      {cats.map(c => (
-                        <span key={c.id} style={{
-                          fontSize: 'var(--fs-xs)', padding: '2px 7px', borderRadius: 'var(--radius-sm)',
-                          background: 'var(--bg-subtle)', color: 'var(--text-subtle)', border: '1px solid var(--border)',
-                        }}>{c.label}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* 나머지 소형 카드 */}
+                <EventHero
+                  event={hero}
+                  onOpen={openEvent}
+                  onOpenPromoPlan={setPromoPlanEvent}
+                />
                 {rest.length > 0 && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
-                    {rest.map(ev => {
-                      const dd = daysUntil(ev.start);
-                      const act = isActive(ev);
-                      return (
-                        <div
-                          key={ev.id}
-                          onClick={() => setSelectedEvent(ev)}
-                          style={{
-                            padding: '12px 14px', borderRadius: 'var(--radius-md)',
-                            background: 'var(--surface)', border: `1px solid color-mix(in oklch, ${catColor(ev.type)} 20%, var(--border))`,
-                            borderLeft: `3px solid ${catColor(ev.type)}`,
-                            cursor: 'pointer', transition: 'box-shadow 0.15s',
-                          }}
-                          onMouseEnter={e => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
-                          onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
-                        >
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
-                            <TypeBadge type={ev.type} />
-                            <span style={{ fontSize: 'var(--fs-2xs)', color: act ? 'var(--accent-text)' : 'var(--text-subtle)', fontWeight: 600 }}>
-                              {act ? '진행 중' : `D-${dd}`}
-                            </span>
-                          </div>
-                          <div style={{ fontSize: 'var(--fs-base)', fontWeight: 600, color: 'var(--text)', marginBottom: 3 }}>{ev.title}</div>
-                          <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>
-                            트렌드 {ev.trendScore}점 · 검색 {ev.search}
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8, marginTop: 10 }}>
+                    {rest.map(ev => (
+                      <FocusEventCard
+                        key={ev.id}
+                        event={ev}
+                        onOpen={openEvent}
+                        onOpenPromoPlan={setPromoPlanEvent}
+                        filter="all"
+                      />
+                    ))}
                   </div>
                 )}
               </>
@@ -555,7 +481,7 @@ export default function SeasonPromos() {
         {filtered.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {filtered.map(ev => (
-              <EventCard key={ev.id} event={ev} onOpen={setSelectedEvent} />
+              <SeasonEventCard key={ev.id} event={ev} onOpen={setSelectedEvent} />
             ))}
           </div>
         ) : (
