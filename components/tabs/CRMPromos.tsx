@@ -352,7 +352,7 @@ export default function CRMPromos() {
   );
 
   return (
-    <div style={{ padding: '20px 28px 60px' }}>
+    <div className="tab-page">
       {/* 페이지 헤더 */}
       <div style={{ marginBottom: 24 }}>
         <div style={{

@@ -382,7 +382,7 @@ export default function SeasonPromos() {
   }, [typeFilter, catFilter]);
 
   return (
-    <div style={{ padding: '20px 28px 60px' }}>
+    <div className="tab-page">
       {/* 페이지 헤더 */}
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 'var(--fs-xl)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>

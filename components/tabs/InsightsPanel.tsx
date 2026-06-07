@@ -534,7 +534,7 @@ export default function InsightsPanel() {
   ];
 
   return (
-    <div style={{ padding: '20px 28px 60px' }}>
+    <div className="tab-page">
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 'var(--fs-xl)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', marginBottom: 4 }}>
           인사이트

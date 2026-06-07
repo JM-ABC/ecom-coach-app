@@ -263,6 +263,9 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
 }
 
+/* ---- 탭 페이지 공통 래퍼 ---- */
+.tab-page { padding: 20px 28px 60px; }
+
 /* ---- 반응형 레이아웃 ---- */
 .sidebar-desktop { display: flex; flex-direction: column; }
 .mobile-nav { display: none; }
@@ -398,6 +401,7 @@ a { color: inherit; text-decoration: none; }
   .mobile-platform-bar::-webkit-scrollbar { display: none; }
 
   .main-content { padding-bottom: 56px; }
+  .tab-page { padding: 16px 16px 80px !important; }
 
   /* 포커스뷰: 1컬럼 스택 */
   .focus-grid {
@@ -406,7 +410,7 @@ a { color: inherit; text-decoration: none; }
   }
 
   /* 캘린더 패딩 축소 */
-  .cal-body { padding: 12px 12px 60px !important; }
+  .cal-body { padding: 16px 16px 80px !important; }
 
   /* 툴바 레이아웃 재배치 */
   .cal-toolbar {
@@ -415,7 +419,7 @@ a { color: inherit; text-decoration: none; }
     gap: 10px;
     margin-bottom: 12px !important;
   }
-  .cal-toolbar-title { font-size: 18px !important; }
+  .cal-toolbar-title { font-size: 22px !important; }
   .cal-toolbar-meta { font-size: 12px !important; }
   .cal-toolbar-actions {
     display: flex;
