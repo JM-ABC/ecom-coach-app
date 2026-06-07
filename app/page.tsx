@@ -7,6 +7,7 @@ import ProductNameOptimizer from '@/components/tabs/ProductNameOptimizer';
 import CopyGenerator from '@/components/tabs/CopyGenerator';
 import DetailPageDesign from '@/components/tabs/DetailPageDesign';
 import EventManager from '@/components/tabs/EventManager';
+import SeasonPromos from '@/components/tabs/SeasonPromos';
 import Icon from '@/components/Icon';
 import type { TabId } from '@/lib/types';
 
@@ -27,7 +28,7 @@ export default function Home() {
       <Sidebar activeTab={tab} onTabChange={setTab} />
       <div className="main-content" style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
         {tab === 'calendar' && <MarketingCalendar />}
-        {tab === 'season-promos' && <EventManager />}
+        {tab === 'season-promos' && <SeasonPromos />}
         {tab === 'crm-promos' && (
           <div style={{ padding: 32, color: 'var(--text-muted)', fontSize: 'var(--fs-base)' }}>
             CRM 기획전 — 준비 중
