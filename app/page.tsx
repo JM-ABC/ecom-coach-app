@@ -46,7 +46,7 @@ export default function Home() {
             style={t.disabled ? { opacity: 0.35, pointerEvents: 'none' } : undefined}
             disabled={t.disabled}
           >
-            <Icon name={t.icon} size={18} />
+            <Icon name={t.icon} size={20} />
             {t.label}
           </button>
         ))}
