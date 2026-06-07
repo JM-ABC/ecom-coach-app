@@ -6,9 +6,10 @@ import { EventHero, EventCard, MiniItem } from './CalendarParts';
 import DetailPanel from '@/components/DetailPanel';
 import PromoPlanPanel from '@/components/PromoPlanPanel';
 import {
-  EVENTS, CATEGORIES, CATEGORY_GROUPS, EVENT_TYPES,
+  EVENTS, CATEGORIES, CATEGORY_GROUPS, EVENT_TYPES, AUTO_DISPLAY_TYPES,
   TODAY, catColor, typeLabel, fmtDate, daysUntil, isActive,
 } from '@/lib/data';
+import { useCalendarSelections } from '@/hooks/useCalendarSelections';
 import type { MarketingEvent, ViewMode } from '@/lib/types';
 import { useWeatherEvents } from '@/hooks/useWeatherEvents';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
@@ -256,6 +257,32 @@ function FocusView({ hero, thisWeek, upcoming, filter, onOpen, onOpenPromoPlan, 
   );
 }
 
+// ---- EventBadge (auto-display season/holiday) ----
+function EventBadge({ event, onOpen }: { event: MarketingEvent; onOpen?: (e: MarketingEvent) => void }) {
+  return (
+    <div
+      onClick={() => onOpen?.(event)}
+      style={{
+        fontSize: 'var(--fs-2xs)',
+        color: 'var(--text-subtle)',
+        background: 'var(--bg-subtle)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-sm)',
+        padding: '1px 5px',
+        marginBottom: 2,
+        cursor: onOpen ? 'pointer' : 'default',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        opacity: 0.75,
+      }}
+      title={event.title}
+    >
+      {event.title}
+    </div>
+  );
+}
+
 // ---- GridView ----
 function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen }: {
   year: number; monthIdx: number; monthOffset: number;
@@ -328,21 +355,25 @@ function GridView({ year, monthIdx, monthOffset, setMonthOffset, events, onOpen 
                     }}>
                       {day}
                     </div>
-                    {dayEvents.slice(0, 3).map(ev => (
-                      <div
-                        key={ev.id}
-                        className="grid-view-event-chip"
-                        style={{
-                          padding: '2px 4px', borderRadius: 3, fontSize: 11, fontWeight: 500,
-                          lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                          cursor: 'pointer', background: catColor(ev.type), color: '#fff', opacity: 0.92,
-                        }}
-                        onClick={() => onOpen(ev)}
-                        title={ev.title}
-                      >
-                        {ev.title}
-                      </div>
-                    ))}
+                    {dayEvents.slice(0, 3).map(ev =>
+                      (AUTO_DISPLAY_TYPES as string[]).includes(ev.type) ? (
+                        <EventBadge key={ev.id} event={ev} onOpen={onOpen} />
+                      ) : (
+                        <div
+                          key={ev.id}
+                          className="grid-view-event-chip"
+                          style={{
+                            padding: '2px 4px', borderRadius: 3, fontSize: 11, fontWeight: 500,
+                            lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                            cursor: 'pointer', background: catColor(ev.type), color: '#fff', opacity: 0.92,
+                          }}
+                          onClick={() => onOpen(ev)}
+                          title={ev.title}
+                        >
+                          {ev.title}
+                        </div>
+                      )
+                    )}
                     {dayEvents.length > 3 && (
                       <div style={{ fontSize: 10, color: 'var(--text-subtle)', padding: '0 3px' }}>
                         +{dayEvents.length - 3}건
@@ -537,6 +568,8 @@ export default function MarketingCalendar() {
   };
   const [monthOffset, setMonthOffset] = useState(0);
 
+  const { selectedIds } = useCalendarSelections();
+
   const weatherState = useWeatherEvents();
   const { events: customEvents } = useCustomEvents();
   const newsEvents = useNewsAsCalendarEvents();
@@ -549,14 +582,21 @@ export default function MarketingCalendar() {
       customEvents.filter(e => e.id.startsWith('custom-news-')).map(e => e.id.slice('custom-news-'.length))
     );
     const dedupedNews = newsEvents.filter(e => !confirmedNewsIds.has(e.id));
+
+    // Layer 1: auto-display events (season/holiday always visible as badges)
+    const autoEvents = EVENTS.filter(e => (AUTO_DISPLAY_TYPES as string[]).includes(e.type));
+    // Layer 2: MD-selected events (full cards)
+    const selectedEvents = EVENTS.filter(e => !(AUTO_DISPLAY_TYPES as string[]).includes(e.type) && selectedIds.has(e.id));
+
     return [
-      ...EVENTS,
+      ...autoEvents,
+      ...selectedEvents,
       ...weatherState.events,
       ...autoTrendEvents,
       ...customEvents,
       ...dedupedNews,
     ];
-  }, [weatherState.events, autoTrendEvents, customEvents, newsEvents]);
+  }, [weatherState.events, autoTrendEvents, customEvents, newsEvents, selectedIds]);
 
   const currentMonth = TODAY.getMonth() + monthOffset;
   const currentYear = TODAY.getFullYear() + Math.floor(currentMonth / 12);
@@ -569,11 +609,21 @@ export default function MarketingCalendar() {
 
   const activeEvents = useMemo(() => filteredEvents.filter(e => isActive(e)), [filteredEvents]);
 
+  // FocusView planning events: exclude pure auto-display season/holiday (context awareness only)
+  // Weather events and MD-selected auto events ARE planning-relevant
+  const planningEvents = useMemo(() =>
+    filteredEvents.filter(e =>
+      !(AUTO_DISPLAY_TYPES as string[]).includes(e.type) ||
+      e.source === 'weather-api' ||
+      selectedIds.has(e.id)
+    ),
+  [filteredEvents, selectedIds]);
+
   const upcoming = useMemo(() =>
-    filteredEvents
+    planningEvents
       .filter(e => { const d = daysUntil(e.start); return d > 0 && d <= 62; })
       .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()),
-    [filteredEvents]);
+    [planningEvents]);
 
   const hero = upcoming.find(e => e.trendScore >= 80) || upcoming[0] || activeEvents.find(e => e.trendScore >= 80) || activeEvents[0];
 
@@ -588,11 +638,11 @@ export default function MarketingCalendar() {
   }, [hero, allEvents]);
 
   const thisWeek = useMemo(() =>
-    filteredEvents.filter(e => {
+    planningEvents.filter(e => {
       const d = daysUntil(e.start);
       const endD = daysUntil(e.end);
       return (d >= -3 && d <= 7 && endD >= 0) || (endD >= 0 && d <= 0);
-    }), [filteredEvents]);
+    }), [planningEvents]);
 
   const views = [
     { id: 'focus' as ViewMode, label: '포커스', icon: 'sparkles' },
