@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Icon from './Icon';
+import { exportPromoPlanToExcel } from '@/lib/exportExcel';
 import type { MarketingEvent } from '@/lib/types';
 
 interface PromoPlanPanelProps {
@@ -291,8 +292,11 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
             <button className="btn sm" onClick={handleCopy} disabled={state === 'loading'}>
               <Icon name="copy" size={12} />복사
             </button>
+            <button className="btn sm" onClick={() => exportPromoPlanToExcel(event, planText)} disabled={state === 'loading'}>
+              <Icon name="download" size={12} />엑셀
+            </button>
             <button className="btn primary sm" onClick={handleDownload} disabled={state === 'loading'}>
-              <Icon name="download" size={12} />다운로드
+              <Icon name="download" size={12} />MD 다운로드
             </button>
           </div>
         )}

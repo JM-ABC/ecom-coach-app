@@ -6,6 +6,7 @@ import { PlatformInsights } from './calendar/CalendarParts';
 import { CATEGORIES, PLATFORMS, catColor, typeLabel, typeChip, fmtDateFull, daysUntil, isActive, getPlatformInsight } from '@/lib/data';
 import { useEventTrend } from '@/hooks/useEventTrend';
 import { useCustomEvents } from '@/hooks/useCustomEvents';
+import { exportDetailToExcel } from '@/lib/exportExcel';
 import type { MarketingEvent } from '@/lib/types';
 
 const urgencyStyle = (u: string) => ({
@@ -92,6 +93,10 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
   const showFeedback = (msg: string) => {
     setFeedback(msg);
     setTimeout(() => setFeedback(null), 2000);
+  };
+
+  const handleExcelExport = () => {
+    exportDetailToExcel(event, checked, commonChecked);
   };
 
   const handleShare = () => {
@@ -522,6 +527,9 @@ export default function DetailPanel({ event, onClose, initialTab = 'plan', onOpe
           </button>
           <button className="btn sm" onClick={handleDuplicate}>
             <Icon name="plus" size={12} />이벤트에 추가
+          </button>
+          <button className="btn sm" onClick={handleExcelExport}>
+            <Icon name="download" size={12} />엑셀 내보내기
           </button>
           {feedback && (
             <span style={{ fontSize: 11, color: 'var(--success)', fontWeight: 600 }}>{feedback}</span>
