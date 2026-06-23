@@ -10,7 +10,9 @@
 - **Framework**: Next.js 16.2.4 (App Router, Turbopack)
 - **Language**: TypeScript (strict)
 - **Styling**: CSS Variables 기반 커스텀 디자인 시스템 (Tailwind 미사용)
-- **AI**: Google Generative AI (`@google/generative-ai`) — Gemini 2.5 Pro
+- **AI**: Anthropic Claude (`@anthropic-ai/sdk`)
+  - 기획서(promo-plan): `claude-opus-4-8` — adaptive thinking + 스트리밍
+  - 브리핑/컨셉(brief-ai): `claude-sonnet-4-6` — structured output(`output_config.format`) + `effort: low`
 - **Test**: Vitest
 
 ## 주요 파일 구조
@@ -22,7 +24,7 @@ app/
     trends/route.ts         # 네이버 DataLab 검색어 트렌드 (v1/datalab/search, 주간)
     event-trend/route.ts    # 네이버 DataLab 검색어트렌드 (이벤트별 YoY)
     news-events/route.ts    # 네이버 뉴스 API (플랫폼 행사 감지 + 소비 트렌드)
-    promo-plan/route.ts     # Gemini 2.5 Pro AI 프로모션 기획서 스트리밍
+    promo-plan/route.ts     # Claude Opus 4.8 AI 프로모션 기획서 스트리밍
 
 components/
   calendar/
@@ -53,7 +55,7 @@ lib/
 NAVER_CLIENT_ID=            # 네이버 오픈API (DataLab + 뉴스)
 NAVER_CLIENT_SECRET=        # 네이버 오픈API
 KMA_API_KEY=                # 공공데이터포털 기상청 단기예보 API
-GEMINI_API_KEY=                 # Gemini AI (AI 기획서) — process.env.GEMINI_API_KEY 로 참조
+ANTHROPIC_API_KEY=          # Anthropic Claude (AI 기획서) — process.env.ANTHROPIC_API_KEY 로 참조
 ```
 
 ## 핵심 데이터 구조

@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 
 export const runtime = 'nodejs';
 
@@ -114,11 +114,11 @@ ${weatherStr}
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
     return new Response(
-      JSON.stringify({ error: 'GEMINI_API_KEY가 설정되지 않았습니다.' }),
+      JSON.stringify({ error: 'ANTHROPIC_API_KEY가 설정되지 않았습니다.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -133,21 +133,27 @@ export async function POST(request: Request) {
       );
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
+    const client = new Anthropic({ apiKey });
 
     const prompt = buildPrompt(body);
-
-    const result = await model.generateContentStream(prompt);
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of result.stream) {
-            const text = chunk.text();
-            if (text) {
-              controller.enqueue(encoder.encode(text));
+          const messageStream = client.messages.stream({
+            model: 'claude-opus-4-8',
+            max_tokens: 16000,
+            thinking: { type: 'adaptive' },
+            messages: [{ role: 'user', content: prompt }],
+          });
+
+          for await (const event of messageStream) {
+            if (
+              event.type === 'content_block_delta' &&
+              event.delta.type === 'text_delta'
+            ) {
+              controller.enqueue(encoder.encode(event.delta.text));
             }
           }
           controller.close();

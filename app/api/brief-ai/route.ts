@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
@@ -86,71 +86,65 @@ ${seasonStr}
 - 각 컨셉 title은 5~15자, products는 3개`;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const RESPONSE_SCHEMA: any = {
-  type: SchemaType.OBJECT,
+const RESPONSE_SCHEMA = {
+  type: 'object',
   properties: {
     summary: {
-      type: SchemaType.STRING,
+      type: 'string',
       description: '3섹션 브리핑 요약 텍스트',
     },
     concepts: {
-      type: SchemaType.ARRAY,
+      type: 'array',
       description: '기획전 컨셉 3개',
       items: {
-        type: SchemaType.OBJECT,
+        type: 'object',
         properties: {
-          title: { type: SchemaType.STRING, description: '기획전 이름 5~15자' },
-          hook: { type: SchemaType.STRING, description: '소비자 언어 한 줄 메시지' },
-          why: { type: SchemaType.STRING, description: '지금 기획해야 하는 이유 1~2문장' },
+          title: { type: 'string', description: '기획전 이름 5~15자' },
+          hook: { type: 'string', description: '소비자 언어 한 줄 메시지' },
+          why: { type: 'string', description: '지금 기획해야 하는 이유 1~2문장' },
           products: {
-            type: SchemaType.ARRAY,
-            items: { type: SchemaType.STRING },
+            type: 'array',
+            items: { type: 'string' },
             description: '추천 상품 3개',
           },
         },
         required: ['title', 'hook', 'why', 'products'],
+        additionalProperties: false,
       },
     },
   },
   required: ['summary', 'concepts'],
-};
+  additionalProperties: false,
+} as const;
 
 export async function POST(request: Request) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
-    return NextResponse.json({ error: 'GEMINI_API_KEY가 설정되지 않았습니다.' }, { status: 500 });
+    return NextResponse.json({ error: 'ANTHROPIC_API_KEY가 설정되지 않았습니다.' }, { status: 500 });
   }
 
   try {
     const body: BriefAiRequest = await request.json();
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      generationConfig: {
-        maxOutputTokens: 4000,
-        responseMimeType: 'application/json',
-        responseSchema: RESPONSE_SCHEMA,
-      },
+    const client = new Anthropic({ apiKey });
+
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4000,
+      output_config: { effort: 'low', format: { type: 'json_schema', schema: RESPONSE_SCHEMA } },
+      messages: [{ role: 'user', content: buildPrompt(body) }],
     });
 
-    const result = await model.generateContent(buildPrompt(body));
-    const rawText = result.response.text();
-    // Gemini sometimes wraps JSON in markdown code fences — strip them
-    const raw = rawText.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+    if (response.stop_reason === 'refusal') {
+      return NextResponse.json({ error: '요청이 안전 정책으로 거부되었습니다.' }, { status: 502 });
+    }
+
+    const raw = response.content.find(b => b.type === 'text')?.text ?? '';
 
     let parsed: { summary: string; concepts: ConceptItem[] };
     try {
       parsed = JSON.parse(raw);
-      // Guard: if summary is itself a JSON string (double-encoded), unwrap it
-      if (typeof parsed.summary === 'string' && parsed.summary.trimStart().startsWith('{')) {
-        try {
-          const inner = JSON.parse(parsed.summary);
-          if (inner.summary) parsed = inner;
-        } catch { /* not JSON, keep as-is */ }
-      }
     } catch {
       parsed = { summary: raw, concepts: [] };
     }

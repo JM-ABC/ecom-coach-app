@@ -48,7 +48,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
         // 트렌드 없이도 기획서 생성 가능
       }
 
-      // 2. Gemini 기획서 생성 요청
+      // 2. Claude 기획서 생성 요청
       const res = await fetch('/api/promo-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -168,7 +168,7 @@ export default function PromoPlanPanel({ event, onClose, weatherHint }: PromoPla
               AI 프로모션 기획서
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-              {event.title} · Gemini 2.5 Pro
+              {event.title} · Claude Opus 4.8
             </div>
           </div>
           <button className="btn ghost icon sm" onClick={onClose}>
