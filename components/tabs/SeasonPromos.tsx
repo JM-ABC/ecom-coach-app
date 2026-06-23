@@ -8,6 +8,12 @@ import type { MarketingEvent, EventType } from '@/lib/types';
 import DetailPanel from '@/components/DetailPanel';
 import PromoPlanPanel from '@/components/PromoPlanPanel';
 import { EventHero, EventCard as FocusEventCard } from '@/components/calendar/CalendarParts';
+import { useTrendData } from '@/hooks/useTrendData';
+import { useCandidateCart } from '@/hooks/useCandidateCart';
+import { getCandidateProductsByCategory } from '@/lib/candidates';
+import CandidateSection from '@/components/candidates/CandidateSection';
+import CandidateCartBar from '@/components/candidates/CandidateCartBar';
+import type { ProductCandidate } from '@/lib/types';
 
 // ── 유틸 ────────────────────────────────────────────────────
 function genId() {
@@ -370,6 +376,23 @@ export default function SeasonPromos() {
       .sort((a, b) => a.start.localeCompare(b.start));
   }, [catFilter]);
 
+  const { trends } = useTrendData();
+  const cart = useCandidateCart();
+  const { add: addCustomEvent } = useCustomEvents();
+  const trendCandidates: ProductCandidate[] = useMemo(() =>
+    trends.filter(t => t.changeVsPrevWeek >= 8).flatMap(t =>
+      getCandidateProductsByCategory(t.ourKey, 3).map((p, i) => ({
+        id: `trend-${t.ourKey}-${i}`,
+        name: p.name,
+        reason: p.reason,
+        urgency: p.urgency,
+        category: p.category,
+        ...(p.priceRange ? { priceRange: p.priceRange } : {}),
+        source: 'trend' as const,
+        signalLabel: `${t.title} +${t.changeVsPrevWeek}% 급등`,
+      }))
+    ), [trends]);
+
   return (
     <div className="tab-page">
       {/* 페이지 헤더 */}
@@ -417,6 +440,24 @@ export default function SeasonPromos() {
               </>
             );
           })()}
+        </section>
+      )}
+
+      {/* ── 트렌드 기반 추천 후보 ── */}
+      {trendCandidates.length > 0 && (
+        <section style={{ marginBottom: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <div style={{ fontSize: 'var(--fs-xs)', fontWeight: 600, color: 'var(--text-subtle)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              트렌드 기반 추천 후보
+            </div>
+            <span style={{ fontSize: 'var(--fs-xs)', padding: '2px 7px', borderRadius: 4, background: 'oklch(0.93 0.06 145)', color: 'var(--success)', fontWeight: 600 }}>
+              {trendCandidates.length}건
+            </span>
+          </div>
+          <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)', marginBottom: 12 }}>
+            네이버 검색 급등 카테고리의 추천 품목입니다. 담아서 캘린더·AI 기획서로 보내세요.
+          </div>
+          <CandidateSection candidates={trendCandidates} onAdd={cart.add} isInCart={cart.has} />
         </section>
       )}
 
@@ -479,6 +520,8 @@ export default function SeasonPromos() {
           onClose={() => setPromoPlanEvent(null)}
         />
       )}
+
+      <CandidateCartBar items={cart.items} onAddToCalendar={addCustomEvent} onClear={cart.clear} />
     </div>
   );
 }
