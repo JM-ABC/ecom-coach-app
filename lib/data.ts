@@ -1419,6 +1419,36 @@ export const EVENTS: MarketingEvent[] = [
       naver: { tip: '"집먼지진드기 세제", "침구 살균 스프레이", "방진 커버" 쇼핑검색광고 입찰. 9월 2주~10월 1주 피크.', action: '침구 케어 키워드 광고 상향', metric: '검색 클릭 +36% (추정치)' },
     },
   },
+  {
+    id: 'e-summer-travel-care', title: '여름 휴가 기내·여행 케어 기획전', type: 'season',
+    start: '2026-06-25', end: '2026-08-20',
+    categories: ['l_body', 'l_tissue', 'b_carry', 'b_wipe'],
+    platforms: ['momq', 'coupang', 'naver'],
+    summary: '여름 휴가·해외여행 수요 급증기. 기내 습도가 10~20%로 매우 낮아 "기내 가습·수분 마스크"가 SNS에서 뜨는 신흥 트렌드입니다. 수분 마스크팩·미스트·여행용 미니 키트를 여행 케어 단독 테마로 묶고, 맘큐 강점인 아기 여행 위생 키트를 함께 배치합니다.',
+    trendScore: 80, search: '+60%', gmv: '+45%',
+    products: [
+      { name: '기내 수분 마스크팩 (건조 케어)', reason: '기내 저습도 건조 대응. SNS "비행기 마스크" 트렌드로 여행 전 선구매 급증.', urgency: 'high', category: 'l_body', priceRange: { min: 6000, max: 20000 }, prepDays: 7, momqTip: '맘큐 단독 할인 + 미스트와 "기내 수분 케어 세트" 번들. "장거리 비행 건조 탈출" 카피. 출국 전 구매 타이밍 CRM 발송.' },
+      { name: '휴대용 수분 미스트·진정 스프레이', reason: '기내·야외 수시 수분 보충. 마스크와 번들 최적, 회전 빠른 소모품.', urgency: 'high', category: 'l_body', priceRange: { min: 5000, max: 15000 }, prepDays: 7, momqTip: '수분 마스크와 "기내 케어 2종" 번들. 100ml 이하 기내 반입 가능 용량 강조.' },
+      { name: '여행용 미니 토일러트리 키트 (샴푸·바디워시)', reason: '여행 필수 미니 용량. 100ml 이하 기내 반입 수요.', urgency: 'mid', category: 'l_body', priceRange: { min: 8000, max: 22000 }, prepDays: 7, momqTip: '"기내 반입 OK 미니 키트" 구성. 마스크·미스트와 여행 케어 풀세트 업셀.' },
+      { name: '아기 여행 위생 키트 (휴대 물티슈·기저귀 휴대팩)', reason: '맘큐 강점 — 아이 동반 여행 위생 필수. 유아 가구 정조준.', urgency: 'mid', category: 'b_wipe', priceRange: { min: 6000, max: 18000 }, prepDays: 7, momqTip: '"아이와 떠나는 여행 준비물" 커뮤니티 콘텐츠 연동. 3만원 이상 구매 시 휴대용 물티슈 사은품(히어로 단가 10%).' },
+      { name: '휴대용 항균 물티슈·손소독 (여행 위생)', reason: '여행지 위생 필수, 가방 비치 소모품. 회전 빠름.', urgency: 'low', category: 'l_tissue', priceRange: { min: 3000, max: 10000 }, prepDays: 5, momqTip: '여행 케어 세트 크로스셀. 어른+아이 공용 멀티팩.' },
+    ],
+    checklist: [
+      { d: -14, task: '"여름 휴가 기내·여행 케어" 맘큐 기획전 배너 제작', done: false },
+      { d: -10, task: '네이버 기획전 신청 (6/25 노출 목표)', done: false },
+      { d: -7, task: '수분 마스크·미스트·여행 미니 키트 재고 2주치 확보', done: false },
+      { d: -3, task: '맘큐 메인 슬롯 교체 + "여행 가는 회원" 세그먼트 CRM 예약', done: false },
+      { d: 0, task: '맘큐 기획전 라이브 + CRM 발송', done: false },
+      { d: 0, task: '"출국 전 챙기세요" 여름 휴가 시즌 앱 푸시 세팅', done: false },
+      { d: 20, task: '중간 성과 점검 — 기내 케어 세트 번들 비율 확인', done: false },
+    ],
+    pro: '기내 수분 마스크는 "비행기 건조"라는 명확한 페인포인트가 SNS 검색을 만드는 신흥 트렌드입니다. 100ml 이하 기내 반입 가능 용량을 전면에 내세우고, 맘큐 강점인 "아이와 떠나는 여행 위생 키트"를 함께 묶으면 유아 동반 여행 가구를 정조준할 수 있습니다. 기존 "여름 휴가 시즌"(물놀이 중심)과 별도로 여행 케어 검색 인텐트를 공략하세요.',
+    platformTips: {
+      momq: { tip: '"여행 가는 회원" 세그먼트 CRM, 기내 수분 케어 2종 번들, 아이 여행 위생 키트, 휴대용 물티슈 사은품(히어로 단가 10%). 맘큐 주채널.', action: '여행 세그먼트 CRM + 기내 케어 세트', metric: '객단가 +20% (추정치)' },
+      coupang: { tip: '로켓배송 수분 마스크·미스트 재고 2배 선확보. 여름 휴가 성수기 광고 +30% 상향.', action: '로켓 재고 선확보 + 광고 상향', metric: '로켓 노출 +45% (추정치)' },
+      naver: { tip: '"기내 수분 마스크", "비행기 마스크팩", "여행용 미니 키트" 쇼핑검색광고 입찰. 7월 휴가 성수기 피크.', action: '여행 케어 키워드 광고 상향', metric: '검색 클릭 +50% (추정치)' },
+    },
+  },
 ];
 
 export const LIFECYCLE_RECOS: LifecycleReco[] = [
