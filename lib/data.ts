@@ -303,7 +303,7 @@ export const EVENTS: MarketingEvent[] = [
     checklist: [
       { d: -18, task: '"어린이날 선물 TOP 10" 기획전 페이지', done: true },
       { d: -10, task: '선물포장 옵션 추가', done: true },
-      { d: -7, task: '배송일 강조 배너 (5/4까지 도착)', done: false },
+      { d: -7, task: '주문 마감일 안내 배너 (5/4까지 주문)', done: false },
       { d: -3, task: '로켓·재고 점검 (쿠팡·맘큐)', done: false },
       { d: 0, task: '마감 임박 리마케팅 캠페인', done: false },
       { d: -14, task: '주요 완구 카테고리 경쟁사 기획전 기간·할인율 스캔', done: false },
@@ -539,14 +539,14 @@ export const EVENTS: MarketingEvent[] = [
     summary: '명절 선물세트 수요. 건강식품·프리미엄 생활용품·유아 선물 급증.',
     trendScore: 94, search: '+185%', gmv: '+210%',
     products: [
-      { name: '건강기능식품 선물세트', reason: '명절 최고 판매 카테고리', urgency: 'high', category: 'l_health', priceRange: { min: 30000, max: 120000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 "추석 한정 선물세트" 단독 구성. 선물포장+배송일 보장 강조.' },
+      { name: '건강기능식품 선물세트', reason: '명절 최고 판매 카테고리', urgency: 'high', category: 'l_health', priceRange: { min: 30000, max: 120000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 "추석 한정 선물세트" 단독 구성. 선물포장 강조.' },
       { name: '프리미엄 바디케어 세트', reason: '여성 가족 선물 포지션', urgency: 'high', category: 'l_body', priceRange: { min: 25000, max: 65000 }, prepDays: 14, momqTip: '맘큐 에디션 리본 포장. 스탠다드 회원 가입축하 포인트로 실질 할인 체감 극대화.' },
       { name: '유아 선물 세트', reason: '손자녀 선물 수요', urgency: 'mid', category: 'b_formula', priceRange: { min: 20000, max: 50000 }, prepDays: 14, momqTip: '조부모→손자녀 선물 프레임. 맘큐 회원 초대 시 얼리버드 보너스 1,000원 활용.' },
     ],
     checklist: [
       { d: -21, task: '추석 선물세트 페이지 오픈', done: false },
       { d: -14, task: '선물포장·메시지카드 옵션 추가', done: false },
-      { d: -7, task: '배송 마감일 배너 게시', done: false },
+      { d: -7, task: '주문 마감일 안내 배너 게시', done: false },
     ],
     pro: '추석 선물 구매 피크는 명절 약 2주 전부터 집중됩니다. 명절 1주일 전 이후 주문은 도착 보장 불가 안내를 미리 배너에 표시하세요.',
   },
@@ -660,7 +660,7 @@ export const EVENTS: MarketingEvent[] = [
     checklist: [
       { d: -21, task: '크리스마스 기획전 페이지 오픈', done: false },
       { d: -14, task: '선물포장·리본 옵션 추가', done: false },
-      { d: -7, task: '크리스마스 전 배송 마감일 배너', done: false },
+      { d: -7, task: '크리스마스 전 주문 마감일 안내 배너', done: false },
     ],
     pro: '12월 15~20일이 크리스마스 선물 구매 피크입니다. 12/21 이후 주문은 도착 보장 불가 안내 필수.',
   },
@@ -722,7 +722,7 @@ export const EVENTS: MarketingEvent[] = [
     checklist: [
       { d: -18, task: '"가정의달 선물 통합 기획전" 페이지 오픈', done: false },
       { d: -10, task: '가족 세트 번들 상품 구성 확정', done: false },
-      { d: -5, task: '어린이날 배송 마감 배너 (5/3까지 주문)', done: false },
+      { d: -5, task: '어린이날 주문 마감 안내 배너 (5/3까지 주문)', done: false },
       { d: 3, task: '어버이날 D-5 재구매 CRM 발송', done: false },
       { d: 10, task: '스승의날 답례품 기획전 오픈', done: false },
     ],
@@ -881,7 +881,7 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '유아 면역 영양제·유산균', reason: '환절기 선제 구매, 맘 커뮤니티 1위 관심 품목', urgency: 'high', category: 'b_suppl', priceRange: { min: 15000, max: 48000 }, prepDays: 10, momqTip: '추석 전 건강 챙기기 프레임. 선물세트 구성 가능. 커뮤니티 후기 선행 확보 필수.' },
       { name: '유아 보습 크림·스킨케어 세트', reason: '가을 건조 시작, 환절기 필수 보습 수요', urgency: 'high', category: 'b_bath', priceRange: { min: 12000, max: 35000 }, prepDays: 7, momqTip: '봄 환절기 구매 고객 재구매 CRM. "EWG 등급" 인증 강조.' },
-      { name: '유아동 가을 이불 (얇은 이불)', reason: '여름 이불→가을 이불 교체 수요', urgency: 'mid', category: 'b_bedding', priceRange: { min: 25000, max: 75000 }, prepDays: 14, momqTip: '세탁세제 + 침구 크로스셀 번들. 추석 전 배송 보장 강조.' },
+      { name: '유아동 가을 이불 (얇은 이불)', reason: '여름 이불→가을 이불 교체 수요', urgency: 'mid', category: 'b_bedding', priceRange: { min: 25000, max: 75000 }, prepDays: 14, momqTip: '세탁세제 + 침구 크로스셀 번들. 추석 전 가을 이불 교체 수요 공략.' },
       { name: '가을 탈모·두피 케어 샴푸 (환절기 탈모 급증)', reason: '가을 환절기 탈모 검색량 연간 최고점', urgency: 'mid', category: 'l_hair', priceRange: { min: 8000, max: 28000 }, prepDays: 7, momqTip: '"환절기 머리 빠져요" 커뮤니티 질문 피크. 유아용 샴푸와 패밀리 세트 구성.' },
     ],
     checklist: [
@@ -1461,9 +1461,9 @@ export const LIFECYCLE_RECOS: LifecycleReco[] = [
       { d: 0, task: '신생아 출산 회원 CRM 발송 — "축하합니다! 지금 필요한 것들"', done: false },
       { d: 3, task: '첫 구매 고객 재구매 쿠폰 발송 (구매 3일 후)', done: false },
     ],
-    pro: '퇴원 후 72시간이 첫 구매 골든타임입니다. 출산 축하 메시지와 함께 "지금 필요한 것" 프레임으로 CRM 발송하면 전환율이 가장 높습니다. 빠른 배송(맘쑝배송)을 전면에 내세우세요.',
+    pro: '퇴원 후 72시간이 첫 구매 골든타임입니다. 출산 축하 메시지와 함께 "지금 필요한 것" 프레임으로 CRM 발송하면 전환율이 가장 높습니다.',
     platformTips: {
-      momq: { tip: '출산 후 72시간 CRM 발송. 신생아 기저귀+물티슈 번들 긴급 배송 강조.', action: '출산 직후 CRM + 긴급배송 번들', metric: '초기 락인 +40%' },
+      momq: { tip: '출산 후 72시간 CRM 발송. 신생아 기저귀+물티슈 번들 우선 노출.', action: '출산 직후 CRM + 신생아 번들', metric: '초기 락인 +40%' },
       coupang: { tip: '로켓배송으로 당일/익일 도착 강조. 신생아 카테고리 광고 집중.', action: '로켓 신생아 광고 집중', metric: '전환 +25%' },
     },
   },
