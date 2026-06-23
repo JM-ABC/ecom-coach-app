@@ -226,7 +226,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '어린이 책상·의자 세트', reason: '새학기 공부 환경 세팅 수요, 가격대 높아 객단가 우수', urgency: 'high', category: 'b_furniture', priceRange: { min: 120000, max: 350000 }, prepDays: 28, momqTip: '스탠다드 이상 회원 무료 설치 서비스 제공. 고객단가 방어 핵심 상품.' },
       { name: '유아동 실내화·운동화', reason: '유치원·어린이집 필수품, 반복 구매', urgency: 'mid', category: 'b_fashion', priceRange: { min: 15000, max: 35000 }, prepDays: 14, momqTip: '3개월 교체 주기 기반 재구매 유도. 라이트 회원 업그레이드 훅으로 활용.' },
       { name: '아동 학습교구·퍼즐 세트', reason: '입학 선물 포지션, 선물세트 구성 용이', urgency: 'mid', category: 'b_toy', priceRange: { min: 20000, max: 55000 }, prepDays: 14, momqTip: '선물포장 무료 옵션 추가. 맘큐 단독 번들(교구+퍼즐) 구성으로 차별화.' },
-      { name: '유아 유모차·웨건 (어린이집 등원용)', reason: '입학 시즌 신규 구매 수요 피크, 객단가 최상위', urgency: 'mid', category: 'b_stroller', priceRange: { min: 150000, max: 600000 }, prepDays: 28, momqTip: '프리미엄 회원 쇼핑지원금 + 무료 배송 강조. "어린이집 첫 등원" 커뮤니티 콘텐츠 연동.' },
+      { name: '유아 유모차·웨건 (어린이집 등원용)', reason: '입학 시즌 신규 구매 수요 피크, 객단가 최상위', urgency: 'mid', category: 'b_stroller', priceRange: { min: 150000, max: 600000 }, prepDays: 28, momqTip: '프리미엄 회원 쇼핑지원금 활용 안내. "어린이집 첫 등원" 커뮤니티 콘텐츠 연동.' },
       { name: '유아 카시트 (신학기 이동 증가 대비)', reason: '어린이집 차량 이동 시작으로 카시트 신규·교체 수요', urgency: 'mid', category: 'b_carseat', priceRange: { min: 80000, max: 350000 }, prepDays: 21, momqTip: 'KC 안전 인증·ISOFIX 장착 여부 강조. 고가 상품으로 프리미엄 쇼핑지원금 활용 안내.' },
       { name: '이유식기·수저세트 (어린이집 준비물)', reason: '어린이집 준비물 리스트 1순위, 반복 구매', urgency: 'mid', category: 'b_wean', priceRange: { min: 8000, max: 35000 }, prepDays: 10, momqTip: '준비물 리스트 기획 콘텐츠에 상품 태그. 맘큐 커뮤니티 "어린이집 준비물 총정리" 협업.' },
     ],
@@ -252,7 +252,7 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '피크닉 매트 (대형·방수)', reason: '가족 단위 수요 ↑, 방수 기능 필수', urgency: 'high', category: 'l_storage', priceRange: { min: 15000, max: 45000 }, prepDays: 14, momqTip: '맘큐 단독 "대형 방수" 키워드 썸네일 운영. 프리미엄 회원 쇼핑지원금 활용 유도.' },
       { name: '휴대용 아기 방수매트', reason: '기저귀 교체+식사 겸용 수요', urgency: 'high', category: 'b_safety', priceRange: { min: 8000, max: 22000 }, prepDays: 7, momqTip: '기저귀 구매 고객 대상 크로스셀. 장바구니 추천 배너 삽입.' },
-      { name: '아기띠·힙시트', reason: '짧은 나들이 필수템, 봄 신상 구매 집중', urgency: 'mid', category: 'b_carry', priceRange: { min: 35000, max: 120000 }, prepDays: 21, momqTip: '고가 상품이므로 스탠다드→프리미엄 업그레이드 훅으로 활용. 가입비 대비 이득 프레임.' },
+      { name: '아기띠·힙시트', reason: '짧은 나들이 필수템, 봄 신상 구매 집중', urgency: 'mid', category: 'b_carry', priceRange: { min: 35000, max: 120000 }, prepDays: 21, momqTip: '고가 상품이므로 스탠다드→레귤러 업그레이드 훅으로 활용. 가입비 대비 이득 프레임.' },
       { name: '유아 외출용 보냉백', reason: '이유식·간식 보관 수요', urgency: 'mid', category: 'b_carry', priceRange: { min: 12000, max: 30000 }, prepDays: 7, momqTip: '이유식 카테고리 묶음 할인과 연계. 맘큐 커뮤니티 "나들이템 추천" 게시판 노출.' },
       { name: '아기 자외선차단제 SPF30~50 (봄 외출용)', reason: '4월 봄 햇살 강화, 피크닉 외출 필수품', urgency: 'mid', category: 'l_body', priceRange: { min: 10000, max: 25000 }, prepDays: 7, momqTip: '"봄 나들이 필수템" 피크닉 매트 번들 구성. 무기자차·저자극 성분 강조.' },
     ],
@@ -295,7 +295,7 @@ export const EVENTS: MarketingEvent[] = [
     products: [
       { name: '4-7세 학습 완구·교구', reason: '검색량 최상위 (교육 + 재미)', urgency: 'high', category: 'b_toy', priceRange: { min: 15000, max: 89000 }, prepDays: 18, momqTip: '맘큐 포토리뷰 200건 이상 상품 상단 배치. 프리미엄 회원 5% 추가 할인으로 전환 유도.' },
       { name: '캐릭터 완구 선물세트', reason: '포장 단위 구매, 객단가 높음', urgency: 'high', category: 'b_toy', priceRange: { min: 30000, max: 79000 }, prepDays: 14, momqTip: '맘큐 단독 선물포장 무료 옵션. 비회원→라이트 전환 시 즉시 할인 쿠폰 지급.' },
-      { name: '유아 자전거·킥보드', reason: '5월 초 야외활동과 연결', urgency: 'mid', category: 'b_toy', priceRange: { min: 50000, max: 180000 }, prepDays: 21, momqTip: '고가 상품 — 프리미엄 멤버십 쇼핑지원금(매달 3,000원) 활용 안내로 가입 유도.' },
+      { name: '유아 자전거·킥보드', reason: '5월 초 야외활동과 연결', urgency: 'mid', category: 'b_toy', priceRange: { min: 50000, max: 180000 }, prepDays: 21, momqTip: '고가 상품 — 프리미엄 멤버십 매월 쇼핑지원금 활용 안내로 가입 유도.' },
       { name: '캐릭터 유아동 의류세트', reason: '실용 선물 포지션, 리뷰 전환 좋음', urgency: 'mid', category: 'b_fashion', priceRange: { min: 20000, max: 45000 }, prepDays: 10, momqTip: '완구+의류 크로스셀 번들. 맘큐 커뮤니티 "선물 추천" 게시판 협업 콘텐츠.' },
       { name: '어린이 이유식기·식판·수저세트 (선물용)', reason: '실용 선물 포지션, 새로운 식기 세트 선물 수요', urgency: 'low', category: 'b_wean', priceRange: { min: 12000, max: 45000 }, prepDays: 10, momqTip: '캐릭터 식판+수저 선물 세트 구성. "어린이날 실용 선물" 키워드 공략.' },
       { name: '어린이 전동칫솔·구강케어 세트', reason: '건강 선물 포지션, 부모가 직접 구매하는 실용 선물', urgency: 'low', category: 'l_oral', priceRange: { min: 15000, max: 55000 }, prepDays: 10, momqTip: '완구와 함께 "건강+재미" 콤보 선물세트 구성. 맘큐 커뮤니티 치과 추천 콘텐츠 연동.' },
@@ -540,7 +540,7 @@ export const EVENTS: MarketingEvent[] = [
     trendScore: 94, search: '+185%', gmv: '+210%',
     products: [
       { name: '건강기능식품 선물세트', reason: '명절 최고 판매 카테고리', urgency: 'high', category: 'l_health', priceRange: { min: 30000, max: 120000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 "추석 한정 선물세트" 단독 구성. 선물포장+배송일 보장 강조.' },
-      { name: '프리미엄 바디케어 세트', reason: '여성 가족 선물 포지션', urgency: 'high', category: 'l_body', priceRange: { min: 25000, max: 65000 }, prepDays: 14, momqTip: '맘큐 에디션 리본 포장. 스탠다드 회원 가입축하 15,000P로 실질 할인 체감 극대화.' },
+      { name: '프리미엄 바디케어 세트', reason: '여성 가족 선물 포지션', urgency: 'high', category: 'l_body', priceRange: { min: 25000, max: 65000 }, prepDays: 14, momqTip: '맘큐 에디션 리본 포장. 스탠다드 회원 가입축하 포인트로 실질 할인 체감 극대화.' },
       { name: '유아 선물 세트', reason: '손자녀 선물 수요', urgency: 'mid', category: 'b_formula', priceRange: { min: 20000, max: 50000 }, prepDays: 14, momqTip: '조부모→손자녀 선물 프레임. 맘큐 회원 초대 시 얼리버드 보너스 1,000원 활용.' },
     ],
     checklist: [
@@ -612,9 +612,9 @@ export const EVENTS: MarketingEvent[] = [
     summary: '맘큐 자사몰 연간 최대 D2C 기획전. 블랙프라이데이 직전 4일간 맘큐 회원 전용 특가로 자사몰 매출 극대화.',
     trendScore: 89, search: '+110%', gmv: '+145%',
     products: [
-      { name: '맘큐 단독 기저귀·물티슈 대용량 연간 묶음', reason: '연중 최저가 포지셔닝, 자사몰 락인 효과 최대', urgency: 'high', category: 'b_diaper', priceRange: { min: 150000, max: 350000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 연간 최저가 묶음. 비회원→프리미엄 원스텝 가입 유도 (가입비 6,000원 < 절감액).' },
+      { name: '맘큐 단독 기저귀·물티슈 대용량 연간 묶음', reason: '연중 최저가 포지셔닝, 자사몰 락인 효과 최대', urgency: 'high', category: 'b_diaper', priceRange: { min: 150000, max: 350000 }, prepDays: 21, momqTip: '프리미엄 회원 전용 연간 최저가 묶음. 비회원→라이트 원스텝 가입 유도 (가입비 6,000원 < 절감액).' },
       { name: '유아 스킨케어 풀세트 (맘큐 에디션)', reason: '자사몰 단독 구성, 커뮤니티 인플루언서 협업', urgency: 'high', category: 'l_body', priceRange: { min: 45000, max: 89000 }, prepDays: 14, momqTip: '맘큐에서만 살 수 있는 단독 구성이 핵심. 커뮤니티 인플루언서 언박싱 영상 5편 이상 확보.' },
-      { name: '프리미엄 분유·이유식 3개월 세트', reason: '맘큐 회원 전용 가격, 재구매 전환 핵심', urgency: 'high', category: 'b_formula', priceRange: { min: 80000, max: 180000 }, prepDays: 14, momqTip: '재구매율 최상위 상품. 프리미엄 회원 매달 쇼핑지원금 3,000원 적용으로 체감가 극대화.' },
+      { name: '프리미엄 분유·이유식 3개월 세트', reason: '맘큐 회원 전용 가격, 재구매 전환 핵심', urgency: 'high', category: 'b_formula', priceRange: { min: 80000, max: 180000 }, prepDays: 14, momqTip: '재구매율 최상위 상품. 프리미엄 회원 매월 쇼핑지원금 적용으로 체감가 극대화.' },
       { name: '생활용품 묶음 기획세트', reason: '블랙프라이데이 전 선점 구매 유도', urgency: 'mid', category: 'l_clean', priceRange: { min: 25000, max: 55000 }, prepDays: 7, momqTip: '대용량 묶음으로 마진 방어. 라이트→스탠다드 업그레이드 시 추가 5% 할인 제공.' },
     ],
     checklist: [
@@ -717,7 +717,7 @@ export const EVENTS: MarketingEvent[] = [
       { name: '가족 선물 세트 (어린이+어버이 묶음)', reason: '한 번에 두 가지 선물 해결, 객단가 극대화', urgency: 'high', category: 'b_toy', priceRange: { min: 45000, max: 120000 }, prepDays: 18, momqTip: '맘큐 단독 "가족 세트" 기획. 어린이 완구 + 부모님 건강용품 묶음으로 차별화.' },
       { name: '유아 건강식품 선물세트', reason: '어버이날 겸 아이 선물 포지션', urgency: 'high', category: 'b_formula', priceRange: { min: 25000, max: 65000 }, prepDays: 14, momqTip: '프리미엄 선물포장 + 메시지카드 무료. 맘큐 회원 전용 가격 강조.' },
       { name: '어린이 완구·교구 선물세트', reason: '5/5 어린이날 선물 최상위 품목', urgency: 'high', category: 'b_toy', priceRange: { min: 20000, max: 75000 }, prepDays: 14, momqTip: '선물포장 무료. 맘큐 커뮤니티 "5월 선물 추천" 협업 콘텐츠.' },
-      { name: '부모님 프리미엄 바디케어 세트', reason: '어버이날 실용 선물', urgency: 'mid', category: 'l_health', priceRange: { min: 30000, max: 80000 }, prepDays: 14, momqTip: '스탠다드→프리미엄 업그레이드 시 추가 10% 할인 쿠폰.' },
+      { name: '부모님 프리미엄 바디케어 세트', reason: '어버이날 실용 선물', urgency: 'mid', category: 'l_health', priceRange: { min: 30000, max: 80000 }, prepDays: 14, momqTip: '스탠다드→레귤러 업그레이드 시 추가 10% 할인 쿠폰.' },
     ],
     checklist: [
       { d: -18, task: '"가정의달 선물 통합 기획전" 페이지 오픈', done: false },
