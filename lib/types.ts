@@ -98,3 +98,16 @@ export interface LifecycleReco {
   pro: string;
   platformTips?: Record<string, PlatformInsight>;
 }
+
+export interface ProductCandidate {
+  id: string;
+  name: string;
+  reason: string;
+  urgency: UrgencyLevel;
+  category: string;            // 맘큐 ourKey
+  priceRange?: { min: number; max: number };
+  source: 'trend' | 'news';
+  signalLabel: string;
+  sourceLink?: string;
+  estimated?: boolean;
+}
