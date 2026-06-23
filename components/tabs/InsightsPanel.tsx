@@ -8,7 +8,15 @@ import { useAutoTrendEvents } from '@/hooks/useAutoTrendEvents';
 import { useWeatherEvents } from '@/hooks/useWeatherEvents';
 import { useNewsEvents } from '@/hooks/useNewsEvents';
 import type { DetectedNewsEvent } from '@/hooks/useNewsEvents';
-import { catColor } from '@/lib/data';
+import { useCandidateCart } from '@/hooks/useCandidateCart';
+import { useTrendProducts } from '@/hooks/useTrendProducts';
+import { getCandidateProductsByCategory } from '@/lib/candidates';
+import CandidateSection from '@/components/candidates/CandidateSection';
+import CandidateCartBar from '@/components/candidates/CandidateCartBar';
+import type { ProductCandidate } from '@/lib/types';
+import { catColor, CATEGORIES } from '@/lib/data';
+
+type CartApi = ReturnType<typeof useCandidateCart>;
 
 // ── 상태 배지 ─────────────────────────────────────────────────
 function StatusBadge({ status, label }: { status: string; label: string }) {
@@ -42,11 +50,23 @@ function signalInfo(change: number) {
 }
 
 // ── 트렌드 패널 ───────────────────────────────────────────────
-function TrendPanel() {
+function TrendPanel({ cart }: { cart: CartApi }) {
   const { trends, status, updatedAt } = useTrendData();
   const { events: autoEvents } = useAutoTrendEvents();
 
   const rising  = trends.filter(t => t.changeVsPrevWeek >= 8);
+  const trendCandidates: ProductCandidate[] = rising.flatMap(t =>
+    getCandidateProductsByCategory(t.ourKey, 3).map((p, i) => ({
+      id: `trend-${t.ourKey}-${i}`,
+      name: p.name,
+      reason: p.reason,
+      urgency: p.urgency,
+      category: p.category,
+      ...(p.priceRange ? { priceRange: p.priceRange } : {}),
+      source: 'trend' as const,
+      signalLabel: `${t.title} +${t.changeVsPrevWeek}% 급등`,
+    }))
+  );
   const falling = trends.filter(t => t.changeVsPrevWeek <= -8);
   const stable  = trends.filter(t => t.changeVsPrevWeek > -8 && t.changeVsPrevWeek < 8);
   const sorted  = [...trends].sort((a, b) => b.changeVsPrevWeek - a.changeVsPrevWeek);
@@ -152,6 +172,22 @@ function TrendPanel() {
       {updatedAt && (
         <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-subtle)', marginTop: 12 }}>
           마지막 업데이트: {new Date(updatedAt).toLocaleString('ko-KR')}
+        </div>
+      )}
+
+      {trendCandidates.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <Icon name="sparkles" size={13} />
+            <div style={{ fontSize: 'var(--fs-base)', fontWeight: 700, letterSpacing: '-0.01em' }}>트렌드 기반 품목 후보</div>
+            <span style={{ fontSize: 'var(--fs-xs)', padding: '2px 7px', borderRadius: 4, background: 'oklch(0.93 0.06 145)', color: 'var(--success)', fontWeight: 600 }}>
+              {trendCandidates.length}건
+            </span>
+          </div>
+          <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--text-muted)', marginBottom: 12 }}>
+            급등 카테고리의 기존 큐레이션 품목입니다. 담아서 캘린더·AI 기획서로 보내세요.
+          </div>
+          <CandidateSection candidates={trendCandidates} onAdd={cart.add} isInCart={cart.has} />
         </div>
       )}
 
@@ -273,11 +309,17 @@ const TAG_COLOR: Record<string, { bg: string; color: string }> = {
   orange: { bg: 'oklch(0.96 0.05 60)',  color: 'oklch(0.48 0.14 60)' },
 };
 
-function NewsDetectionPanel() {
+function NewsDetectionPanel({ cart }: { cart: CartApi }) {
   const { events, insights, status, updatedAt } = useNewsEvents();
   const { add } = useCustomEvents();
+  const tp = useTrendProducts();
   const [added, setAdded] = useState<Set<string>>(new Set());
   const [insightTab, setInsightTab] = useState<'events' | 'trends'>('events');
+
+  const analyzeInsights = () => {
+    const cats = CATEGORIES.filter(c => c.id !== 'all').map(c => c.id);
+    tp.analyze(insights, cats);
+  };
 
   const handleAdd = async (ev: DetectedNewsEvent) => {
     const { toMarketingEvent } = await import('@/app/api/news-events/route');
@@ -388,6 +430,27 @@ function NewsDetectionPanel() {
       {/* 소비 트렌드 탭 */}
       {insightTab === 'trends' && (
         <>
+          {insights.length > 0 && (
+            <div style={{ marginBottom: 16, padding: '12px 14px', borderRadius: 'var(--radius-md)', background: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 'var(--fs-base)', fontWeight: 600, color: 'var(--text)' }}>뉴스에서 품목 후보 뽑기</div>
+                  <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-muted)', marginTop: 2 }}>수집된 트렌드 기사를 Claude가 맘큐 품목 후보로 분석합니다.</div>
+                </div>
+                <button className="btn primary sm" onClick={analyzeInsights} disabled={tp.status === 'loading'} style={{ flexShrink: 0 }}>
+                  <Icon name="sparkles" size={12} />{tp.status === 'loading' ? '분석 중...' : '품목 후보 분석'}
+                </button>
+              </div>
+              {tp.status === 'no-api-key' && <div style={{ fontSize: 'var(--fs-xs)', color: 'oklch(0.55 0.12 75)', marginTop: 8 }}>ANTHROPIC_API_KEY 미설정 — 후보 분석 불가</div>}
+              {tp.status === 'error' && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--danger)', marginTop: 8 }}>분석 중 오류가 발생했습니다.</div>}
+              {tp.status === 'ok' && tp.candidates.length === 0 && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-subtle)', marginTop: 8 }}>맘큐 카테고리에 맞는 품목 후보가 없습니다.</div>}
+              {tp.candidates.length > 0 && (
+                <div style={{ marginTop: 12 }}>
+                  <CandidateSection candidates={tp.candidates} onAdd={cart.add} isInCart={cart.has} />
+                </div>
+              )}
+            </div>
+          )}
           {insights.length === 0 && status === 'ok' && (
             <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-subtle)', fontSize: 'var(--fs-base)', background: 'var(--surface)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border)' }}>
               수집된 트렌드 기사가 없습니다.
@@ -529,6 +592,8 @@ type PanelId = 'news' | 'trends' | 'weather' | 'competitor';
 
 export default function InsightsPanel() {
   const [panel, setPanel] = useState<PanelId>('news');
+  const cart = useCandidateCart();
+  const { add: addCustomEvent } = useCustomEvents();
 
   const panels: { id: PanelId; label: string; icon: string }[] = [
     { id: 'news',       label: '뉴스 감지',       icon: 'search' },
@@ -570,10 +635,12 @@ export default function InsightsPanel() {
         ))}
       </div>
 
-      {panel === 'news'       && <NewsDetectionPanel />}
-      {panel === 'trends'     && <TrendPanel />}
+      {panel === 'news'       && <NewsDetectionPanel cart={cart} />}
+      {panel === 'trends'     && <TrendPanel cart={cart} />}
       {panel === 'weather'    && <WeatherPanel />}
       {panel === 'competitor' && <CompetitorPanel />}
+
+      <CandidateCartBar items={cart.items} onAddToCalendar={addCustomEvent} onClear={cart.clear} />
     </div>
   );
 }
