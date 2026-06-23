@@ -31,10 +31,17 @@ function addDays(iso: string, days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+// 후보 묶음 내용 기반 짧은 해시 — 같은 날 다른 묶음의 id 충돌 방지
+function shortHash(s: string): string {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(h, 31) + s.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(36);
+}
+
 export function buildEventFromCandidates(items: ProductCandidate[], todayIso: string): MarketingEvent {
   const categories = [...new Set(items.map(c => c.category))];
   return {
-    id: `candidate-${todayIso}-${items.length}`,
+    id: `candidate-${todayIso}-${shortHash(items.map(c => c.id).join('|'))}`,
     title: '트렌드·뉴스 후보 기획전 (검토 필요)',
     type: 'season',
     start: todayIso,
